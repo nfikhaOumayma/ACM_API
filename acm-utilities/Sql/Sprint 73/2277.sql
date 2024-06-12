@@ -1,0 +1,2 @@
+alter table  ACM_CONDITIONNAL_APPROVE 
+add  ID_ACM_CALENDAR_EVENT bigint

@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="agreement_mel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55f20fc8-f629-434f-8bc3-1471e0d714a4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tamkeen Recette"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="200"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="795"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="SEAT_ADDRESS" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SET LANGUAGE ENGLISH;
+SELECT 
+[dbo].[ConvertDayNameEnglishToArabic](DATENAME(WEEKDAY, GETDATE())) [DAY_IN_ARABIC],
+ DATEPART(DAY, GETDATE()) [DAY],
+ [dbo].[ConvertMonthNumberToArabic](DATEPART(MONTH, GETDATE())) [MONTH_OF_THE_YEAR],
+ DATEPART(YEAR, GETDATE()) [YEAR],
+ (SELECT Description from Branches where Branches.BranchID = CUAccount.BranchID) [BRANCH_NAME],
+ (select value from UserDefinedFieldLinks where UserDefinedFieldID = 38 and UserDefinedFieldLinks.BranchID = CUAccount.BranchID) [BRANCH_MANAGER],
+ (select Address1 + ' ' + ' '+ TownCity + ' '+ State  from Address,Branches where Address.AddressID = Branches.AddressID and Branches.BranchID = CUAccount.BranchID)  [BRANCH_ADDRESS],
+ REPLACE(REPLACE(customer.CorrespondenceName,'Mrs ',''),'Mr ','') [CUSTOMER_NAME],
+ FLOOR((CAST (GetDate() AS INTEGER) - CAST(person.DateOfBirth AS INTEGER)) / 365.25) [CUSTOMER_AGE],
+ (SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=3 AND UserDefinedFieldLinks.CustomerID=CULoan.CustomerID) [CUSTOMER_NATIONAL_ID],
+ ( SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=36 AND UserDefinedFieldLinks.CustomerID = CULoan.CustomerID) [CUSTOMER_NATIONAL_ID_ISSUE_PLACE],
+ (SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=37 AND CustomerID=CULoan.CustomerID) [CUSTOMER_NATIONAL_ID_ISSUE_DATE],
+ ISNULL(( SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=26 AND UserDefinedFieldLinks.CustomerID = CULoan.CustomerID),'.................')[CUSTOMER_PROFESSION],
+ (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_ADDRESS1_STREET],
+ (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_ADDRESS1_STREET_COUNTY],
+ (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY],
+ (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_ADDRESS1_STREET_COUNTY_STATE],
+ (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [CUSTOMER_ADDRESS2_STREET],
+ (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [CUSTOMER_ADDRESS2_STREET_COUNTY],
+ (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [CUSTOMER_ADDRESS2_STREET_COUNTY_TOWNCITY],
+ (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [CUSTOMER_ADDRESS2_STREET_COUNTY_STATE],
+ ISNULL(Person.Telephone1, '.................')  [CUSTOMER_MOBILE_NUMBER],
+ REPLACE(REPLACE(guarantor.CorrespondenceName,'Mrs ',''),'Mr ','') [GUARANTOR_NAME],
+ FLOOR((CAST (GetDate() AS INTEGER) - CAST(Personguarantor.DateOfBirth AS INTEGER)) / 365.25) [GUARANTOR_AGE],
+(SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=3 AND CustomerID=guarantor.CustomerID) [GUARANTOR_ID],
+(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=36 AND UserDefinedFieldLinks.CustomerID = guarantor.CustomerID) [GUARANTOR_ID_ISSUE_PLACE],
+(SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=37 AND CustomerID=guarantor.CustomerID) [GUARANTOR_ID_ISSUE_DATE],
+ ISNULL((SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=26 AND UserDefinedFieldLinks.CustomerID = guarantor.CustomerID),'.................') [GUARANTOR_PROFESSION],
+ (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6) [GUARANTOR_ADDRESS1_STREET],
+ (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [GUARANTOR_ADDRESS1_STREET_COUNTY],
+ (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY],
+ (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [GUARANTOR_ADDRESS1_STREET_COUNTY_STATE],
+ (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [GUARANTOR_ADDRESS2_STREET],
+ (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [GUARANTOR_ADDRESS2_STREET_COUNTY],
+ (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [GUARANTOR_ADDRESS2_STREET_COUNTY_TOWNCITY],
+ (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 2)  [GUARANTOR_ADDRESS2_STREET_COUNTY_STATE],
+ ISNULL(Personguarantor.Telephone1,'.................')  [GUARANTOR_MOBILE_NUMBER],
+ cast(cast(CULoanPart.IssueAmount as float) as int) [ISSUE_AMOUNT_DEGITAL],
+ dbo.ConvertNumber2Letters( cast(cast(IssueAmount as float) as int), N'جنيه') [ISSUE_AMOUNT_LETTER],
+ (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 1)  [CUSTOMER_PROJECT_STREET],
+ (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 1)  [CUSTOMER_PROJECT_COUNTY],
+ (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 1)  [CUSTOMER_PROJECT_STREET_COUNTY_TOWNCITY],
+ (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 1)  [CUSTOMER_PROJECT_STREET_COUNTY_STATE],
+ CULoanPart.TermPeriodNum [TERM_NUM],
+ CULoanPart.InitialPaymentDate [FIRST_REPAYMENT_DATE],
+ (select MAX(RepaymentDate) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID) [LAST_REPAYMENT_DATE],
+ convert(VARCHAR,ROUND(convert(FLOAT,CUProductLoan.FlatRateIntRate),2) ) [FLAT_INTEREST_RATE],
+ CAST((select SUM(InterestRepayment) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID) AS INTEGER) [INTEREST],
+ cast ( cast (CULoanPart.NormalPayment as float) as int) [MONTHLY_REPAYMENT],
+ FORMAT(CUProductLoan.PenaltyInterestRate, 'N') + ' % ,' [PENALITY_INTERST_RATE],
+ CUAccount.AccountNumber [ACCOUNT_NUMBER],
+ CULoanPart.IssueDate [ISSUE_DATE], 
+ isnull((SELECT TOP 1 UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=7 AND UserDefinedFieldLinks.CUAccountID = CUAccount.CUAccountID) , '.................') [IND_CODE_L1],
+ isnull((SELECT TOP 1 UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=8 AND UserDefinedFieldLinks.CUAccountID = CUAccount.CUAccountID),'.................' ) [IND_CODE_L2],
+ (select Description from CUProductLoanReasons where CULoan.LoanReasonID = CUProductLoanReasons.LoanReasonID) [LOAN_REASON],
+ 
+ CAST(ISNULL(case when CUProductLoan.IssueFeeID1 is not null 
+ 	then (select IssueFee1Amount from CULoanPart where CULoanID = culoan.culoanID) 
+	else ISNULL(CUFee.amount, case when CUFee.CUFeeID =4 then 300 when CUFee.CUFeeID =3 then 200 else 150 end)
+	end,0) AS INTEGER) AS APPLICATION_FEE,
+ CAST(ISNULL(case when CUProductLoan.IssueFeeID1 is not null 
+ 	then (select IssueFee2Amount from CULoanPart where CULoanID = culoan.culoanID)
+	else (IssueAmount / 100) * (select top 1 FeePercentage FROM CUFeeBand where CUFeeBand.CUFeeID=CUProductLoan.IssueFeeID) 
+	end,0) AS INTEGER) AS ADMIN_FEE
+	
+ from CULoan 
+ INNER JOIN CUAccount ON(CUAccount.CUAccountID=CULoan.CUAccountID) 
+ INNER JOIN customer ON(CULoan.CustomerID = customer.CustomerID) 
+ INNER JOIN CustomerPerson ON(CustomerPerson.CustomerID = customer.CustomerID) 
+ INNER JOIN Person ON(Person.PersonID = CustomerPerson.PersonID) 
+ INNER JOIN CULoanPart ON(CULoanPart.CULoanID=CULoan.CULoanID)
+ INNER JOIN CUProductLoan ON(CUProductLoan.ProductID=CULoan.ProductID)
+ INNER JOIN CUFee ON(CULoan.ProductID = CUFee.cufeeID)
+ LEFT JOIN CULoanGuarantor on (CULoanGuarantor.CULoanID = CULoan.CULoanID)
+ LEFT JOIN Customer as guarantor ON(guarantor.CustomerID=CULoanGuarantor.CustomerID) 
+ LEFT JOIN CustomerPerson as CustomerPersonGuarantor ON(CustomerPersonGuarantor.CustomerID = guarantor.CustomerID) 
+ LEFT JOIN Person as Personguarantor ON(Personguarantor.PersonID = CustomerPersonGuarantor.PersonID)
+ 
+where CUAccount.CUAccountID =  $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="DAY_IN_ARABIC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DAY_IN_ARABIC"/>
+		<property name="com.jaspersoft.studio.field.label" value="DAY_IN_ARABIC"/>
+	</field>
+	<field name="DAY" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="DAY"/>
+		<property name="com.jaspersoft.studio.field.label" value="DAY"/>
+	</field>
+	<field name="MONTH_OF_THE_YEAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MONTH_OF_THE_YEAR"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTH_OF_THE_YEAR"/>
+	</field>
+	<field name="YEAR" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="YEAR"/>
+		<property name="com.jaspersoft.studio.field.label" value="YEAR"/>
+	</field>
+	<field name="BRANCH_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_NAME"/>
+	</field>
+	<field name="BRANCH_MANAGER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_MANAGER"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_MANAGER"/>
+	</field>
+	<field name="BRANCH_ADDRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_ADDRESS"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_ADDRESS"/>
+	</field>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="CUSTOMER_AGE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_AGE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_AGE"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID_ISSUE_PLACE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID_ISSUE_PLACE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID_ISSUE_PLACE"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID_ISSUE_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID_ISSUE_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID_ISSUE_DATE"/>
+	</field>
+	<field name="CUSTOMER_PROFESSION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PROFESSION"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PROFESSION"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS1_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS1_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS1_STREET"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS1_STREET_COUNTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS1_STREET_COUNTY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS1_STREET_COUNTY"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS1_STREET_COUNTY_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS1_STREET_COUNTY_STATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS1_STREET_COUNTY_STATE"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS2_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS2_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS2_STREET"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS2_STREET_COUNTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS2_STREET_COUNTY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS2_STREET_COUNTY"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS2_STREET_COUNTY_TOWNCITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS2_STREET_COUNTY_TOWNCITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS2_STREET_COUNTY_TOWNCITY"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS2_STREET_COUNTY_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS2_STREET_COUNTY_STATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS2_STREET_COUNTY_STATE"/>
+	</field>
+	<field name="CUSTOMER_MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_MOBILE_NUMBER"/>
+	</field>
+	<field name="GUARANTOR_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_NAME"/>
+	</field>
+	<field name="GUARANTOR_AGE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_AGE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_AGE"/>
+	</field>
+	<field name="GUARANTOR_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ID"/>
+	</field>
+	<field name="GUARANTOR_ID_ISSUE_PLACE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ID_ISSUE_PLACE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ID_ISSUE_PLACE"/>
+	</field>
+	<field name="GUARANTOR_ID_ISSUE_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ID_ISSUE_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ID_ISSUE_DATE"/>
+	</field>
+	<field name="GUARANTOR_PROFESSION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_PROFESSION"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_PROFESSION"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS1_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS1_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS1_STREET"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS1_STREET_COUNTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS1_STREET_COUNTY"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS1_STREET_COUNTY"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS1_STREET_COUNTY_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS1_STREET_COUNTY_STATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS1_STREET_COUNTY_STATE"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS2_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS2_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS2_STREET"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS2_STREET_COUNTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS2_STREET_COUNTY"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS2_STREET_COUNTY"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS2_STREET_COUNTY_TOWNCITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS2_STREET_COUNTY_TOWNCITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS2_STREET_COUNTY_TOWNCITY"/>
+	</field>
+	<field name="GUARANTOR_ADDRESS2_STREET_COUNTY_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADDRESS2_STREET_COUNTY_STATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADDRESS2_STREET_COUNTY_STATE"/>
+	</field>
+	<field name="GUARANTOR_MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_MOBILE_NUMBER"/>
+	</field>
+	<field name="ISSUE_AMOUNT_DEGITAL" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ISSUE_AMOUNT_DEGITAL"/>
+		<property name="com.jaspersoft.studio.field.label" value="ISSUE_AMOUNT_DEGITAL"/>
+	</field>
+	<field name="ISSUE_AMOUNT_LETTER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ISSUE_AMOUNT_LETTER"/>
+		<property name="com.jaspersoft.studio.field.label" value="ISSUE_AMOUNT_LETTER"/>
+	</field>
+	<field name="CUSTOMER_PROJECT_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PROJECT_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PROJECT_STREET"/>
+	</field>
+	<field name="CUSTOMER_PROJECT_COUNTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PROJECT_COUNTY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PROJECT_COUNTY"/>
+	</field>
+	<field name="CUSTOMER_PROJECT_STREET_COUNTY_TOWNCITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PROJECT_STREET_COUNTY_TOWNCITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PROJECT_STREET_COUNTY_TOWNCITY"/>
+	</field>
+	<field name="CUSTOMER_PROJECT_STREET_COUNTY_STATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PROJECT_STREET_COUNTY_STATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PROJECT_STREET_COUNTY_STATE"/>
+	</field>
+	<field name="TERM_NUM" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.name" value="TERM_NUM"/>
+		<property name="com.jaspersoft.studio.field.label" value="TERM_NUM"/>
+	</field>
+	<field name="FIRST_REPAYMENT_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="FIRST_REPAYMENT_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="FIRST_REPAYMENT_DATE"/>
+	</field>
+	<field name="LAST_REPAYMENT_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="LAST_REPAYMENT_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="LAST_REPAYMENT_DATE"/>
+	</field>
+	<field name="FLAT_INTEREST_RATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="FLAT_INTEREST_RATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="FLAT_INTEREST_RATE"/>
+	</field>
+	<field name="INTEREST" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="INTEREST"/>
+		<property name="com.jaspersoft.studio.field.label" value="INTEREST"/>
+	</field>
+	<field name="MONTHLY_REPAYMENT" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="MONTHLY_REPAYMENT"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTHLY_REPAYMENT"/>
+	</field>
+	<field name="PENALITY_INTERST_RATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PENALITY_INTERST_RATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="PENALITY_INTERST_RATE"/>
+	</field>
+	<field name="ACCOUNT_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ACCOUNT_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="ACCOUNT_NUMBER"/>
+	</field>
+	<field name="ISSUE_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="ISSUE_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ISSUE_DATE"/>
+	</field>
+	<field name="IND_CODE_L1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="IND_CODE_L1"/>
+		<property name="com.jaspersoft.studio.field.label" value="IND_CODE_L1"/>
+	</field>
+	<field name="IND_CODE_L2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="IND_CODE_L2"/>
+		<property name="com.jaspersoft.studio.field.label" value="IND_CODE_L2"/>
+	</field>
+	<field name="LOAN_REASON" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LOAN_REASON"/>
+		<property name="com.jaspersoft.studio.field.label" value="LOAN_REASON"/>
+	</field>
+	<field name="APPLICATION_FEE" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="APPLICATION_FEE"/>
+		<property name="com.jaspersoft.studio.field.label" value="APPLICATION_FEE"/>
+	</field>
+	<field name="ADMIN_FEE" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ADMIN_FEE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ADMIN_FEE"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="295" y="7" width="263" height="56" forecolor="#09345C" uuid="95a0aa4c-3904-4505-9f27-c0f8416fc4b9"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[شركة الاهلى كابيتال للتمويل متناهى الصغر تمكين (ش.م.م)
+سجل تجارى رقم 157106 استثمار القاهرة
+ترخيص هيئة الرقابة المالية رقم 12
+
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="2" width="125" height="65" uuid="5a29d085-4a07-40ef-851d-dfae1214877d"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/tamkeen_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="682" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="23" width="555" height="20" uuid="0d279a29-fe9e-4647-af56-4680b530796c"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[عقد تمويل متناهى الصغر]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-10" y="49" width="565" height="27" uuid="3f69f731-d9c3-4ea6-8f2a-5f6fa08ed52d"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أنه فى يوم  "+$F{DAY_IN_ARABIC} +"  الموافق  "+$F{DAY} + "  من شهر " + $F{MONTH_OF_THE_YEAR} +" سنة "+ $F{YEAR}+" بمدينة "+$F{BRANCH_NAME} + " بجمهورية مصر العربية تحرر فى زمانه ومكانه بين كل من :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="75" width="555" height="55" uuid="cc4cf56c-fb3c-41eb-b461-fb73bfd88934">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اولا: شركة الاهلى كابيتال للتمويل متناهى الصغر- تمكين (ش.م.م)، ومقرها "+$P{SEAT_ADDRESS} +"، ترخيص هيئة الرقابة المالية رقم 12 ويوقع عنها فى العقد الماثل السيد "+$F{BRANCH_MANAGER}+ " / مدير فرع "+$F{BRANCH_NAME}+" الكائن "+$F{BRANCH_ADDRESS}+"  مفوضاً عن الممثل القانونى للشركة وبموجب التفويض الصادر بتاريخ ...... /...... / 2021"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="72" y="130" width="130" height="14" uuid="2ef50f88-9675-4a36-b72e-42a9a024ea3d"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(طرف أول ـ دائن ممول).]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="150" width="555" height="76" uuid="9a64a45d-d879-4eba-8897-82527fb51daa">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ثانياً/السيد/ "+ $F{CUSTOMER_NAME} +" السن  "+$F{CUSTOMER_AGE}+"  ومهنته "+$F{CUSTOMER_PROFESSION}+" بطاقة رقم قومى "+$F{CUSTOMER_NATIONAL_ID}+" صادرة بتاريخ "+$F{CUSTOMER_NATIONAL_ID_ISSUE_DATE}+" ومحل إقامته من واقع بطاقة الرقم القومي فى شارع " + $F{CUSTOMER_ADDRESS1_STREET} + " حى / قرية " + $F{CUSTOMER_ADDRESS1_STREET_COUNTY} + " مدينة / مركز " + $F{CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY} + " محافظة " + $F{CUSTOMER_ADDRESS1_STREET_COUNTY_STATE} + "\n" +
+"وعنوان المرسلات في شارع " + IF($F{CUSTOMER_ADDRESS2_STREET} == null ,$F{CUSTOMER_ADDRESS1_STREET}, $F{CUSTOMER_ADDRESS2_STREET})   + " حى / قرية " +   IF($F{CUSTOMER_ADDRESS2_STREET} == null ,   $F{CUSTOMER_ADDRESS1_STREET_COUNTY} , $F{CUSTOMER_ADDRESS2_STREET_COUNTY}) + " مدينة / مركز " +  IF($F{CUSTOMER_ADDRESS2_STREET} == null ,   $F{CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY}  , $F{CUSTOMER_ADDRESS2_STREET_COUNTY_TOWNCITY}) + " محافظة " + IF($F{CUSTOMER_ADDRESS2_STREET} == null ,   $F{CUSTOMER_ADDRESS1_STREET_COUNTY_STATE}  , 
+	$F{CUSTOMER_ADDRESS2_STREET_COUNTY_STATE} )+ " هاتف العميل رقم : "+ $F{CUSTOMER_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="60" y="226" width="144" height="14" uuid="c198fdfa-e725-4a08-9d83-2666f143371c"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(طرف ثان ـ مدين متلقى التمويل).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="317" width="555" height="15" uuid="4d9e5716-316b-4c7a-8ee6-cc84c2c32a64">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[أقر الطرفان أهلية كل منهما للتصرف والتعاقد وتم الإتفاق على ماهو وارد فى العقد الماثل :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="329" width="555" height="17" uuid="020395b1-4ccd-43d6-a5e3-be641af8dcad"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="12" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[تمهيـد]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="347" width="555" height="63" uuid="173ad538-82ce-424e-9631-ae9e0775f818">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بما أن الطرف الأول شركة مساهمة مصرية مرخص لها بمزاولة نشاط التمويل المتناهى الصغر وفقاً لأحكام القانون 141 لسنة 2014 و تعديلاته و ذلك بموجب الترخيص رقم 12 بتاريخ 08/02/2021 الصادر من الهيئة العامة للرقابة المالية، وبما أن الطرف الثانى تقدم إلى الشركة الطرف الأول بطلب الحصول على تمويل متناهى الصغر وقد لاقى هذا الطلب قبولا  لدى الطرف الاو ل وحيث ان الكفيل المتضامن قد ابدى موافقته على كفالة متلقى التمويل في التزاماته تجاه الممول على سبيل التضامن فيما بينهما ، فقد تم الإتفاق بين الأطراف على الشروط والقواعد الواردة فيما بعد: "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="412" width="555" height="17" uuid="60dc9286-524e-4437-b81c-97ecb875dd8c">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الأو ل/ التمهيد والمرفقات: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="430" width="555" height="16" uuid="1bd70c57-5b47-44e1-87cb-b894e79a1d78">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[يعتبر التمهيد السابق وكافة مرفقات هذا العقد المعتمدة توقيعاً من طرفيه جزء لا يتجزأ منه ومكملاً ومتمماً له. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="449" width="555" height="17" uuid="132cb3be-4f9b-4fea-8d43-c78e50b1457b">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الثانى/ قيمة التمويل: 
+
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="466" width="555" height="75" uuid="03372767-2f90-43e7-993e-feb80cf6243a">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["سلمت الشركة الطرف الأول الى الطرف الثانى القابل لذلك تمويلاً  متناهى الصغر نقداً  ودفعة واحدة واجبة الرد بمبلغ  "+$F{ISSUE_AMOUNT_DEGITAL} +" جنيه فقط "+$F{ISSUE_AMOUNT_LETTER}+" لاغير  بخلاف عوائده بغرض تطوير نشاط "+ $F{IND_CODE_L1} +" وغرض التمويل "+ $F{LOAN_REASON}+" ويقر الطرف الثانى بأنه يزاول هذا النشاط بنفسه و هو الكائن فى  شارع " +IF( $F{CUSTOMER_PROJECT_STREET}==null ,$F{CUSTOMER_ADDRESS1_STREET} ,  $F{CUSTOMER_PROJECT_STREET}) + " حى / قرية " + IF( $F{CUSTOMER_PROJECT_STREET}==null ,$F{CUSTOMER_ADDRESS1_STREET_COUNTY} ,  $F{CUSTOMER_PROJECT_COUNTY})+ " مدينة / مركز " + IF( $F{CUSTOMER_PROJECT_STREET}==null ,$F{CUSTOMER_ADDRESS1_STREET_COUNTY_TOWNCITY} , $F{CUSTOMER_PROJECT_STREET_COUNTY_TOWNCITY}) + " محافظة " + IF( $F{CUSTOMER_PROJECT_STREET}==null ,$F{CUSTOMER_ADDRESS1_STREET_COUNTY_STATE} ,$F{CUSTOMER_PROJECT_STREET_COUNTY_STATE})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="241" width="555" height="64" uuid="928cd77c-0a1d-451b-9875-d81a4ed6677d">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" markup="styled">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["و السيد/ "+$F{GUARANTOR_NAME}+" السن "+$F{GUARANTOR_AGE}+" ومهنته  : "+$F{GUARANTOR_PROFESSION}+" بطاقة رقم قومى: "+$F{GUARANTOR_ID}+" صادرة بتاريخ "+ $F{GUARANTOR_ID_ISSUE_DATE}+" ومحل إقامته من واقع بطاقة الرقم القومي فى شارع " + $F{GUARANTOR_ADDRESS1_STREET} + " حى / قرية " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY} + " مدينة / مركز " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY} + " محافظة " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY_STATE} + "\n" +
+"وعنوان المرسلات في شارع " + IF($F{GUARANTOR_ADDRESS2_STREET} == null,$F{GUARANTOR_ADDRESS1_STREET}, $F{GUARANTOR_ADDRESS2_STREET})   + " حى / قرية " +   IF($F{GUARANTOR_ADDRESS2_STREET} == null ,   $F{GUARANTOR_ADDRESS1_STREET_COUNTY} , $F{GUARANTOR_ADDRESS2_STREET_COUNTY}) + " مدينة / مركز " +  IF($F{GUARANTOR_ADDRESS2_STREET} == null ,   $F{GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY}  , $F{GUARANTOR_ADDRESS2_STREET_COUNTY_TOWNCITY}) + " محافظة " + IF($F{GUARANTOR_ADDRESS2_STREET} == null ,   $F{GUARANTOR_ADDRESS1_STREET_COUNTY_STATE}  , 
+$F{GUARANTOR_ADDRESS2_STREET_COUNTY_STATE} ) +" هاتف رقم : "+$F{GUARANTOR_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="23" y="300" width="201" height="14" uuid="6516f038-dc64-4cf9-b1ca-051ca45a93d7"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( كفيل متضامن. للمدين متلقى التمويل)]]></text>
+			</staticText>
+		</band>
+		<band height="682">
+			<textField>
+				<reportElement x="0" y="216" width="555" height="125" uuid="a8d812fd-660b-4641-82b2-fe3f16ac645a">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  \n " + 
+"1.  يتقاضى الطرف الأول عمولة سداد معجل فى حالة طلب الطرف الثانى (العميل) السداد المعجل , يحق للشركة (الطرف الاول) خصم تكلفة التمويل للشهر الذى يتم فيه السداد مع إضافة عمولة سداد معجل "+$F{PENALITY_INTERST_RATE}+" من  اصل المبلغ المستحق المطلوب تعجيل الوفاء به ."+"  \n " +
+"2.  تسرى على المبالغ المستحقة للطرف الأول بموجب هذا العقد غرامات تأخير بواقع "+$F{PENALITY_INTERST_RATE}+" شهريا وتحتسب يوميا على اجمالي قيمه الرصيد المستحق سداده  بحد اقصى 12 شهر من تاريخ التوقف عن السداد . " +" \n " +
+"3. يتقاضى الطرف الأول مصروفات إداريةبمبلغ "+ $F{ADMIN_FEE}  +"  جم ومصروفات إستعلام بمبلغ "+$F{APPLICATION_FEE}+" جم من الطرف الثانى. "+"\n"+
+"4.  تكون كافة مصاريف و تكاليف المطالبات الودية والرسمية والقضائية بأي قسط أو بإجمالي قيمة الدين أو جزء منه على الطرف الثاني. وتكون للمبالغ التي يقدرها الطرف الاول في هذا الشأن حجية مطلقة، ولا يكون للطرف الثانى  الحق في المنازعة فيها أو طلب تخفيضها ( لاي سبب من الاسباب )."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="210" width="555" height="17" uuid="7bf1a45b-86c6-4446-930a-46d730381bd5">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الرابع/ العمولات والمصروفات والملحقات : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="344" width="555" height="17" uuid="10048061-8294-42ef-ac80-7694106b6fd6">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الخامس/ حالات الإخلال: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="363" width="555" height="40" uuid="e0c721c4-1036-441a-a734-051c7bad3203">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[دون الإخلال بقواعد وأحكام القوة القاهره والظروف الإستثنائية بمفهومها القانونى يكون الطرف الثانى مخلا بإلتزاماته قبل الطرف الأول بموجب العقد الماثل حال تحقق أى من الحالات الواردة فيما بعد على سبيل المثال وليس الحصر والتى يحق معها للطرف الأول إسقاط كافة الآجال المقترنة بتاريخ إستحقاق مبلغ التمويل: 
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="400" width="555" height="146" uuid="09e4336c-a251-4d31-95dc-5de093f1c4be">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  \n"+
+"1.    إذا تأخر فى سداد أى قسط عن تاريخ الإستحقاق دون مبرر يقبله الطرف الأول."+ " \n"+
+"2.   فى حالة ثبوت عدم صحة أى بيانات أو مستندات أو مخالفتها للواقع و  المقدمة من الطرف الثانى للطرف الأول وكان لهذه المستندات تأثير فى منح التمويل محل هذا العقد للطرف الثانى."+" \n"+
+"3.   إذا إقيمت ضد الطرف الثانى دعاوى إشهار افلاس أو تحر ر ضده إحتجاج عدم الدفع أو تم توقيع حجز فى مواجهته أو حكم بإعساره وعلى وجه العموم إذا اتُخذت بمعرفة الغير ضد الطرف الثانى أية إجراءات  قد يكون من شانها ان تؤثر على مركزه المالى أو تقييد أهليته."+" \n"+
+"4.   فى حالة قيام الطرف الثانى بإستخدام التمويل فى غير الغرض المخصص من أجله."+" \n"+
+"5.   إذا لم يقم الطرف الثانى بتنفيذ أو الوفاء بأى تعهد أو إلتزام ارتبط به بمقتضى هذا العقد."+" \n"+
+"6.   فى حالة إخلال الطرف الثاني في الوفاء بالتزاماته أو التأخر في الوفاء بها يحل موعد إستحقاق الاقساط المؤجلة وعوائدها، و يحق للطرف الاول إتخاذ كافة الاجراءت الضامنة لوفاء إستحقاقاته بما في ذلك إجراء الحجوزات التحفظية والتنفيذية على كافة أموال الطرف الثاني. و تخطر إدارة الشئون القانونية بعد 45 يوم من تعثر الطرف الثانى و أمتناعه عن السداد لأتخاذ اللازم قانونا"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="547" width="555" height="17" uuid="a11cea60-44d1-4ae4-83ee-00a416251a63">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند السادس/ الموطن المختار: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="562" width="555" height="39" uuid="9e53fc20-d813-418f-b63f-232f8b16495f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[- يقر الطرف الثانى بأنه مقيم بالعنوان الموضح قرين إسمه بصدر التعاقد الماثل وأن العنوان المذكور بالبند الثانى من هذا العقد يعتبر موطناً مختار له وأن جميع المراسلات والإعلانات والأوراق التى يرسلها الطرف الأول على أى منهما تعتبر صحيحة مالم يخُطر الشركة  الطرف الأول بما يفيد تغيير موطنه المذكور بموجب خطاب موصى عليه بعلم الوصول. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="15" width="555" height="194" uuid="48779102-9de5-4852-98ce-c3e231153040">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" \n " + 
+"1.   مدة التمويل"+$F{TERM_NUM}+" شهر تبدأ إعتباراً من "+DATEFORMAT(new Date(), "dd/MM/YYYY")+" وتنتهى في "+DATEFORMAT($F{LAST_REPAYMENT_DATE}, "dd/MM/YYYY") +". "+ " \n" + 
+"2.  يسرى على مبلغ التمويل موضوع التعاقد تكلفة تمويل بواقع "+$F{FLAT_INTEREST_RATE}+" %"+" (سنويا) وبقيمة اجمالية قدرها "+$F{INTEREST} +"جنيه مصري. بخلاف المصروفات الاداريه."+ " \n" + 
+"3.  يلتزم الطرف الثانى بسداد مبلغ التمويل وعوائده نقدا على "+$F{TERM_NUM}+" قسط شهرى بخزينة فرع الشركة أو بآي طريقة الكترونية معتمده بالطرف الأول المبين صدر هذا العقد وتكون قيمة كل قسط مبلغ "+$F{MONTHLY_REPAYMENT} +" جم شاملة العائد الشهرى وذلك وفقا للجدول المرفق المعتمد توقيعاً من الطرفين."+ " \n" + 
+"4.  اذا تأخر الطرف الثانى عن سداد اى قسط مستحق يتم الابلاغ عن التأخير فى تقرير الأستعلام الأئتمانى شهريا لشركة الأستعلام الأئتمانى."+ " \n" + 
+"5.  يلتزم الطرف الثانى بتقديم وثيقة تأمين على حياته لصالح الطرف الأول لتغطية إجمالى مبلغ التمويل وعوائده وملحقاته ، و يحق للطرف الأول إتخاذ الترتيبات اللازمة للتغطية التأمينية للدين حال تحقق خطر الوفاة و العجز الكلى المستدام بمعرفة إحدى شركات التأمين المرخص لها من هيئة الرقابة المالية اذا لما يلتزم العميل بذلك  و بتكلفة على عاتق الطرف الثانى."+ " \n" + 
+"6.  تكون كافة أموال الطرف الثاني السائلة والمنقولة والعقارية ضامنة للقرض موضوع هذا العقد وما يترتب عليه من عوائد وعمولات ومصروفات وغير ذلك من إستحقاقات مالية للعميل أو الضامن تكون ضمانًا للقرض وكافة الالتزمات المترتبة عليه، بما في ذلك الالتزمات الواردة بالبند الرابع من هذا التعاقد."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-2" y="11" width="555" height="17" uuid="af8811f2-8905-43f3-8d7e-7265caa6ccb7">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الثالث/ مدة التمويل وطريقة السداد: ]]></text>
+			</staticText>
+		</band>
+		<band height="682">
+			<staticText>
+				<reportElement x="1" y="251" width="555" height="17" uuid="3b3a3285-5df3-4154-ab87-b7c253c1b853">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند  التاسع / أحكام عامة :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="267" width="555" height="311" uuid="4ab19c11-427b-47d9-a70c-faa8111f6432">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1 - "+"يسرى هذا العقد اعتباراً من تاريخ توقيعه من جميع أطرافه."+"\n"+
+"2 - "+"يلتزم متلقى التمويل بسداد جميع مستحقات الممول طبقاً لهذا العقد دون أي قيود أو شروط ودون مقاصة أو خصم أو استقطاع أو حجز من المنبع لحساب أية ضرائب أو رسوم أو استقطاعات ما لم يكن ذلك مقرر قانوناً."+"\n"+
+"3 - "+" يقر كل من متلقى التمويل والكفيل المتضامن بأنه مقيم بالعنوان الموضح قرين اسمه بصدر التعاقد الماثل وأن العنوان المذكور بهذا العقد يعتبر موطناً مختار له وأن جميع المراسلات والإعلانات والأوراق التي يرسلها الممول لأي منهما تعتبر صحيحة مالم يخُطر الممول بما يفيد تغيير الموطن المذكور بموجب خطاب موصى عليه بعلم الوصول. "+"\n"+
+"4 - "+" تكون كافة مصاريف وتكاليف المطالبات الودية والرسمية والقضائية بأي قسط أو بإجمالي قيمة الدين أو جزء منه على عاتق متلقى التمويل. وتكون للمبالغ التي يقدرها الممول في هذا الشأن حجية مطلقة، ولا يكون للطرف الثاني الحق في المنازعة فيها أو طلب تخفيضها لأي سبب من الاسباب."+"\n"+
+"5 - "+" لا يعد تراخى او تأخر الممول في ممارسته لأي من حقوقه بموجب هذا العقد نزولا عن هذا الحق ولا يعتد بأي نزول او تنازل عن أي من حقوق الممول ما لم يكن هذا التنازل صريح وكتاباً وموقع من الممثل القانوني للممول. "+"\n"+
+"6 - "+"في حالة اعتبار أي نص من نصوص هذا العقد باطل أو غير قابل للتنفيذ، لن يؤثر هذا على نفاذ باقي النصوص، ويلتزم الأطراف في تلك الحالة بتعديل النص الأصلي على النحو الذي يعطي ذات الأثر المرجو منه بقدر الإمكان."+"\n"+
+"7 - "+" يكون هذا العقد ملزماً للأطراف وخلفهم العام. "+"\n"+
+"8 - "+" يجوز للممول أن يتنازل أو يحيل كل أو جزء من حقوقه أو التزاماته بموجب هذا العقد الى أي شخص اعتباري يمارس نشاط التمويل متناهي الصغر دون موافقة كتابية مسبقة من متلقى التمويل أو الكفيل وتسري الحوالة بمجرد اعلان الحوالة الى متلقى التمويل والكفيل ودون الحاجة للحصول على موافقة من متلقى التمويل او الكفيل."+"\n"+
+"9 - "+" إتفق الطرفان علي أنه يحق للطرف الأول حوالة الحق بشأن كل أو جزء من مبلغ التمويل موضوع هذا العقد لصالح الغير دون توقف ذلك علي موافقة الطرف الثاني، حيث يعد هذا البند موافقة صريحة وقبول من الطرف الثاني لتلك الحوالة ونفاذها في مواجهته ومواجهة الغير حاليا و مستقبلا و ألا يتم أي تعديل في شروط التمويل الممنوحة للعملاء المحال أرصدتهم أو توقيتات السداد أو غيره ويتعهد الطرف الأول بعدم مطالبة العملاء بالسداد المعجل وأن لا يكون السداد في مقر يبعد أكثر من 10 كيلو متر عن المقر المتفق علي السداد من خلاله قبل حوالة المحفظة"+"\n"+
+"10 - "+" لا يجوز لمتلقي التمويل او الكفيل المتضامن التنازل عن هذا العقد كلياً أو جزئياً الى أي شخص بدون موافقة كتابية مسبقة من الممول. "+"\n"+
+"11 - "+" تعتبر أحكام القانون 141 لسنة 2014 وقرارات هيئة الرقابة المالية وتعليماتها مكملة ومفسرة لنصوص هذا العقد سواء صدرت تلك القرارات والتعليمات قبل او بعد التعاقد."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="211" width="555" height="37" uuid="9d64e8cd-abb4-4873-959a-fda9a57a6fb9"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+				</textElement>
+				<text><![CDATA[-   كل نزاع ينشأ فيما يخص هذا العقد يكون من إختصـاص  المحاكم الكائن بدائرتها  المركز الرئيسـى للشركة الطرف الأول وفقاً لنصاب ودرجة ونوع التقاضي ويتحمل الطرف الثانى وحدة التكلفة الفعلية للمصروفات القضائيه وأتعاب المحاماة وفقاً لمستوي الإجراء ونوع النزاع ودرجته حال خسارته إياه و صدور الحكم لصالح الطرف الأو ل. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="196" width="555" height="17" uuid="00272710-9bd7-459a-871a-aa7b9f890e93">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند الثامن /  الإختصاص القضائى: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="40" width="555" height="152" uuid="1957812d-4cbd-4a43-8a0a-ae1ac3f79b10">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[1.  سلم الطرف الأول للطرف الثانى بيان بشروط التمويل موضوع هذا العقد وجدول الأقساط  بكارت المتابعة
+ 2.  صرح الطرف الثانى للطرف الأول بموافقته على الإطلاع  على بياناته و معلوماته  وأستخدامها من قبل الشركة و موظفيها ومشاركتها مع وكلائها, أو مشاركتها مع آخرين من الاطراف المعنية بغرض التمويل فى حالة الحاجة دون الحصول على موافقة مسبقة منفصلة من الطرف الثاني وفى حدود هذا العقد . 
+ 3.  يقر الكفيل المتضامن بموجب توقيعه على هذا العقد بكفالته لمتلقي التمويل على سبيل التضامن مع متلقي التمويل في سداد كامل الدين من أصل وعوائد ومصاريف وملحقات وفى انتظامه فى أداء الأقساط وفقاً لتواريخ استحقاقها حتى تمام السداد وللممول اتخاذ كافة ما يراه مناسباً ضد الكفيل المتضامن من إجراءات قانونية وقضائية لاستيفاء حقوقه دون الحاجة الى انذار او اعذار او حكم قضائي. 
+4.  يتنازل الكفيل المتضامن بموجب توقيعه على هذا العقد عن الدفع بالتجريد والرجوع على متلقى التمويل اولاً قبل الرجوع على الكفيل المتضامن.
+ 5.  من المتفق عليه صراحة ان الكفالة المقدمة من الكفيل المتضامن هي ضمانة مستقلة وإضافية على أي ضمان أو تأمين أو أداة وفاء قد يحصل عليها الممول من متلقى التمويل لتأمين سداد كامل الالتزامات ولا تؤثر هذه الكفالة على أي ضمان أو تأمين أو مستند أخر مقدم لصالح الممول فيما يتعلق بالتزامات متلقى التمويل.
+ 6.  بإطلاعهم على هذا العقد وكل ما يرتبط به من شروط واحكام ويوافق الطرفان على كل ما ورد به من شروط و احكام 
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="23" width="555" height="17" uuid="2f244795-04a9-4bf3-b7fe-1a6ab1b6cf39">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[يقر الاطراف  بالأتي بتوقيعهم على ذلك العقد :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="7" width="555" height="17" uuid="4685e0b0-15ae-437b-941b-fdd91d126e10">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[البند السابع/  اقرارات : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="585" width="70" height="17" uuid="213a0e74-1ea6-45b3-be36-4806dc900d5f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[الطرف الأو ل]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="602" width="174" height="17" uuid="320fba16-d963-41c1-8d9e-ab465f0aca5f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاســـــــــــم : "+$F{BRANCH_MANAGER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="395" y="619" width="160" height="17" uuid="158c8d1f-985e-452a-935f-623ea26c0be2">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقــــــــــيع : "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="224" y="583" width="130" height="17" uuid="b42907f8-370b-480f-8726-cb9c91348554">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[الطرف الثانى(مدين متلقي التمويل )]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="196" y="628" width="160" height="17" uuid="1675e382-affd-405d-a2ff-47338e8977f7">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم القومى : "+$F{CUSTOMER_NATIONAL_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="600" width="160" height="28" uuid="5a7369c1-6e35-4fe8-b85e-fc00b988e0b4">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاســـــــــــم :"+$F{CUSTOMER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="645" width="160" height="17" uuid="b834a8f1-0c21-4a21-a46c-f47e428f0a33">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقـــــــــيع : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="395" y="636" width="160" height="17" uuid="6b484f73-b02f-44ab-b8d4-cc95a66f9868">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["خاتم الفرع : "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="84" y="585" width="90" height="17" uuid="d3b05b54-75d5-4f98-8b55-f342806482a4">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[( الكفيل المتضامن ) : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="602" width="172" height="28" uuid="9a84191c-c67d-4e4d-bac0-8b8eba35ee8e">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاســـــــــــم :"+$F{GUARANTOR_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="630" width="172" height="17" uuid="9e53ba37-2a83-4223-afcd-a4efcc25fb0e">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم القومى : "+$F{GUARANTOR_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="647" width="160" height="17" uuid="985c2041-22ab-48c6-aedd-d0262c19cfd1">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقـــــــــيع : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="197" y="663" width="160" height="17" uuid="a5d51c5f-ba69-4d90-adda-d4a3f8b52abe">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بصمة ابهام اليد اليمنى : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="663" width="160" height="17" uuid="d07c830d-b07d-4604-8cc1-7bbf6dd96ed6">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بصمة ابهام اليد اليمنى : "]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="357">
+			<staticText>
+				<reportElement x="4" y="30" width="555" height="17" uuid="670f36ee-0a7c-4c98-9828-be14af118aa3">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[إقرار الكفيل المتضامن]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="69" width="555" height="27" uuid="05f9e8bc-10fe-48e7-9344-33e172bcbf89">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أقر أنا "+$F{GUARANTOR_NAME}+" بطاقة رقم قومى "+$F{GUARANTOR_ID}+" صادرة بتاريخ "+$F{GUARANTOR_ID_ISSUE_DATE}+" ومهنتى "+$F{GUARANTOR_PROFESSION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="54" width="555" height="27" uuid="0b1199e8-15e6-4576-a23e-19edece5663f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أنه فى يوم  "+$F{DAY_IN_ARABIC} +"  الموافق  "+$F{DAY} + "  من شهر " + $F{MONTH_OF_THE_YEAR} +" سنة "+ $F{YEAR}+" بمدينة "+$F{BRANCH_NAME} + " بجمهورية مصر العربية"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="85" width="555" height="32" uuid="7db65091-1932-40c5-b500-aa154dfdd33f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ومقيم فى شارع " + $F{GUARANTOR_ADDRESS1_STREET} + " حى / قرية " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY} + " مدينة / مركز " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY_TOWNCITY} + " محافظة " + $F{GUARANTOR_ADDRESS1_STREET_COUNTY_STATE}+" هاتف رقم : "+$F{GUARANTOR_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="119" width="555" height="102" uuid="a2a71258-58f3-43d1-a6a3-579501c75611">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أقر بأننى إطلعت على نص  عقد التمويل متناهى الصغر رقم "+RIGHT($F{ACCOUNT_NUMBER},8) +"-"+LEFT($F{ACCOUNT_NUMBER},3)+" المؤرخ "+DATEFORMAT(new Date(), "dd/MM/YYYY") +"  والممنوح من شركة الاهلى كابيتال للتمويل متناهى الصغر – تمكين للسيد / "+$F{CUSTOMER_NAME}+" بطاقة رقم قومى"+$F{CUSTOMER_NATIONAL_ID}+" بمبلغ ("+$F{ISSUE_AMOUNT_DEGITAL} +")فقط "+$F{ISSUE_AMOUNT_LETTER}+" لاغير فضلا عن العوائد والمستحقات ، وبموجب هذا أقر بأننى أضمن المدين متلقى التمويل فى سداد كامل الدين من أصل وعوائد وملحقات وفى إنتظامة فى أداء الأقساط  وفقاً لتواريخ إستحقاقها ويحق للشركة ( الدائن الممول ) إتخاذ كافة ماتراه مناسباً ضدى من إجراءات قانونية وقضائية لإستيفاء حقوقها بسبب هذه الضمانة والكفالة دون ما سابق تنبية أو إنذار أو إعذار حال تقصير أو تعثر أو توقف المدين متلقى التمويل عند السداد ولها أن تحيل كل الدين أو جزء منه للغير دون توقف على رضاء منى ."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="33" y="231" width="176" height="20" uuid="62360e9d-3c15-46fe-ad61-6e405390ad35"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[الضامن الكفيل]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="38" y="246" width="172" height="40" uuid="0db610ec-b8ea-4774-bc9a-ba6d5bc77f39">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاســـــــــــم :"+$F{GUARANTOR_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="286" width="172" height="17" uuid="ed6dbc09-4c8d-4717-8b92-6ce9850b0c3f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الرقم القومى : "+$F{GUARANTOR_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="303" width="160" height="17" uuid="be1c364b-ccaf-462e-8cc5-ec7d47e74ce9">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقـــــــــيع : "]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="13" y="20" width="536" height="19" uuid="f77fb626-abe0-4b1b-a7de-ffd25301483e"/>
+				<text><![CDATA[BUS|OP,005-4,Ver001,052021]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

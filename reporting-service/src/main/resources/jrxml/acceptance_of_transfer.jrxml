@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acceptance_of_transfer" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e3431e8-71ba-4bd9-adb6-de2742ce78e8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tamkeen_Recette"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="285"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="710"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="698"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="292"/>
+	<parameter name="ACCOUNTID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="CULOANID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SET LANGUAGE English;
+SELECT
+	  [dbo].[ConvertDayNameEnglishToArabic](DATENAME(WEEKDAY, GETDATE())) [DAY_OF_WEEK],
+	  DATEPART(DAY, GETDATE()) [DAY_OF_MONTH],
+          [dbo].[ConvertMonthNumberToArabic](DATEPART(MONTH, GETDATE())) [MONTH_OF_THE_YEAR],
+		  DATEPART(YEAR, GETDATE()) [YEAR],
+	  (SELECT Description FROM Branches WHERE BranchID=CUAccount.BranchID) [CITY_BRANCH],
+	 REPLACE(REPLACE((SELECT CorrespondenceName FROM Customer WHERE CustomerID=CULoan.CustomerID),'Mrs ',''),'Mr ','') [CUSTOMER_FULL_NAME],
+	  (SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=3 AND CustomerID=CULoan.CustomerID)  [NATIONALID],
+	  (select Value from UserDefinedFieldLinks where UserDefinedFieldID=37 AND CustomerID=CULoan.CustomerID ) [ID_RELEASED_FROM],
+
+	  ISNULL((SELECT TOP 1 UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=26 AND CustomerID=CULoan.CustomerID),'............') [JOB],
+
+	  Address2  [BUILDING_NUMBER],
+	  Address1  [STREET],
+	  County  [DISTRICT],
+	  TownCity [CITY],
+	  State [REGION],
+	  (SELECT Telephone1 FROM Person WHERE PersonID=CustomerPerson.PersonID) [MOBILE_NUMBER],
+	  (SELECT AccountNumber FROM CUAccount WHERE CUAccountID=CULoan.CUAccountID) [LOAN_APPLICATION_NUMBER],
+	  (SELECT IssueDate FROM CULoanPart WHERE CULoanID=CULoan.CULoanID) [ISSUE_DATE]
+FROM CULoan 
+	INNER JOIN CUAccount ON CUAccount.CUAccountID=CULoan.CUAccountID
+	INNER JOIN CustomerAddress ON CustomerAddress.CustomerID=CULoan.CustomerID
+	INNER JOIN Address ON Address.AddressID=CustomerAddress.AddressID and AddressTypeID = 6
+	INNER JOIN CustomerPerson ON CustomerPerson.CustomerID=CULoan.CustomerID
+
+	WHERE CULoan.CUAccountID= $P{ACCOUNTID} and CULoan.CULoanID = $P{CULOANID}]]>
+	</queryString>
+	<field name="DAY_OF_WEEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DAY_OF_WEEK"/>
+		<property name="com.jaspersoft.studio.field.label" value="DAY_OF_WEEK"/>
+	</field>
+	<field name="DAY_OF_MONTH" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="DAY_OF_MONTH"/>
+		<property name="com.jaspersoft.studio.field.label" value="DAY_OF_MONTH"/>
+	</field>
+	<field name="MONTH_OF_THE_YEAR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MONTH_OF_THE_YEAR"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTH_OF_THE_YEAR"/>
+	</field>
+	<field name="YEAR" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="YEAR"/>
+		<property name="com.jaspersoft.studio.field.label" value="YEAR"/>
+	</field>
+	<field name="CITY_BRANCH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CITY_BRANCH"/>
+		<property name="com.jaspersoft.studio.field.label" value="CITY_BRANCH"/>
+	</field>
+	<field name="CUSTOMER_FULL_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_FULL_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_FULL_NAME"/>
+	</field>
+	<field name="NATIONALID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NATIONALID"/>
+		<property name="com.jaspersoft.studio.field.label" value="NATIONALID"/>
+	</field>
+	<field name="ID_RELEASED_FROM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ID_RELEASED_FROM"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_RELEASED_FROM"/>
+	</field>
+	<field name="JOB" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="JOB"/>
+		<property name="com.jaspersoft.studio.field.label" value="JOB"/>
+	</field>
+	<field name="BUILDING_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BUILDING_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="BUILDING_NUMBER"/>
+	</field>
+	<field name="STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="STREET"/>
+	</field>
+	<field name="DISTRICT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DISTRICT"/>
+		<property name="com.jaspersoft.studio.field.label" value="DISTRICT"/>
+	</field>
+	<field name="CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CITY"/>
+	</field>
+	<field name="REGION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="REGION"/>
+		<property name="com.jaspersoft.studio.field.label" value="REGION"/>
+	</field>
+	<field name="MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="MOBILE_NUMBER"/>
+	</field>
+	<field name="LOAN_APPLICATION_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LOAN_APPLICATION_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="LOAN_APPLICATION_NUMBER"/>
+	</field>
+	<field name="ISSUE_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="ISSUE_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ISSUE_DATE"/>
+	</field>
+	<detail>
+		<band height="615" splitType="Stretch">
+			<rectangle>
+				<reportElement x="172" y="17" width="220" height="40" backcolor="#E0E0E0" uuid="f82e6709-cb62-4fff-9b92-d8b30155df1e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="102" width="528" height="180" uuid="c671b140-df58-44d9-9337-bfd99cf4d2b7">
+					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<box leftPadding="0" rightPadding="10"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="12" isBold="false"/>
+					<paragraph lineSpacing="Double" lineSpacingSize="0.0" firstLineIndent="5" leftIndent="5" rightIndent="0" spacingBefore="5" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  إنه  يوم  "+$F{DAY_OF_WEEK}+" الموافق "+$F{DAY_OF_MONTH}+" من شهر "+$F{MONTH_OF_THE_YEAR}+" سنة "+$F{YEAR} +" بمدينة " +$F{CITY_BRANCH}+" جمهورية مصر العربية."+"\n"+" أنا "+$F{CUSTOMER_FULL_NAME}+"  بطاقة رقم القومي  "+ $F{NATIONALID}+" صادره بتاريخ  "+ $F{ID_RELEASED_FROM}+"\n"+" و مهنتي  "+ $F{JOB}+" و مقيم في "+ $F{BUILDING_NUMBER}+"  شارع "+$F{STREET}+" حي/قرية "+ $F{DISTRICT}+" مركز/مدينة  "+$F{CITY}+" محافظه  "+ $F{REGION}+"  هاتف " + $F{MOBILE_NUMBER}+"."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-9" y="252" width="528" height="190" uuid="9b0789c1-0b5c-492a-9e65-70fe4c1a2958">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="12" isBold="false"/>
+					<paragraph lineSpacing="Double" rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" اقر بأنني أقبل حواله كافة الحقوق المقرر قبلي لصالح شركة الأهلي للتمويل متناهي الصغر (تمكين) لعقد تمويل متناهي الصغر رقم  "+RIGHT($F{LOAN_APPLICATION_NUMBER},8)+"-"+LEFT($F{LOAN_APPLICATION_NUMBER},3)+" المؤرخ " +DATEFORMAT(new Date(), "dd/MM/YYYY") +" لصالح  البنك ................................................................ أو لغيره من بنوك أو كيانات أو أشخاص قانونية أخرى، وذلك وفقًا لاحكام حوالة الحق المنصوص عليها في القانون المدني، وأن ما يتم تحويله من حقوق لا يرتبط بصدور أي رضاء مني، سواء كان صريح أو ضمني، وأنه بمجرد قيام شركة الاهلي للتمويل متناهي الصغر (تمكين) بالقيام بحوالة الحق، أكون ملتزم أمام المحال إليه بذات الالتزامات التي إلتزم بها قبل المحيل. "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="86" y="446" width="339" height="30" uuid="2c04819f-8255-43b4-b3ae-31cb62039f77"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[و هذا إقرار نهائي مني بذلك غير قابل للرجوع فيه]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="480" width="100" height="77" uuid="25435fa0-2704-43a7-aea0-a61a41ecb87e"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<text><![CDATA[- الاسم :
+- الرقم القومي :
+- التوقيع :]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement x="26" y="487" width="103" height="91" uuid="28de5618-cce7-4533-8ce3-f2d7aa0b8165"/>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#0D9C08"/>
+				</graphicElement>
+			</ellipse>
+			<staticText>
+				<reportElement x="32" y="512" width="96" height="40" uuid="5bddb24c-1440-47c5-ad70-dccdf9520c77"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="12"/>
+				</textElement>
+				<text><![CDATA[
+بصمه العميل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="30" width="170" height="27" uuid="5166dd8d-cf86-480c-82e5-3de54dfa7d60"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<text><![CDATA[إقرار قبول حوالة حق]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="13" y="20" width="536" height="19" uuid="8c0bfe56-8d9c-428c-b3a5-918e4dca7b82"/>
+				<text><![CDATA[BUS|OP,008-1,Ver001,042021]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

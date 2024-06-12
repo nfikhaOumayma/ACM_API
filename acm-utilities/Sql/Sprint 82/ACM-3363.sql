@@ -1,0 +1,2 @@
+ALTER TABLE ACM_PRODUCT 
+ add   DISBURSE  bit;

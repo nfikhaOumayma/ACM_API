@@ -1,0 +1,18 @@
+----------------------DEV------------------------------------
+--  "0 0/60 * * * ?" = run job Every 60 mins of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_LOANS', '0 0/60 * * * ?', 1, '2020-07-23', 0);
+
+--  "0 0 * * * *" = run job at fire at 8 am every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_USERS', '0 0 8 * * *', 1, '2020-07-23', 0);
+
+-----------------------Recette & integration-----------------------------------
+
+--  "0 0/5 * * * ?" = run job Every 5 mins of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_LOANS', '0 0/5 * * * ?', 1, '2020-07-23', 0);
+
+# "0 0 * * * *" = run job at the top of every hour from 8h to 19h of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_USERS', '0 0 8-19 * * *', 1, '2020-07-23', 0);

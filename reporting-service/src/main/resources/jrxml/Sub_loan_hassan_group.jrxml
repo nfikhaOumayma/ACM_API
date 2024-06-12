@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_قرض حسن – جماعي" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="671d1751-2d15-4d75-978e-74c3faa40f21">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Abacus"/>
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[IkN1c3RvbWVyUGVyc29uIiAsMjEzLDgyMyw2OWI4MGIzNC04MmM1LTRiNzEtYTZkZC1lNGFlZmRk
+NzY2MjY7IkFkZHJlc3MiICw5MDYsMTUsOWRjMDM4NmMtZTQ2OC00ZDEyLWE0NjAtMzk2MmQwMTYy
+MDUwOyJDdXN0b21lckFkZHJlc3MiICw2NDMsMTg2LDIyMTdiMWNhLWE1OTItNDczOC04YTRhLTU4
+MDU4M2I2YjJkNzsiUGVyc29uIiAsMTUsMTkzLGE3N2JlYTUxLTA1ZTUtNDY3Ni04NTZiLTI2OWNk
+NjYyNGRiNTsiQ3VzdG9tZXJBZGRyZXNzIiAsMTUsMTQ5NSw3ODc2Yjc0OC00NmUyLTQyNGItYmM1
+MS1mOTBiMTNhMjM0OWU7IkFkZHJlc3MiICwyMTMsMTQ2LDM5YjZhNWEzLTIxYTktNGFkMi04ODMx
+LTZlODlhZDUwZmNjMzsiQ3VzdG9tZXIiICwzOTcsMTU2LGQ1YzE3MjU2LWYwNTEtNDY3Ny1iN2Yw
+LTcxNDA2ZWI3OTg3NTsiQ1VMb2FuIiAsNjQzLDQ4NiwyZGNmYTdhYi04NzgzLTRiNGQtYTU3NC01
+N2RiZDJjYjhmMzg7]]>
+	</property>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 3]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	CULoan.CULoanID
+	,REPLACE(Customer.Name,',','') Customer_Name
+	,CASE 
+		WHEN ((SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=Customer.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=2) = 1) 
+			THEN (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=Customer.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=3)
+			ELSE (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=Customer.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=4)
+		END National_Resident_ID
+	,ISNULL(AH.TownCity,'') HomeCity
+	,ISNULL(AH.Address1,'') HomeStreet
+	,ISNULL(AH.Address2,'') HomeBuildingNumber
+	,ISNULL(AH.Address3,'') HomeUnitNumber
+	,ISNULL(AH.PostalCode,'') HomePostalCode
+	,Telephone1 Work_Phone_Number
+	,Telephone2 Home_Phone_Number
+	,Telephone3 MobileNumber
+	,email Email
+	,ISNULL(AW.TownCity,'') WorkCity
+	,ISNULL(AW.Address1,'') WorkStreet
+	,ISNULL(AW.Address2,'') WorkBuildingNumber
+	,ISNULL(AW.Address3,'') WorkUnitNumber
+	,ISNULL(AW.PostalCode,'') WorkPostalCode
+FROM CULoan
+INNER JOIN Customer ON Customer.CustomerID=CULoan.CustomerID
+INNER JOIN CustomerPerson ON CustomerPerson.CustomerID=Customer.CustomerID
+INNER JOIN Person ON Person.PersonID=CustomerPerson.PersonID
+INNER JOIN CustomerAddress CAH ON Customer.CustomerID=CAH.CustomerID AND CAH.AddressTypeID=2
+INNER JOIN Address AH ON CAH.AddressID=AH.AddressID
+LEFT JOIN CustomerAddress CAW ON Customer.CustomerID=CAW.CustomerID AND CAW.AddressTypeID=1
+LEFT JOIN Address AW ON CAW.AddressID=AW.AddressID
+WHERE  CULoan.CommunityCULoanID IN (SELECT CULoan.CULoanID FROM CULoan WHERE CULoan.CUAccountID=$P{ACCOUNTID})]]>
+	</queryString>
+	<field name="CULoanID" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="CULoanID"/>
+		<property name="com.jaspersoft.studio.field.label" value="CULoanID"/>
+	</field>
+	<field name="Customer_Name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Customer_Name"/>
+		<property name="com.jaspersoft.studio.field.label" value="Customer_Name"/>
+	</field>
+	<field name="National_Resident_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="National_Resident_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="National_Resident_ID"/>
+	</field>
+	<field name="HomeCity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="HomeCity"/>
+		<property name="com.jaspersoft.studio.field.label" value="HomeCity"/>
+	</field>
+	<field name="HomeStreet" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="HomeStreet"/>
+		<property name="com.jaspersoft.studio.field.label" value="HomeStreet"/>
+	</field>
+	<field name="HomeBuildingNumber" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="HomeBuildingNumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="HomeBuildingNumber"/>
+	</field>
+	<field name="HomeUnitNumber" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="HomeUnitNumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="HomeUnitNumber"/>
+	</field>
+	<field name="HomePostalCode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="HomePostalCode"/>
+		<property name="com.jaspersoft.studio.field.label" value="HomePostalCode"/>
+	</field>
+	<field name="Work_Phone_Number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Work_Phone_Number"/>
+		<property name="com.jaspersoft.studio.field.label" value="Work_Phone_Number"/>
+	</field>
+	<field name="Home_Phone_Number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Home_Phone_Number"/>
+		<property name="com.jaspersoft.studio.field.label" value="Home_Phone_Number"/>
+	</field>
+	<field name="MobileNumber" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MobileNumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="MobileNumber"/>
+	</field>
+	<field name="Email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Email"/>
+		<property name="com.jaspersoft.studio.field.label" value="Email"/>
+	</field>
+	<field name="WorkCity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WorkCity"/>
+		<property name="com.jaspersoft.studio.field.label" value="WorkCity"/>
+	</field>
+	<field name="WorkStreet" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WorkStreet"/>
+		<property name="com.jaspersoft.studio.field.label" value="WorkStreet"/>
+	</field>
+	<field name="WorkBuildingNumber" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WorkBuildingNumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="WorkBuildingNumber"/>
+	</field>
+	<field name="WorkUnitNumber" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WorkUnitNumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="WorkUnitNumber"/>
+	</field>
+	<field name="WorkPostalCode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="WorkPostalCode"/>
+		<property name="com.jaspersoft.studio.field.label" value="WorkPostalCode"/>
+	</field>
+	<detail>
+		<band height="64" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="510" height="60" uuid="070043d2-af0a-468e-a99a-9360dbe27132"/>
+				<textElement textAlignment="Right" markup="styled">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["السيدة/  " +  "<style isBold='true'>"+$F{Customer_Name} +"</style>"+ " ، " + "السجل المدني/ إقامة رقم  " +  "<style isBold='true'>"+$F{National_Resident_ID} +"</style>"+ " ، عنوانها حي " + "<style isBold='true'>"+ $F{HomeCity} +"</style>"+ " شارع " + "<style isBold='true'>"+ $F{HomeStreet} +"</style>"+ " مبنى/فيلا "+ "<style isBold='true'>"+$F{HomeBuildingNumber}+"</style>"+" شقة  " +  "<style isBold='true'>"+$F{HomeUnitNumber} +"</style>"+" هاتف ثابت " +  "<style isBold='true'>"+$F{Home_Phone_Number} +"</style>"+ "بريد إلكتروني " + "<style isBold='true'>"+$F{Email} +"</style>"+" ،عنوان العمل " + "<style isBold='true'>"+ $F{WorkCity} +" "+$F{WorkStreet} +" "+$F{WorkBuildingNumber} +" "+$F{WorkUnitNumber} +"</style>"+"عنوان بريد  "+  "<style isBold='true'>"+$F{HomePostalCode}+"</style>"+"،    رمز بريدي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="520" y="-2" width="24" height="22" uuid="395c55d5-9e54-42c4-bda4-2b47e8b07802"/>
+				<textElement textAlignment="Right" markup="styled">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

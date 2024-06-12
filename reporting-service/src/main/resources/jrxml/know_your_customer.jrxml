@@ -1,0 +1,2261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="know_your_customer" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a41f324a-0d51-4a2e-83c6-0e762b059b74">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tamkeen Recette"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="254"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="740"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="ACCOUNTID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	Branches.Description [BranchName],
+	(select Value from UserDefinedFieldLinks where UserDefinedFieldID = 3 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [NationalID],
+	(select Value from UserDefinedFieldLinks where UserDefinedFieldID = 37 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [IssueDateNationalID],
+	REPLACE(REPLACE(Customer.CorrespondenceName,'Mrs ',''),'Mr ','') [CUSTOMER_NAME],
+	ISNULL(
+	ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 30 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID),'') + ' ' +
+	ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 31 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID),'') + ' ' +
+	ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 32 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID),'') + ' ' +
+	ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 33 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID),''),'') [CUSTOMER_NAME_EN],
+	Person.Gender [GENDER],
+	CONVERT(DATE, Person.DateOfBirth) [DATE_OF_BIRTH],
+	(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=2 AND UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [CUSTOMER_NATIONALITY],
+	ISNULL((SELECT TOP 1 Address3 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_UNIT_NUMBER],
+	ISNULL((SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_ADDRESS_PART_1],
+	ISNULL((SELECT TOP 1 County + ' ' +TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_DISTRICT],
+	ISNULL((SELECT TOP 1 Address2 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_ADDRESS_PART_2],
+	ISNULL((SELECT TOP 1 PostalCode FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_ZIP_CODE],
+	ISNULL((SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_REGION],
+	ISNULL((SELECT TOP 1 Country FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6), '')  [PRIMARY_CONTRY],
+	ISNULL((SELECT TOP 1 Address3 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_UNIT_NUMBER],
+	ISNULL((SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_ADDRESS_PART_1],
+	ISNULL((SELECT TOP 1 County + ' ' +TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_DISTRICT],
+	ISNULL((SELECT TOP 1 Address2 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_ADDRESS_PART_2],
+	ISNULL((SELECT TOP 1 PostalCode FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_ZIP_CODE],
+	ISNULL((SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_REGION],
+	ISNULL((SELECT TOP 1 Country FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 2), '')  [OTHER_CONTRY],
+	ISNULL(Person.Telephone1, '')  [CUSTOMER_MOBILE_NUMBER],
+	ISNULL(Person.Telephone2, '')  [CUSTOMER_PHONE_NUMBER],
+	ISNULL(Person.EMail, '')  [CUSTOMER_email],
+	(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=23 AND UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [CUSTOMER_FAMILY_SITUATION],
+	(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=21 AND UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [EDUCATION_LEVEL],
+	CULoanGuarantor.Name  [GUARANTOR_NAME],
+	(SELECT TOP 1
+	ISNULL(Address3, '') + ' ' +
+	ISNULL(Address1, '') + ' ' +
+	ISNULL(County, '') + ' ' +
+	ISNULL(TownCity, '') + ' ' +
+	ISNULL(Address2, '') + ' ' +
+	ISNULL(PostalCode, '') + ' ' +
+	ISNULL(State, '') + ' ' +
+	ISNULL(Country, '') 
+	FROM CustomerAddress, Address where CustomerAddress.customerID = CULoanGuarantor.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 6) [GUARANTOR_ADRESS],
+	(SELECT ISNULL(Telephone1, '')  from Person, CustomerPerson where Person.personID = CustomerPerson.personID 
+	and CustomerPerson.CustomerID = CULoanGuarantor.CustomerID)[GUARANTOR_MOBILE_NUMBER],
+	(SELECT ISNULL(Telephone2, '')  from Person, CustomerPerson where Person.personID = CustomerPerson.personID 
+	and CustomerPerson.CustomerID = CULoanGuarantor.CustomerID)[GUARANTOR_PHONE_NUMBER],
+	(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=7 AND UserDefinedFieldLinks.CUAccountID = CUAccount.CUAccountID) [INDUSTRY_CODE_LEVEL_1],
+	ISNULL((SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=9 AND UserDefinedFieldLinks.CUAccountID = CUAccount.CUAccountID), '') [INDUSTRY_CODE_LEVEL_3],
+	ISNULL((SELECT TOP 1 Address3 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_UNIT_NUMBER],
+	ISNULL((SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_ADDRESS_PART_1],
+	ISNULL((SELECT TOP 1 County + ' ' +TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_DISTRICT],
+	ISNULL((SELECT TOP 1 Address2 FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_ADDRESS_PART_2],
+	ISNULL((SELECT TOP 1 PostalCode FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_ZIP_CODE],
+	ISNULL((SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_REGION],
+	ISNULL((SELECT TOP 1 Country FROM CustomerAddress, Address where CustomerAddress.customerID = CUAccount.customerID and CustomerAddress.AddressID = Address.AddressID
+	AND CustomerAddress.AddressTypeID = 1), '')  [PROJECT_CONTRY],
+	(SELECT CAST(CASE WHEN  count(*) > 1 THEN 1 ELSE 0 END AS BIT) FROM CUAccount where CUAccount.CustomerID = Customer.CustomerID and ParentAccountID is not null) [HISTORIQUE_LOAN],	 
+	(SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+	UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) 
+	AND UserDefinedFieldID=26 AND UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [CUSTOMER_JOB],
+    ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 14 and UserDefinedFieldLinks.CUAccountID = CUAccount.CUAccountID), '')  [ACTIVITY_ADRESS],
+	ISNULL((select Value from UserDefinedFieldLinks where UserDefinedFieldID = 24 and UserDefinedFieldLinks.CustomerID = Customer.CustomerID), '')  [CHILDREN_NUMBER]
+from CUAccount, Branches, Customer, CustomerPerson, Person, CULoan, CULoanGuarantor
+where 
+	 CUAccount.BranchID = Branches.BranchID
+	 AND CUAccount.CustomerID = Customer.CustomerID
+	 AND Customer.CustomerID = CustomerPerson.CustomerID
+	 AND CustomerPerson.PersonID = Person.PersonID
+	 AND CUAccount.CUAccountID = CULoan.CUAccountID
+	 AND CULoan.CULoanID = CULoanGuarantor.CULoanID
+	 AND CUAccount.CUAccountID = $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="BranchName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BranchName"/>
+		<property name="com.jaspersoft.studio.field.label" value="BranchName"/>
+	</field>
+	<field name="NationalID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NationalID"/>
+		<property name="com.jaspersoft.studio.field.label" value="NationalID"/>
+	</field>
+	<field name="IssueDateNationalID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="IssueDateNationalID"/>
+		<property name="com.jaspersoft.studio.field.label" value="IssueDateNationalID"/>
+	</field>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="CUSTOMER_NAME_EN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME_EN"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME_EN"/>
+	</field>
+	<field name="GENDER" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.name" value="GENDER"/>
+		<property name="com.jaspersoft.studio.field.label" value="GENDER"/>
+	</field>
+	<field name="DATE_OF_BIRTH" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="DATE_OF_BIRTH"/>
+		<property name="com.jaspersoft.studio.field.label" value="DATE_OF_BIRTH"/>
+	</field>
+	<field name="CUSTOMER_NATIONALITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONALITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONALITY"/>
+	</field>
+	<field name="PRIMARY_UNIT_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_UNIT_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_UNIT_NUMBER"/>
+	</field>
+	<field name="PRIMARY_ADDRESS_PART_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_ADDRESS_PART_1"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_ADDRESS_PART_1"/>
+	</field>
+	<field name="PRIMARY_DISTRICT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_DISTRICT"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_DISTRICT"/>
+	</field>
+	<field name="PRIMARY_ADDRESS_PART_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_ADDRESS_PART_2"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_ADDRESS_PART_2"/>
+	</field>
+	<field name="PRIMARY_ZIP_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_ZIP_CODE"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_ZIP_CODE"/>
+	</field>
+	<field name="PRIMARY_REGION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_REGION"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_REGION"/>
+	</field>
+	<field name="PRIMARY_CONTRY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PRIMARY_CONTRY"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRIMARY_CONTRY"/>
+	</field>
+	<field name="OTHER_UNIT_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_UNIT_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_UNIT_NUMBER"/>
+	</field>
+	<field name="OTHER_ADDRESS_PART_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_ADDRESS_PART_1"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_ADDRESS_PART_1"/>
+	</field>
+	<field name="OTHER_DISTRICT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_DISTRICT"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_DISTRICT"/>
+	</field>
+	<field name="OTHER_ADDRESS_PART_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_ADDRESS_PART_2"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_ADDRESS_PART_2"/>
+	</field>
+	<field name="OTHER_ZIP_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_ZIP_CODE"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_ZIP_CODE"/>
+	</field>
+	<field name="OTHER_REGION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_REGION"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_REGION"/>
+	</field>
+	<field name="OTHER_CONTRY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OTHER_CONTRY"/>
+		<property name="com.jaspersoft.studio.field.label" value="OTHER_CONTRY"/>
+	</field>
+	<field name="CUSTOMER_MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_MOBILE_NUMBER"/>
+	</field>
+	<field name="CUSTOMER_PHONE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_PHONE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_PHONE_NUMBER"/>
+	</field>
+	<field name="CUSTOMER_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_email"/>
+	</field>
+	<field name="CUSTOMER_FAMILY_SITUATION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_FAMILY_SITUATION"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_FAMILY_SITUATION"/>
+	</field>
+	<field name="EDUCATION_LEVEL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="EDUCATION_LEVEL"/>
+		<property name="com.jaspersoft.studio.field.label" value="EDUCATION_LEVEL"/>
+	</field>
+	<field name="GUARANTOR_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_NAME"/>
+	</field>
+	<field name="GUARANTOR_ADRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_ADRESS"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_ADRESS"/>
+	</field>
+	<field name="GUARANTOR_MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_MOBILE_NUMBER"/>
+	</field>
+	<field name="GUARANTOR_PHONE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_PHONE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_PHONE_NUMBER"/>
+	</field>
+	<field name="INDUSTRY_CODE_LEVEL_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="INDUSTRY_CODE_LEVEL_1"/>
+		<property name="com.jaspersoft.studio.field.label" value="INDUSTRY_CODE_LEVEL_1"/>
+	</field>
+	<field name="INDUSTRY_CODE_LEVEL_3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="INDUSTRY_CODE_LEVEL_3"/>
+		<property name="com.jaspersoft.studio.field.label" value="INDUSTRY_CODE_LEVEL_3"/>
+	</field>
+	<field name="PROJECT_UNIT_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_UNIT_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_UNIT_NUMBER"/>
+	</field>
+	<field name="PROJECT_ADDRESS_PART_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_ADDRESS_PART_1"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_ADDRESS_PART_1"/>
+	</field>
+	<field name="PROJECT_DISTRICT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_DISTRICT"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_DISTRICT"/>
+	</field>
+	<field name="PROJECT_ADDRESS_PART_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_ADDRESS_PART_2"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_ADDRESS_PART_2"/>
+	</field>
+	<field name="PROJECT_ZIP_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_ZIP_CODE"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_ZIP_CODE"/>
+	</field>
+	<field name="PROJECT_REGION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_REGION"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_REGION"/>
+	</field>
+	<field name="PROJECT_CONTRY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="PROJECT_CONTRY"/>
+		<property name="com.jaspersoft.studio.field.label" value="PROJECT_CONTRY"/>
+	</field>
+	<field name="HISTORIQUE_LOAN" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="HISTORIQUE_LOAN"/>
+		<property name="com.jaspersoft.studio.field.label" value="HISTORIQUE_LOAN"/>
+	</field>
+	<field name="CUSTOMER_JOB" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_JOB"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_JOB"/>
+	</field>
+	<field name="ACTIVITY_ADRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ACTIVITY_ADRESS"/>
+		<property name="com.jaspersoft.studio.field.label" value="ACTIVITY_ADRESS"/>
+	</field>
+	<field name="CHILDREN_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CHILDREN_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CHILDREN_NUMBER"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="-12" y="10" width="265" height="30" forecolor="#3C5622" uuid="9e5dcdd9-8ac9-4206-82ab-de7fabe708f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="22"/>
+				</textElement>
+				<text><![CDATA[استمارة بيانات العميل ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="485" y="4" width="72" height="43" uuid="49f8d94d-a6d7-43f8-9dc1-fb90c90236f9"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/tamkeen_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="699" splitType="Stretch">
+			<staticText>
+				<reportElement x="482" y="53" width="71" height="20" uuid="ddd58560-5090-4868-844d-a7b336cdd746"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[حالة العميل :]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="463" y="50" width="20" height="20" uuid="fa167cdd-96d3-4d94-b48e-304172bf6c25"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="434" y="53" width="25" height="18" uuid="cc2987df-304b-4bcc-9292-77979af732de"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[جديد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="53" width="109" height="18" uuid="30615f0b-1e10-4122-b612-1770c62e2790"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[تحديث بيانات عميل قائم ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="413" y="50" width="20" height="20" uuid="d5be2125-0a2c-4372-86e3-d37d7370563e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="-12" y="53" width="113" height="18" uuid="81e82552-8a13-4ad3-9e1e-41782f93d3e4"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[جواز سفر مدون به الرقم القومي]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="108" y="50" width="20" height="20" uuid="7b655b57-71eb-4ac3-b17a-4343b403c125"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="201" y="52" width="94" height="20" uuid="91762584-d24b-4e5f-b12f-072e5f1ff85c"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[نوع مستند الهوية :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="52" width="45" height="18" uuid="e6ffcdaf-ddab-4bfd-9e01-cbda367fd9ce"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[رقم قومي]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="178" y="50" width="20" height="20" uuid="a481b406-a861-4346-b62a-0392a8ddeb59"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="434" y="81" width="119" height="20" uuid="32b79b88-67be-4905-b294-d1649bbefcd7"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رقم مستند الهوية:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="368" y="77" width="20" height="20" uuid="633d275f-e571-44bc-b7d0-7c1d0aee174d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="348" y="77" width="20" height="20" uuid="d814cd73-c9d1-4694-aed7-1eecfc932f03"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="328" y="77" width="20" height="20" uuid="8d185589-f9da-4615-8104-20f1167d3236"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="308" y="77" width="20" height="20" uuid="54038201-c067-40ad-9756-b46c81fab4e7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="288" y="77" width="20" height="20" uuid="d9e73a64-193e-41b1-88db-d062dd12d36c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="228" y="77" width="20" height="20" uuid="f82054b7-a50b-4a20-bbaf-092f0a508067"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="268" y="77" width="20" height="20" uuid="17605bd8-8d51-47ef-8c1c-f7de8cf63409"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="248" y="77" width="20" height="20" uuid="50da8f2c-89c1-4823-974c-e6ed28fa3e2e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="208" y="77" width="20" height="20" uuid="0d661199-5c94-4796-8174-b16b48f94f90"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="148" y="77" width="20" height="20" uuid="c7ea853f-e29e-4948-86bf-e26940997abc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="108" y="77" width="20" height="20" uuid="5ac0341e-c1f9-46ce-82d9-76e650ea7f13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="128" y="77" width="20" height="20" uuid="fc72b63a-5fc4-494d-8f5a-25f3b51793eb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="188" y="77" width="20" height="20" uuid="34cf7d88-d348-451c-87c9-686ef09dde0e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="168" y="77" width="20" height="20" uuid="2b81d943-a7af-4fdc-befa-4e70f222dac5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="368" y="102" width="20" height="20" uuid="75552015-e0ea-4c9a-983a-561fccc505d7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="308" y="102" width="20" height="20" uuid="9eaae155-9774-4d8c-bdad-593dd9255731"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="434" y="102" width="119" height="20" uuid="ec1bbb31-08ec-44f3-9e3b-e2ee2b144c3e"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[رقم المطبوع:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="188" y="102" width="20" height="20" uuid="82803079-ca9f-4e0c-8f2d-71ccdd9fdbf2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="268" y="102" width="20" height="20" uuid="fc7c6931-36f6-4991-bcb1-f091ef8ffeaa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="288" y="102" width="20" height="20" uuid="60a4a89c-7202-4116-9b33-2e23c0190009"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="228" y="102" width="20" height="20" uuid="ce560648-6483-4efe-8127-313916ee978a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="348" y="102" width="20" height="20" uuid="106fd354-6c79-4476-b99b-c457ed30b5e9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="328" y="102" width="20" height="20" uuid="2ea28998-a0ec-4774-883d-f61916600b1f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="208" y="102" width="20" height="20" uuid="66034f27-94cd-4d2f-8333-66cd5e260bcf"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="248" y="102" width="20" height="20" uuid="f8bba7ba-6a6a-435f-9cf4-8ffc4159c444"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="434" y="119" width="119" height="20" uuid="e7a5b287-4d59-4381-9803-2bf77b86a7cf"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(في حالة تقديم الرقم القومي)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-2" y="139" width="554" height="22" forecolor="#FFFFFF" backcolor="#3C5622" uuid="425f7b20-946e-4b8c-8963-6959429950da">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[البيانات الأساسية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="165" width="119" height="14" uuid="c7555256-4d83-4f4f-a326-e7d6db008bd2"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ الإسم بالكامل:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="182" width="119" height="20" uuid="f3dc58f6-0e74-4811-98e1-a4ffd0937fa0"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="504" y="235" width="48" height="22" uuid="68b652c0-5839-4753-b305-bb207e4f7e80"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[النوع:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="237" width="31" height="18" uuid="48a9c4c1-78f9-43f1-a34d-be3803fc81d5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[أنثى]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="455" y="235" width="20" height="20" uuid="f91c61e6-d217-4639-9779-48f2fad9ba98"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="505" y="235" width="20" height="20" uuid="cba52717-80df-4390-b6c0-18075d3f1e88"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="476" y="237" width="25" height="18" uuid="ad2c9317-1654-4576-b0f5-01244c24bdcd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[ذكر]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="234" width="71" height="22" uuid="fe631a6e-2e40-4efa-bece-6efc3f30c4e0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[محل الميلاد:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="232" width="58" height="22" forecolor="#DEDEDE" uuid="eb27aa9f-d598-49be-8cb6-824ed5163aca"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[_______________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="234" width="71" height="22" uuid="e1c804aa-47a0-4e41-931a-57aea128d9a9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[بلد الميلاد:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-3" y="234" width="99" height="22" forecolor="#030202" uuid="c613f413-beaa-490c-8f58-2dca5b26e8c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ جمهورية مصر العربية ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="440" y="264" width="20" height="20" uuid="993047f3-225c-4635-a688-c1ac04d927a4"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="461" y="266" width="30" height="18" uuid="70165360-c107-46c9-90e7-ad5483792b75"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[مصري]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="504" y="264" width="48" height="22" uuid="f8f59ac0-fc86-4c3b-9725-b72905024f7a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الجنسية:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="494" y="265" width="20" height="20" uuid="f4a6663b-c713-4ab7-b4ad-8e4b8046ce21"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="405" y="266" width="31" height="18" uuid="4465ef95-08e1-4536-a2de-eb0f50d29c26"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[أجنبي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="265" width="102" height="22" uuid="2818297c-2d17-4d72-876c-08e6bfb36263"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[هل لديك جنسيات اخر ى:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-11" y="268" width="31" height="18" uuid="cd1fe796-464d-456e-af9c-08711bf1a5a3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="267" width="25" height="18" uuid="19623d6b-3e2f-4cda-bf22-994e856aefab"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[نعم ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="23" y="265" width="20" height="20" uuid="d19a7689-2861-4810-8162-3134865f372b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="73" y="265" width="20" height="20" uuid="7185c1c4-1f8e-4aa4-ac3f-149aa1bce958"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="328" y="291" width="221" height="20" uuid="6ec4182c-0408-4f39-96d6-ab6c1d09fae4"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[في حالة الاجابة بنعم تذكر الجنسيات الاخرى:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="308" width="193" height="20" uuid="e26dd5d8-f27d-43f5-b99a-3efc293e12a7"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[مع ضرورة الحصول على مستند الهوية الدال على ذلك]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-3" y="305" width="329" height="19" forecolor="#DEDEDE" uuid="ed4fa160-61cf-427a-9506-1232269a631d"/>
+				<text><![CDATA[_____________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-2" y="325" width="554" height="19" forecolor="#000000" backcolor="#C5DFB3" uuid="be5a5388-3772-44e6-9151-d1bece48fc97">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[عنوان محل الاقامة الدائم من واقع مستند تحقيق الشخصية: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-3" y="407" width="554" height="25" forecolor="#000000" backcolor="#C5DFB3" uuid="d6092b2a-ca20-4cb4-a9a3-b96929054de8">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[عنوان محل الاقامة في حالة الاختلاف عن العنوان المدون بمستند تحقيق الشخصية:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="519" width="48" height="18" uuid="0ccb93b0-b780-4312-bd3c-80b1b43d95ff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[تليفون:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="492" width="48" height="22" uuid="9dad4976-c044-4f7c-ab46-cfe0c3275c76"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="492" width="58" height="22" uuid="19ee5f9f-4217-4b42-a0cf-dd2cdd0b3991"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود المحافظة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="518" width="58" height="19" forecolor="#DEDEDE" uuid="b2adbb9c-45cf-453f-861a-186b11c617e7"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="519" width="58" height="19" forecolor="#050505" uuid="1a9e2daa-5798-4714-b004-057e13de0d04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="562" width="48" height="22" uuid="8578d8fa-d6de-4a35-b28b-52bec2a8ebd9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[فاكس:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="537" width="48" height="22" uuid="2eb98294-53d1-4f65-b5b2-ff53797f5039"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="535" width="58" height="22" uuid="efdcdac1-92b6-4527-93d3-afe3fb2725d8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم الهاتف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="563" width="54" height="19" forecolor="#DEDEDE" uuid="5bff59ed-8912-4814-a5d8-b2628037a1e2"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="519" width="45" height="19" forecolor="#080808" uuid="1e46b446-181c-469a-8c73-d8927a0e8ddb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="469" y="592" width="86" height="22" uuid="e7bcbe87-0034-4fff-930f-025e0163e687"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[الحالة الاجتماعي:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="454" y="593" width="20" height="20" uuid="59d0916b-984a-4b61-a8c3-c1aca103cf7e">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="415" y="595" width="34" height="18" uuid="b313f127-ecac-4ffa-b9c6-6e7003cd8968">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[أعزب ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="398" y="592" width="20" height="20" uuid="1e700bb7-06fc-4c05-a045-37988c3d9818">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="360" y="594" width="34" height="18" uuid="02735613-ba89-4911-94a3-733cd8f9378b">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[متزوج]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="339" y="593" width="20" height="20" uuid="8e229f33-1594-4aa6-8714-a85dcbf89485">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="264" y="595" width="71" height="18" uuid="dc416a69-716b-4855-9c70-9a551c8a65ca">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[متزوج ويعول]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="258" y="594" width="20" height="20" uuid="50bfb94d-bd84-42ac-84b4-34cbe35297ed">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="224" y="596" width="31" height="18" uuid="7dcdf085-feb5-4664-b5e9-2bd43f115922">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[أرمل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="156" y="597" width="45" height="18" uuid="ec7b4354-35a5-4199-b3c0-371331c8eb08">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[مطلق ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="203" y="595" width="20" height="20" uuid="13efed55-4f4e-48fa-ac70-969dd8cfa240">
+					<propertyExpression name="net.sf.jasperreports.export.xls.cell.hidden"><![CDATA[]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION} == null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="69" y="594" width="86" height="22" uuid="431e950e-3640-452f-a2a9-b664f0593695"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[عدد من يعول:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="339" y="632" width="20" height="20" uuid="f820406b-3f36-4f3f-b6bc-fa8e67b40082">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="472" y="631" width="86" height="22" uuid="053c24e5-f252-4e0b-a631-2ed4be34577d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[الحالة التعليمية:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="454" y="632" width="20" height="20" uuid="c6daa97e-d496-40ac-bf71-e2e6e8ea6a5e">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="249" y="634" width="85" height="18" uuid="f64deba3-4064-4bc6-a8e2-54d0f17da461">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[يجيد القراءة الكتابة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="634" width="89" height="18" uuid="65d15e5f-3315-4fbb-b4f6-e26840dc322d">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا يجيد القراءة الكتابة ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="634" width="28" height="18" uuid="a59aef6e-7007-43f7-80a4-9ac28d683fd4">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إبتدائي]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="227" y="632" width="20" height="20" uuid="2bef033e-fc01-444e-9f85-3f5c128f338e">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="131" y="634" width="34" height="18" uuid="e1ac76f1-11d4-4e5b-8382-5c64dd1732a5">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[اعدادي]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="168" y="632" width="20" height="20" uuid="11499bba-0443-4827-ad21-a15b579b74fc">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="73" y="634" width="34" height="18" uuid="01fa2350-51c3-4093-a8b6-2c02fb0d874e">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[متوسط ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="110" y="632" width="20" height="20" uuid="fb1260c4-1125-4925-8639-10022a659644">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="-5" y="634" width="55" height="18" uuid="7b0d1b74-6ae1-4121-8326-d15c379f29b3">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[فوق متوسط]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="54" y="632" width="20" height="20" uuid="5b35064b-08ac-4d0a-a269-28053ddafd79">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="397" y="657" width="20" height="20" uuid="37c577c7-7e4e-4670-a1ad-4b66ae453104">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="454" y="657" width="20" height="20" uuid="5c1bbba3-ded2-4824-8d73-afc82245001a">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="409" y="659" width="42" height="18" uuid="70a5ac78-09e9-42f6-9a75-eb2776f6f2ff">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[جامعي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="659" width="85" height="18" uuid="1d9d7b35-099f-4f0c-8ca3-13544e78365b">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[دراسات عليا]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="4" width="225" height="20" uuid="80a30a57-2bdf-4d0b-b59c-3937e97ef466"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[شركة الأهلي كابيتال للتمويل متناهي الصغر (تمكين)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="459" y="20" width="94" height="20" uuid="be06b613-78a2-4fc4-8430-7b2c3f5443d0"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الفرع :" + $F{BranchName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="180" width="499" height="18" uuid="f0f3787a-942e-4767-9785-2a5d91059063"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" (كما هو مدون  بمستند ألهوية) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="202" width="464" height="28" uuid="eb41966e-f070-4111-a7de-e4355e13a84d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Full Name : "  +  $F{CUSTOMER_NAME_EN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="282" y="236" width="132" height="20" uuid="78adbbf3-a450-4bd1-a085-979def3d0677"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تاريخ الميلاد:"    +    $F{DATE_OF_BIRTH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="266" width="159" height="20" uuid="fd26a795-e658-479e-8983-8d774ae7fd5b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بلد الجنسية: "  +   $F{CUSTOMER_NATIONALITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="352" width="78" height="22" uuid="8e6b5566-5cbf-429f-b5bf-06b69acad033"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم :"  +   $F{PRIMARY_UNIT_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="352" width="82" height="22" uuid="ad6aa1af-6486-4ebd-97bc-96c42740535a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" شارع : "  +   $F{PRIMARY_ADDRESS_PART_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="351" width="206" height="24" uuid="962cb804-1ad0-4852-9c4e-c890dd07676b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["حي / القسم / المركز : " +  $F{PRIMARY_DISTRICT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="350" width="168" height="24" uuid="92e02765-05d1-499c-beb6-d358bbc2232a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الشقة : "   +   $F{PRIMARY_ADDRESS_PART_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="380" width="169" height="20" uuid="09bc5884-360e-4c13-83c0-795cc0ac16fb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["صندوق  البريدي : "   +  $F{PRIMARY_ZIP_CODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="380" width="194" height="20" uuid="7f516902-ee1c-4245-8b81-29de869248f7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["محافظة  :"  +    $F{PRIMARY_REGION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="380" width="167" height="20" uuid="cb2339d7-080b-4bb6-ad89-d4c3ee226ab1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["البلد : "  +   $F{PRIMARY_CONTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="493" y="439" width="58" height="22" uuid="b2a37287-1cad-4401-9344-eb6d1dec638d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم : "  +   $F{OTHER_UNIT_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="438" width="92" height="22" uuid="a6eb0b6f-e624-4830-8f9c-fcdfa5edad98"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" شارع : "  +  $F{OTHER_ADDRESS_PART_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="437" width="180" height="21" uuid="48b9a532-23ce-418f-b914-bb57781051ab"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["حي / القسم / المركز  :"   +   $F{OTHER_DISTRICT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="436" width="152" height="22" uuid="43081942-4a02-47b5-a0ce-9743306fe739"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الشقة :"  +  $F{OTHER_ADDRESS_PART_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="460" width="130" height="22" uuid="49701799-dc29-46b3-93ad-0662886c4a06"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["صندوق البريدي : "  +  $F{OTHER_ZIP_CODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="282" y="460" width="136" height="22" uuid="b38b2c77-bc67-4703-aea5-4d79a978eb7b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["محافظة : "   +  $F{OTHER_REGION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="460" width="168" height="22" uuid="4525ec16-29d9-4114-b0e1-ec9f36c4c473"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["البلد :"   +   $F{OTHER_CONTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="558" width="165" height="21" uuid="d92a0184-4ddb-4f1a-bf95-5c01650fc5b1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="78" width="18" height="18" uuid="5f6afd9b-9f50-4795-a5e7-d493600c9630"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(0)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="78" width="18" height="18" uuid="97229dde-24e9-4472-a4fd-61c851a440b7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(1)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="78" width="18" height="18" uuid="8abe440e-1705-4ca6-ae6c-541264dae88c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(2)]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="507" y="236" width="17" height="19" uuid="332faba4-3072-46d5-a7ca-31e24280f8b6"/>
+				<imageExpression><![CDATA[IF($F{GENDER} == 0 ,   $P{SUBREPORT_DIR}+ "/images/check.png"  , $P{SUBREPORT_DIR}+ "/images/transparent.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="457" y="236" width="17" height="19" uuid="f9c6e330-f390-4a35-bbd3-2d89df41c2c7"/>
+				<imageExpression><![CDATA[IF($F{GENDER} == 1 ,   $P{SUBREPORT_DIR}+ "/images/check.png"  , $P{SUBREPORT_DIR}+ "/images/transparent.png")]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="168" y="78" width="18" height="18" uuid="ba9dde39-f746-43f9-9c4e-82e7ca9b10fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(3)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="78" width="18" height="18" uuid="20ff9a6b-9735-4940-b76e-6b105c8e717f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(4)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="78" width="18" height="18" uuid="be10bfe7-f299-4a33-9854-cde58c1b7fc0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(5)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="78" width="18" height="18" uuid="95c67305-4b90-403d-841f-7da88d433a38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(6)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="78" width="18" height="18" uuid="b772e679-20b3-4a53-bec8-ff1554a934c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(7)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="269" y="78" width="18" height="18" uuid="443f8d66-1bf0-4877-b865-19582b51c6be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(8)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="78" width="18" height="18" uuid="04e23f21-3830-4022-9ca3-1fb18777c7f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(9)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="78" width="18" height="18" uuid="7a0c41bd-7440-42c9-af38-bd5e5233df39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="78" width="18" height="18" uuid="fbb969dc-b851-475a-9165-96ddb4cfa376"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(11)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="78" width="18" height="18" uuid="a5725110-2a2c-4184-a76a-979c32198bbf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(12)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="78" width="18" height="18" uuid="e9daa616-8ad2-42bf-bb35-cadb16d0bf0b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NationalID}.charAt(13)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="102" width="176" height="20" uuid="b41cc82d-407b-45b0-916a-1309a1c91ced"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تاريخ الاصدار :"  +  $F{IssueDateNationalID}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="182" y="52" width="24" height="17" uuid="f8f96dff-f6dc-44d5-83b1-bd4d55f29df5"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/check.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="496" y="266" width="24" height="17" uuid="5ec35968-2dee-48ef-a8b7-fa30fbc10ec3"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/check.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="465" y="52" width="17" height="19" uuid="b246cdd6-9788-43f0-b03f-069b12ca4f94"/>
+				<imageExpression><![CDATA[IF($F{HISTORIQUE_LOAN} == false ,   $P{SUBREPORT_DIR}+ "/images/check.png"  , $P{SUBREPORT_DIR}+ "/images/transparent.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="414" y="52" width="17" height="19" uuid="9837e087-08e4-46d5-841b-b86047c57cf5"/>
+				<imageExpression><![CDATA[IF($F{HISTORIQUE_LOAN} == true,   $P{SUBREPORT_DIR}+ "/images/check.png"  , $P{SUBREPORT_DIR}+ "/images/transparent.png")]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="170" y="492" width="48" height="22" uuid="cf6ee8fc-5fb0-4756-b69c-7495941c860f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="519" width="48" height="18" uuid="40696201-d340-4e3e-8824-168ce57ace07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[محمول:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="9" y="520" width="162" height="17" uuid="a4002bc7-2426-4e61-9198-82e38e1aaa00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="372" y="535" width="58" height="22" uuid="9e4f41e9-f2f9-4d6e-9fa7-8d8e5ad09c80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود المحافظة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="563" width="58" height="19" forecolor="#DEDEDE" uuid="78cde582-5053-4470-812b-032ae7a32a06"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="563" width="58" height="19" forecolor="#DEDEDE" uuid="f28eb182-0fde-412d-aa32-b0dbb8e5508f"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="150" y="593" width="324" height="20" uuid="d674ed87-0dc5-4ba0-b346-ac0d66268cca">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_FAMILY_SITUATION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="150" y="632" width="324" height="20" uuid="c455fd19-0dcc-41f5-ae75-f56824dc5836">
+					<printWhenExpression><![CDATA[$F{EDUCATION_LEVEL}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EDUCATION_LEVEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="69" y="492" width="56" height="22" uuid="df500dbb-6542-4602-a071-9ebb4956ce15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم الهاتف :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="557" width="76" height="22" uuid="909ddf51-cef3-4e4f-8bae-45447d498e57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[البريد الالكتروني:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="492" width="75" height="22" uuid="9bcdbf26-aa83-4b70-945d-4d2c21a790d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الهاتف : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="520" width="84" height="16" uuid="3a9a32db-21de-4016-899c-7e58fefd8342"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_PHONE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="598" width="53" height="16" uuid="2d52a493-4cdd-4e46-8f5d-67344ce59ec2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHILDREN_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="165" width="290" height="14" uuid="f850efb2-b35a-483a-98e6-f2ccf38ea4d6"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_NAME}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="720">
+			<staticText>
+				<reportElement mode="Opaque" x="3" y="7" width="554" height="22" forecolor="#000000" backcolor="#C5DFB3" uuid="6b209550-3603-4aed-8e9a-4962275226d7">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[شخص يمكن الرجوع إليه:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="89" width="554" height="20" forecolor="#FFFFFF" backcolor="#3C5622" uuid="814d1d9c-2afd-4842-a4a4-494936246546">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[ بيانات النشاط]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="466" y="122" width="20" height="20" uuid="149788a6-75f8-4891-90b0-076f04e6ae90">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="432" y="122" width="29" height="18" uuid="fbb0514f-d4f7-4591-b005-3c5975965877">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[تجاري]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="409" y="122" width="20" height="20" uuid="568e70c0-ff20-4c8a-bafb-ef1b27943137">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="347" y="122" width="58" height="18" uuid="82319036-ea2c-4529-8ac5-3677987cdae2">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إنتاجي/حرفي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="121" width="61" height="22" uuid="7628ec64-d68e-42ba-9b20-fb929a059537"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[قطاع النشاط:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="323" y="121" width="20" height="20" uuid="24d8d681-a281-4d8c-a466-d8997975f960">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="290" y="122" width="29" height="18" uuid="b9ebc394-f28d-4aaa-a460-a34b7099bcb2">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[خدمي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="122" width="29" height="18" uuid="405797c1-26a8-451e-912a-1e785108c73a">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[زراعي]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="267" y="121" width="20" height="20" uuid="23915c68-699e-46cc-9266-e86f79739a71">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="-1" y="152" width="554" height="16" forecolor="#000000" backcolor="#C5DFB3" uuid="84434084-89ec-4dd2-8605-c3f5149ae163">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[عنوان النشاط:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="204" width="555" height="19" forecolor="#DEDEDE" uuid="a2da6daf-dcb0-4214-b794-1a2316f82a86"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="254" width="48" height="19" uuid="f94381bc-ade5-44a2-806e-15f9deb8b8a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[تليفون:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="227" width="48" height="22" uuid="28ac3188-4c5a-4b8f-a442-8f0e99137507"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="227" width="64" height="22" uuid="38b5e4e1-672e-4a3a-ae0e-a027c800d057"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ كود المحافظة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="254" width="64" height="19" forecolor="#DEDEDE" uuid="7e1df328-e56c-4751-a04d-8b4700c56a75"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="321" width="130" height="19" forecolor="#DEDEDE" uuid="67204ba6-2072-4cfe-99e5-3a9aae6987d7"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-2" y="366" width="554" height="20" forecolor="#FFFFFF" backcolor="#3C5622" uuid="1192151f-23ab-4030-9520-d07242a52811">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[ بيانات الوظيفة 
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="454" y="391" width="20" height="20" uuid="131f8d53-4a43-4f65-83e8-135f027b8ae3">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="529" y="391" width="20" height="20" uuid="20bd78f0-0b58-49ab-a531-8dcf1e281d9f">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="371" y="391" width="20" height="20" uuid="2767e232-7593-4091-939d-2887e4d08280">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="169" y="391" width="20" height="20" uuid="115a07d3-fa71-47b2-8190-19c93a41b9d1">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="279" y="393" width="34" height="18" uuid="9a90a510-b300-423a-b758-9632610c1b3c">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[شرطة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="393" width="65" height="18" uuid="b12eafda-924f-4a9a-8c40-b0ad9e906e55">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[قوات مسلحة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="393" width="49" height="18" uuid="5f11bcc5-9c88-4c1a-b27e-58af4bede115">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[قطاع عام]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="393" width="55" height="18" uuid="2dc6f0f1-0979-4ae7-82bd-e8b99cd6df60">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[بالمعاش]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="316" y="391" width="20" height="20" uuid="e64fa1a1-5122-4b05-8b8d-c7d03dd38975">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="338" y="393" width="28" height="18" uuid="872afd64-4b63-40f0-b55f-34f1e31ad29a">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[طالب]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="258" y="391" width="20" height="20" uuid="8da87c5b-ef03-4dfc-b3c9-cb88ff1ac601">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="396" y="393" width="53" height="18" uuid="a1ef17bb-1832-4915-a660-004de3534112">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[قطاع خاص]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="394" width="55" height="18" uuid="224930c3-3f4d-422d-928a-cca6fde41ceb">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا يعمل]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="86" y="392" width="20" height="20" uuid="04d9263c-c741-4115-9685-61c7c50a5d09">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}==null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="460" y="419" width="65" height="18" uuid="ec32ce5f-7bd7-4370-8ac9-414849ee5a69"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[أخرى (تذكر):]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="529" y="417" width="20" height="20" uuid="cd5d214f-d8fa-4b15-8d48-a2b770e40727"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="419" width="456" height="19" forecolor="#DEDEDE" uuid="7f1b8e02-d1c4-4e32-a42b-e088058fea14"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="440" width="39" height="22" uuid="756d7c0e-4091-486a-9509-ecb899062e95"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[المهنة:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="443" width="224" height="19" forecolor="#DEDEDE" uuid="38700948-f7d8-4627-859e-7bbd27c7979e"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="440" width="69" height="22" uuid="de9044fe-f1c8-4eb3-b43d-5af667dc79dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[إسم جهة العمل:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="443" width="202" height="19" forecolor="#DEDEDE" uuid="256d742d-0b5a-4c31-b9bf-9c6d4115fb9b"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="518" width="555" height="19" forecolor="#DEDEDE" uuid="75020f5c-b36a-4d09-93ed-7df3a8404212"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="542" width="58" height="22" uuid="2148ec76-34a1-42b7-b097-98d7c32bae27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم الهاتف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="486" width="109" height="22" uuid="8e1b25f7-ba93-4089-be2a-5b65138040a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[حي / القسم / المركز]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="466" width="554" height="16" forecolor="#000000" backcolor="#C5DFB3" uuid="0bd772ca-35e8-4463-86a6-2436c761b0b0">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[عنوان جهة العمل:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="486" width="58" height="22" uuid="0928f039-3b2e-4c25-9cd2-f3fb74ac2d6d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[محافظة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-3" y="486" width="49" height="22" uuid="29e70f0f-0bf1-4d64-a759-ac49ad80746e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="486" width="66" height="22" uuid="2e7ec87d-7085-448b-ab73-0f6565fe52fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم الشقة ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="556" width="48" height="22" uuid="96d7b859-1529-4711-916b-fc4fa7f50542"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[فاكس:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="566" width="58" height="19" forecolor="#DEDEDE" uuid="25ee55ce-dc0e-493b-bdc4-4c998950b70f"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="567" width="130" height="19" forecolor="#DEDEDE" uuid="a7a561f3-d066-4fca-b8f0-8fe0b17e0bea"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="486" width="48" height="22" uuid="40648a2b-70f2-4c8d-b62c-46037b66a027"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[شارع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="566" width="83" height="19" forecolor="#DEDEDE" uuid="79dc0700-56df-4732-a70f-524b622d24c3"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="556" width="48" height="22" uuid="cda69970-ad55-4c46-bd81-516fb8a360f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[تليفون:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="502" y="486" width="48" height="22" uuid="2c084a0e-fe9b-4a05-8a53-036ec3ac3f8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="542" width="48" height="22" uuid="b8783ac9-81e3-4992-a4e6-c04aeb4bdbaa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="542" width="58" height="22" uuid="d075c43a-3db9-49a4-949e-e79834a9cca3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود المحافظة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="301" y="486" width="46" height="22" uuid="f993bf00-c804-4426-95b3-24a73a7ed982"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[الدور]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="486" width="66" height="22" uuid="3f4464da-9883-4a5f-a76d-cc84f8f4c3ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[صندوق البريدي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="486" width="66" height="22" uuid="cfb22768-014e-4d24-b67f-6829381ed532"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[الرقم البريدي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="542" width="48" height="22" uuid="83b95383-5ec9-457f-b37e-f10efdf5514d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="542" width="58" height="22" uuid="32648b66-cf60-4d6d-a886-7de8f0c0e1f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[رقم الهاتف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="613" width="77" height="22" uuid="578ebf70-87ce-4fe9-bd68-b6d89f259b01"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[المنصب الوظيفي:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="456" y="614" width="20" height="20" uuid="04ddeaf8-65dc-4528-b405-052d7fbd418c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="411" y="616" width="42" height="18" uuid="b7130da9-6e65-42bc-b0e4-42c463cbc815"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إدارة عليا]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="387" y="614" width="20" height="20" uuid="3e728c60-f28d-4618-a8ca-0dc707e6ede5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="325" y="616" width="59" height="18" uuid="cce6e23a-8750-4cf2-a6fa-9b115ec371f2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إدارة وسطى]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="300" y="614" width="20" height="20" uuid="7089b73d-1a1b-4ac0-8e7c-f3940e32eb9e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="202" y="616" width="95" height="18" uuid="ddccbe24-f57a-45ff-a41e-1cfa4b280d07"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[وظائف نمطية وتنفيذية ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="616" width="82" height="18" uuid="c56f7338-914f-4343-9561-7e4da4144adf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إسم الادارة/القسم:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="616" width="104" height="18" forecolor="#DEDEDE" uuid="74df2879-d2d9-4290-9ce3-49c227c07fcd"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="638" width="77" height="22" uuid="540b73a4-564a-44c3-9293-5a712586cac9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[الراتب الشهري:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="640" width="478" height="18" forecolor="#DEDEDE" uuid="49f55917-f4f5-45ec-acaa-10bdcfec610e"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="371" y="33" width="176" height="22" uuid="46fd1d16-887b-46a5-98b8-12de61cab626"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الاسم : " +  $F{GUARANTOR_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="115" y="32" width="250" height="22" uuid="6ee2315e-b0d3-4193-9f89-692e935d0f68"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["العنوان"  +  $F{GUARANTOR_ADRESS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="60" width="142" height="22" uuid="5f494fe8-5835-42ed-b5dc-d6f24eb21cba"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تليفون المنزل"  +  $F{GUARANTOR_PHONE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="60" width="278" height="22" uuid="d5b1b2e0-0445-46ec-b2d8-866134788e00"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["محمول : "  + $F{GUARANTOR_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="122" width="150" height="18" uuid="179727c4-b858-4136-82e0-8faf5dc1d5c5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["النشاط  :"  +   $F{INDUSTRY_CODE_LEVEL_3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="121" y="227" width="48" height="22" uuid="dac121da-afc8-4aad-90c3-15b172ef65d8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[كود البلد ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="252" width="48" height="16" uuid="7177eb71-4cbb-47ef-9a62-ed08d6a96659"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[محمول:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="253" y="391" width="296" height="20" uuid="6ecfa1a1-9a9c-4b2a-b516-719886e450f9">
+					<printWhenExpression><![CDATA[$F{CUSTOMER_JOB}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUSTOMER_JOB}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="227" width="64" height="22" uuid="e9ff9c14-13e8-47a9-989b-18a66ddad5ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ رقم الهاتف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="227" width="64" height="22" uuid="5a40023f-fb43-4f8e-8954-dc7cccf6d05e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ رقم الهاتف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="254" width="49" height="19" forecolor="#050505" uuid="6b28e8a8-1809-4b56-9a25-15ab15471a1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="252" width="47" height="19" forecolor="#050505" uuid="4623b57b-eab6-40ec-9c99-14c41ec89386"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="254" width="94" height="19" forecolor="#DEDEDE" uuid="e7f595e5-8177-4cd2-b7ce-9d295876921e"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="254" width="94" height="19" forecolor="#DEDEDE" uuid="8c085b2d-bf88-4bae-ac43-2eda13202b77"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="568" width="47" height="16" forecolor="#050505" uuid="98c3c468-fe00-46ae-a790-7a387265eac7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="568" width="47" height="16" forecolor="#050505" uuid="e0d91de7-9a0a-460f-9165-c49a313b2a46"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[02]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="168" width="552" height="32" uuid="1c7b4988-c422-406f-8962-6d9f24bc4f33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ACTIVITY_ADRESS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="234" y="122" width="252" height="20" uuid="75537283-3e22-4ffa-9a4e-c70d7e14ed9b">
+					<printWhenExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INDUSTRY_CODE_LEVEL_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="670" width="62" height="22" uuid="f37d3312-1e2a-4a37-9f93-8f2d1a9c086b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[توقيع العميل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="300" width="350" height="30" uuid="84eb3268-270b-435b-bb9d-3698911948fd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[متوسط الدخل الشهري من النشاط]]></text>
+			</staticText>
+		</band>
+		<band height="687">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="5" width="554" height="20" forecolor="#FFFFFF" backcolor="#3C5622" uuid="a7627a03-3e82-4c76-b4a1-80777c4150d1">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[ مصادر آخري للدخل 
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="535" y="30" width="20" height="20" uuid="76a7bd36-2d9b-49d3-a997-fcf18ea7a662"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="482" y="32" width="49" height="18" uuid="24ce25a5-60c1-426e-9fcc-86d88c98b3d5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا يوجد]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="470" y="30" width="20" height="20" uuid="adfb26ad-bcca-439f-a153-fd43cf2e29ec"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="360" y="32" width="105" height="18" uuid="f52b8120-4f66-404e-b722-b6427b1e5f6b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[يوجد (تذكر التفاصيل):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="32" width="371" height="18" forecolor="#DEDEDE" uuid="fb91ad4c-2b77-4b7a-8c07-e2aba2b5c613"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="87" width="252" height="18" uuid="d4ae0fa7-91fa-4ae7-8edb-05c9c48f9ba4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[إجمالي الدخل الشهري من كافة المصدر المشار إليها بعالية:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="60" width="554" height="20" forecolor="#FFFFFF" backcolor="#3C5622" uuid="9285d7f4-249e-4f80-9f69-4104ade693f5">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[ فئة الدخل 
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="87" width="308" height="18" forecolor="#DEDEDE" uuid="acc466c5-7e3d-4b25-b0e3-2c2388ece1cf"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="110" width="554" height="16" forecolor="#000000" backcolor="#C5DFB3" uuid="c02fc00b-4899-435e-917a-7fa07e7a2486">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="13"/>
+					<paragraph leftIndent="0" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[فئة الدخل السنوي:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="537" y="140" width="20" height="20" uuid="636d156e-cd9a-43f7-a483-e1f3d2b6e093"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="428" y="141" width="104" height="18" uuid="0d6549fb-052a-44f9-a760-c48996b1aa59"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[أقل من 5000 جنيه]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="169" width="115" height="18" uuid="4f1ec5f0-94cc-4bdd-9c0f-9dcd978083c8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[30000 وأقل من 70000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="537" y="168" width="20" height="20" uuid="9f3c5b06-1da0-4e8d-9c2f-26e340297658"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="399" y="195" width="134" height="18" uuid="89c9de41-ba25-4634-852a-e3f4e607fc1b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[3000000 وأقل من 400000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="537" y="194" width="20" height="20" uuid="1cf52db3-0e32-4173-8d92-fe85d440b0ea"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="276" y="169" width="122" height="18" uuid="ca064298-1f8c-469d-b4eb-631feef62aa1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[70000 وأقل من 100000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="195" width="130" height="18" uuid="a6c9fc99-9773-439f-b551-be228795a073"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[400000 وأقل من 1000000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="141" width="120" height="18" uuid="7a03533a-a066-4622-9e73-fa00f5d29428"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[من 5000 وأقل من 10000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="404" y="168" width="20" height="20" uuid="043429c9-5e36-4b47-bd16-50e938a0017e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="404" y="140" width="20" height="20" uuid="b6965d7a-862f-46be-a67f-3aafda5e101c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="404" y="194" width="20" height="20" uuid="d1e8ce12-a702-45e7-b0ba-af188275cc1d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="130" y="169" width="122" height="18" uuid="67aba836-eb10-4126-96f3-2a70da0047d0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[100000 وأقل من 200000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="257" y="194" width="20" height="20" uuid="a18d57e5-662a-44ee-acd6-f83f4a6e0351"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="123" y="195" width="130" height="18" uuid="382759e3-df5b-4f02-b4dc-9780a133d661"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[أكثر من 1000000]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="141" width="120" height="18" uuid="2532e06e-ea46-4772-9192-a304b83485c1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[10000 وأقل من 20000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="257" y="142" width="20" height="20" uuid="ef799c5f-6d66-4597-a26a-492f578c7c87"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="257" y="168" width="20" height="20" uuid="7e5a4f75-0cd0-4de6-8f62-3578a383eb8b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="-1" y="141" width="120" height="18" uuid="2c0c07df-e91b-4a11-98a1-cf87750eccb6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[20000 وأقل من 30000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="126" y="168" width="20" height="20" uuid="0f41d65e-d446-482f-b689-d4075a75aedf"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="-1" y="169" width="122" height="18" uuid="f3794a0c-158c-436e-86dc-0e5501c3b320"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[200000 وأقل من 300000]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="126" y="140" width="20" height="20" uuid="1c1ffa89-0d9b-46bd-b3b8-8243715d42ce"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="384" y="220" width="174" height="18" uuid="1e6474a6-8d99-4c40-8a61-a92b10490e06"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[هل إنت المستفيد الحقيقي من التمويل ؟]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="220" width="25" height="18" uuid="f36d0b4f-5306-4a7d-b0eb-738fb3b41e8c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[نعم ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="144" y="218" width="20" height="20" uuid="bb0c3cdd-5d47-412f-97fc-68f3980aeae7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="94" y="218" width="20" height="20" uuid="52cfbbd3-0f26-427b-9e0a-aa81b034fa95"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="60" y="221" width="31" height="18" uuid="8fe1da3d-5105-4519-9c24-0c796e190ba3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="242" width="164" height="18" uuid="ed137c37-da4f-47ca-a41e-0041ddbc7f4c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[في حالة الإجابة (لا) يذكر إسم المستفيد الحقيقي:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="242" width="391" height="18" forecolor="#DEDEDE" uuid="764fe879-03f2-44be-822d-4a372ea64150"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="94" y="263" width="20" height="20" uuid="072d0c38-a810-43b7-b49c-6c23e28d9e75"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="431" y="287" width="126" height="18" uuid="9464b1d9-0d9b-4e42-a138-c85835a38f0d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[تذكر بالتفاصيل في حالة الاجابة (نعم):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="287" width="421" height="18" forecolor="#DEDEDE" uuid="c82a725c-294e-45bc-ba12-9385a83649d2"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="144" y="263" width="20" height="20" uuid="ebabd751-e3aa-4ae2-a493-ad19416daa9e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="170" y="265" width="384" height="18" uuid="5edc8f81-026b-4abc-926d-222d499ecc81"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[هل تشتغل أو سبق لك شغل منصب عام رفيع في الحقل السياسي أو القضائي أو الحكومي ؟]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="265" width="25" height="18" uuid="2d5dcd99-e2ed-4d70-9003-effc464c286c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[نعم ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="266" width="31" height="18" uuid="87b290d4-3c5e-4e48-bcfe-3a1c0b94d550"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="364" width="550" height="49" uuid="12ac04a5-5ba7-4723-b59d-ddc54da32204"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[أقر أنا الموقع أدناه بصحة المعلومات والبيانات بعالية كما أتعهد بعدم ايداعي شخصيا أو قبول إيداع أيه مبالغ مجهولة المصدر أو مشبوهة في أي من حساباتي لدى البنوك كما أتعهد بعدم استخدام التمويل الممنوح من شركة الأهلي كابيتال للتمويل متناهي الصغر (تمكين) في أية أعمال مشبوهة. وكذلك أتعهد بتحديث بياناتي طرف شركة الأهلي كابيتال للتمويل متناهي الصغر (تمكين) فور حدوث أي تعديلات على بياناتي المذكورة أو فور التجنس باي جنسية أخرى أو عند طلب الشركة ذلك.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="427" width="99" height="18" uuid="2b62fc63-de8b-494f-8a78-a6a85380179a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[الاسم]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="449" width="99" height="18" uuid="152d0207-bee2-49df-97f9-ed05f7a24b86"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[الرقم القومي]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="469" width="99" height="18" uuid="36ad631d-44fd-4f39-ab4b-b4a09e9cb7b5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[التوقيع]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="490" width="99" height="18" uuid="4c2a0e43-7515-4a86-a53e-be68548355d2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[تاريخ تحديث البيانات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="427" width="183" height="18" forecolor="#DEDEDE" uuid="1528796e-34c9-4003-955a-03e5bff30458"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="449" width="183" height="18" forecolor="#DEDEDE" uuid="d79e0d8d-5c79-4e03-99ea-2655bc427bb0"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="469" width="183" height="18" forecolor="#DEDEDE" uuid="1c89ce45-f9a0-4abf-9bf2-10357e5db514"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="490" width="183" height="18" forecolor="#DEDEDE" uuid="8e34dd00-4887-49b5-8a9e-1fe2aca3005d"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[20_____/____/____]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="533" width="116" height="22" uuid="39e9b6b8-ad67-4434-be6d-598d8c2a0e08"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[لإستخدام الشركة]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="563" width="120" height="18" uuid="93c1a355-04eb-4393-82bc-bdb4c4741568"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[توقيع موظف إدخال البيانات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="563" width="128" height="18" uuid="13bc32c3-86b2-41ee-8404-6cda96742680"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[توقيع موظف مراجعة البيانات]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="594" width="183" height="18" forecolor="#DEDEDE" uuid="24a2e046-90a1-4ac9-b6e1-1ed2845d6895"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="594" width="183" height="18" forecolor="#DEDEDE" uuid="15396a12-663a-4f15-a4cd-f3962f4e3d9e"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="341" width="126" height="18" uuid="499f069e-7afa-4e7b-9115-9d4522ce55fc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[تذكر بالتفاصيل في حالة الاجابة (نعم):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="316" width="430" height="23" uuid="78732dea-1e21-4ae7-b9f5-8cfffa4dce59"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[هل أي من أعضاء العائلة (الزوجات و الأزواج و الأولاد و الوالدين و الأشقاء ) أو الشركاء يشغل أو سبق له/ا شغل منصب عام في الحقل الحكومي أو السياسي أو القضائي ؟]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="320" width="31" height="18" uuid="cbb3aa7e-5cc7-4af3-a1de-6852ae864f10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[لا]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="62" y="319" width="25" height="18" uuid="9b2b0032-c422-4df2-b4ad-9ca423b07d0f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[نعم ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="41" y="317" width="20" height="20" uuid="38ff9165-172b-4ecf-ae16-13e1d22ea02a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="91" y="317" width="20" height="20" uuid="4552f01a-229a-4255-a13c-b16c415df761"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="8" y="341" width="421" height="18" forecolor="#DEDEDE" uuid="bc37b7f5-beb3-4d9b-a960-e0f71984013b"/>
+				<text><![CDATA[___________________________________________________________________________________________________________]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="32">
+			<staticText>
+				<reportElement x="-4" y="14" width="164" height="14" uuid="7fc18e51-b17b-4e54-b137-373e25fd3590"/>
+				<text><![CDATA[AML|OP,003-2,Ver003,082021
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="2" width="100" height="30" uuid="cbe293fa-3f18-4133-9314-ea731215d964"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

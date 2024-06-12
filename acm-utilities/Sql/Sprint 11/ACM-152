@@ -1,0 +1,4 @@
+----ADD column CATEGORY (loan time tracking : INSTANCE / WARNING / ALERT)
+alter table acm_loan add CATEGORY varchar (256)
+
+update ACM_LOAN set CATEGORY = 'INSTANCE'

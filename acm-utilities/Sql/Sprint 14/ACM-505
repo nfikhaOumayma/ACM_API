@@ -1,0 +1,2 @@
+-----CLIENT TYPE : C or P
+alter table [ACM_CUSTOMER] add CLIENT_TYPE char(1) 

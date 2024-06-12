@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb" if-exists="true" version="2.1">
+  <!--
+
+Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.3.0 
+Voir <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
+Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+Généré le : 2022.03.17 à 05:09:34 PM GMT+01:00 
+
+  -->
+  <bindings xmlns:tns="http://tempuri.org/" if-exists="true" scd="x-schema::tns">
+    <schemaBindings map="false">
+      <package name="com.acm.soap.model"/>
+    </schemaBindings>
+    <bindings if-exists="true" scd="tns:PostRequest">
+      <class ref="com.acm.soap.model.PostRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:PostRequestResponse">
+      <class ref="com.acm.soap.model.PostRequestResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:GetXMLResWithPDF">
+      <class ref="com.acm.soap.model.GetXMLResWithPDF"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:GetXMLResWithPDFResponse">
+      <class ref="com.acm.soap.model.GetXMLResWithPDFResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:LiveResponse">
+      <class ref="com.acm.soap.model.LiveResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:ResponseByTicketID">
+      <class ref="com.acm.soap.model.ResponseByTicketID"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:ResponseByTicketIDResponse">
+      <class ref="com.acm.soap.model.ResponseByTicketIDResponse"/>
+    </bindings>
+  </bindings>
+</bindings>

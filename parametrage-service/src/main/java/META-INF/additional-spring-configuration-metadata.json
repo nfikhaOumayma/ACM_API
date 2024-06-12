@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "cron.expression.loans.load",
+    "type": "java.lang.String",
+    "description": "A description for 'cron.expression.loans.load'"
+  },
+  {
+    "name": "cron.expression.users.load",
+    "type": "java.lang.String",
+    "description": "A description for 'cron.expression.users.load'"
+  },
+  {
+    "name": "url.serveur.authentification",
+    "type": "java.lang.String",
+    "description": "A description for 'url.serveur.authentification'"
+  }
+]}

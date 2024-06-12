@@ -1,0 +1,4 @@
+-- add COLUMN project description --
+ ALTER TABLE IB_LOAN
+    ADD
+        PROJECT_DESCRIPTION VARCHAR (512) NULL;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+	<suppress files="ConfigServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="DiscoveryServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="ProxyServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="ParametrageServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="TransversServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="CreditServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="ReportingServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="GedServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="CrmServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="AuthenticationServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="ExpensesServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="IncentiveServiceApplication\.java" checks="[a-zA-Z0-9]*" />
+	
+	<suppress files="[a-zA-Z0-9]*\.properties" checks="[a-zA-Z0-9]*" />
+</suppressions>

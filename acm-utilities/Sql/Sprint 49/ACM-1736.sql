@@ -1,0 +1,1 @@
+update acm_customer set correspondence_name = null

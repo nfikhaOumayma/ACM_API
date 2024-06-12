@@ -1,0 +1,3 @@
+update ACM_UDF_FIELD set ID_ACM_UDF_GROUPE = (select ID_ACM_UDF_GROUPE  from ACM_UDF_GROUPE aug   where code ='Customer Nationality')where FIELD_NAME ='Hijiri BirthDate'
+ update Tamkeen_Recette.dbo.UserDefinedFields set UserDefinedFieldGroupID = (select UserDefinedFieldGroupID  from Tamkeen_Recette.dbo.UserDefinedFieldGroup aug  
+where code ='Customer Nationality') where FieldName ='Hijiri BirthDate' 

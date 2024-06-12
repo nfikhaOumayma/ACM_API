@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="issal_amana" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fbe9ce39-c44e-418b-8700-4bb326bf2e4b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tamkeen_prod"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="GUARANTOR_NAME" class="java.lang.String"/>
+	<parameter name="CULOANID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 
+REPLACE(REPLACE((select CorrespondenceName from Customer where Customer.CustomerID = CULoan.CustomerID),'Mrs ',''),'Mr ','')  AS CUSTOMER_NAME,
+(select Value from UserDefinedFieldLinks where UserDefinedFieldID = 3 
+and UserDefinedFieldLinks.CustomerID = CULoan.CustomerID ) AS National_ID,
+( SELECT UserDefinedFieldListValues.Description FROM UserDefinedFieldLinks, UserDefinedFieldListValues WHERE 
+ UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID) AND UserDefinedFieldID=36 AND UserDefinedFieldLinks.CustomerID = CULoan.CustomerID) [CUSTOMER_NATIONAL_ID_ISSUE_PLACE],
+(SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=37 AND CustomerID=CULoan.CustomerID) [CUSTOMER_NATIONAL_ID_ISSUE_DATE],
+(select Address1 + ' '+ Address2 + ' ' + County + 
+' ' + TownCity + ' ' + State + ' '+ PostalCode + ' ' + Country from Address,CustomerAddress where CULoan.CustomerID = CustomerAddress.CustomerID and Address.AddressID = CustomerAddress.AddressID and CustomerAddress.AddressTypeID = 6) AS CUSTOMER_ADDRESS,
+(select ROUND(SUM(TotalRepayment), 0) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID) AS TOTAL_LOAN_AMOUNT_DIGITAL,
+(select dbo.ConvertNumber2Letters((select ROUND(SUM(TotalRepayment), 0) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID), N'جنيه') from CULoanPart where CULoanPart.CULoanID = CULoan.CULoanID) AS TOTAL_LOAN_AMOUNT_LETTER ,
+(select Description from Branches where Branches.BranchID = CUAccount.BranchID) AS BRANCH_NAME,
+CUAccount.AccountNumber as ACCOUNTNUMBER,
+REPLACE(REPLACE(guarantor.CorrespondenceName,'Mrs ',''),'Mr ','')  GUARANTOR_NAME
+from CULoan 
+inner join CUAccount on (CULoan.CUAccountID = CUAccount.CUAccountID)
+inner join culoanPart on (culoan.culoanID = culoanPart.culoanID)
+LEFT JOIN CULoanGuarantor on (CULoanGuarantor.CULoanID = CULoan.CULoanID)
+LEFT JOIN Customer as guarantor ON(guarantor.CustomerID=CULoanGuarantor.CustomerID) 
+where CULoan.cuAccountID = $P{ACCOUNTID}  and CULoan.CULoanID = $P{CULOANID}]]>
+	</queryString>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="National_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="National_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="National_ID"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID_ISSUE_PLACE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID_ISSUE_PLACE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID_ISSUE_PLACE"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID_ISSUE_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID_ISSUE_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID_ISSUE_DATE"/>
+	</field>
+	<field name="CUSTOMER_ADDRESS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_ADDRESS"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_ADDRESS"/>
+	</field>
+	<field name="TOTAL_LOAN_AMOUNT_DIGITAL" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="TOTAL_LOAN_AMOUNT_DIGITAL"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_LOAN_AMOUNT_DIGITAL"/>
+	</field>
+	<field name="TOTAL_LOAN_AMOUNT_LETTER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TOTAL_LOAN_AMOUNT_LETTER"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_LOAN_AMOUNT_LETTER"/>
+	</field>
+	<field name="BRANCH_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_NAME"/>
+	</field>
+	<field name="ACCOUNTNUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ACCOUNTNUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="ACCOUNTNUMBER"/>
+	</field>
+	<field name="GUARANTOR_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GUARANTOR_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="GUARANTOR_NAME"/>
+	</field>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<textField textAdjust="ScaleFont">
+				<reportElement x="0" y="63" width="530" height="150" uuid="56180b22-e31c-4cfb-830b-078ee717e43d">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" markup="styled">
+					<font fontName="DejaVu Sans" size="11"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" أقر أنا " +$F{CUSTOMER_NAME} + " رقم قومى "+ $F{National_ID}+"  صادرة من محافظة "+$F{CUSTOMER_NATIONAL_ID_ISSUE_PLACE}+" بتاريخ "+$F{CUSTOMER_NATIONAL_ID_ISSUE_DATE}+" والمقيم فى " + $F{CUSTOMER_ADDRESS}+ " \n " + " بأننى قد تسلمت مبلغ وقدره "+$F{TOTAL_LOAN_AMOUNT_DIGITAL} +"  جم, فقط  "+$F{TOTAL_LOAN_AMOUNT_LETTER}+" مصرى لا غير " + 
+ "<style isBold='true'>(من شركة الاهلى كابيتال للتمويل متناهى الصغر- تمكين) </style> ش.م.م ( فرع " + $F{BRANCH_NAME} + ") وذلك على سبيل الأمانة لأقوم بإيداعها فى حساب الشركة رقم ( 1953071207757501015 ) البنك الأهلى المصرى ، وفى حالة التقاعس عن إيداع هذا المبلغ بالبنك فإننى أعتبر مبددا وخائنا للأمانة التى منحت لى وأتحمل المسئولية الجنائية والمدنية ويحق للشركة فى هذه الحالة إتخاذ كافة الإجراءات " + 
+"القانونية ضدى تأسيسا على نص المادة 341 من قانون العقوبات وذلك دون حاجة إلى إنذارى أو إعذارى بإيداع المبلغ او رده،  وأقر بعدم إخلاء مسئوليتى عن هذا المبلغ الا بإستلامى لأصل لهذا الإيصال او بتقديم ما يفيد الإيداع. "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="174" y="224" width="212" height="30" uuid="8316bdf8-49e6-438a-9359-d70b55935f37">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="16" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[وهذا إقرار منى بذلك ،،،،،    
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="261" width="112" height="27" uuid="4a2674aa-175e-4ba3-a974-332a9733278f"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[المقر بما فيه
+	
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="16" width="140" height="30" uuid="bd6df562-5132-4b00-b78a-1b213cf74396"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA["إيصال أمانة"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="106" y="288" width="280" height="30" uuid="faf0c559-9c3f-4db9-8cd8-009ab20ac266"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ أسـم المستلم :
+توقيع المستلم :]]></text>
+			</staticText>
+		</band>
+		<band height="310">
+			<textField>
+				<reportElement x="148" y="30" width="263" height="30" uuid="12caf9de-6938-47f8-a07d-6e12ce42092a"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اقرار مسئول اول العمليات"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="170" width="150" height="70" uuid="b7c543df-7465-43ee-a1a1-4cc0466cde9f"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مسئول اول العمليات :
+الاســــــــم :
+التـــــــوقيع:
+خــاتم الفرع:
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="9" y="72" width="541" height="88" uuid="23096f2e-661b-44ce-960c-e6194235bb03">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="12"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تم تحرير وملء بيانات أصل ايصالات الأمانة لعقد تمويل متناهي الصغر رقم (  "+ $F{ACCOUNTNUMBER} +" ) المؤرخ "+DATEFORMAT(TODAY( ),"YYYY/MM/dd")+"  أسم المدين متلقي التمويل: ("+$F{CUSTOMER_NAME}+") اسم الكفيل المتضامن : ("+$P{GUARANTOR_NAME}+")  وذلك تحت بصرى وبإشرافى المباشر وتمت تلاوته على المدين وأقر بمطابقة البيانات لأصل أثبات الشخصية ووقع المدين أمامى بعد التأكد من شخصيته."+"\n" + "وأقر بمسئوليتى عن حيازة الأصول وأنها فى عهدتى لحين طلبها من إدارة الشركة فى أى وقت او لحين سداد المدين للمديونية."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

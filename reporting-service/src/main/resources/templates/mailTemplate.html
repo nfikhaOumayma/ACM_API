@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+.bold {
+	font-weight: bold;
+}
+
+img {
+	width: 200px;
+	height: 120px;
+}
+
+.red {
+	color: rgb(226, 0, 49);
+}
+</style>
+</head>
+<body>
+	<p>Bonjour,</p>
+
+	<span th:text="${content}"></span>
+	<p>_______________</p>
+	<p>ACM</p>
+	<p>Cordialement,</p>
+	<p>_______________</p>
+	<span th:text="${host}"></span>
+</body>
+</html>

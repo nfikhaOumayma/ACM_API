@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_mourabha" pageWidth="595" pageHeight="843" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" uuid="ff8a4636-0fa1-44d4-beb3-a34a0b75a924">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Abacus"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="ACCOUNTID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 1]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+	CASE WHEN UserDefinedFieldID=50 THEN N'الأهلي' ELSE N'الراجحي' END BankName
+	,Value
+FROM UserDefinedFieldLinks
+WHERE UserDefinedFieldID IN (50,51) AND CUAccountID=$P{ACCOUNTID}]]>
+	</queryString>
+	<field name="BankName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BankName"/>
+		<property name="com.jaspersoft.studio.field.label" value="BankName"/>
+	</field>
+	<field name="Value" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Value"/>
+		<property name="com.jaspersoft.studio.field.label" value="Value"/>
+	</field>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="8" y="0" width="506" height="15" uuid="7f060a3c-dc27-44c2-83ce-67bd20679df8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بإيداع أو تحويل مبلغ الدفعة في حساب الشركة رقم "+"  "+$F{Value}+" "+"لدى البنك "+" "+$F{BankName}+"."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="523" y="1" width="15" height="15" uuid="5a265b50-562c-4a8b-8361-84f373087a8c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[●]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

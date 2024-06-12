@@ -1,0 +1,14 @@
+-- DROP OLD Columns if exists 
+/*
+alter table ACM_COLLECTION drop column type
+alter table ACM_COLLECTION_INSTANCE drop column CODE_STATUT_COLLECTION
+alter table ACM_COLLECTION_STEP drop column CODE_STATUT_LOAN
+*/
+
+-- ADD COLLECTION TYPE COLUMN 
+alter table  ACM_COLLECTION 
+add COLLECTION_TYPE varchar(100) NULL;
+
+-- ADD PARENT COLLECTION ID COLUMN 
+alter table  ACM_COLLECTION 
+add ID_PARENT_COLLECTION bigint;

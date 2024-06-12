@@ -1,0 +1,2 @@
+alter table acm_product
+add IS_FREQUENCY_WITH_DEFERRED_PEDIODE bit

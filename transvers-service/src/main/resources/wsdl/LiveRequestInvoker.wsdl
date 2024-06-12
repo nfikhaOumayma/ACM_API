@@ -1,0 +1,209 @@
+<wsdl:definitions targetNamespace="http://tempuri.org/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/"
+	xmlns:s="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://tempuri.org/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified"
+			targetNamespace="http://tempuri.org/">
+			<s:element name="PostRequest">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="strRequest"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="strUserID"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1"
+							name="strPassword" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="PostRequestResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="PostRequestResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetXMLResWithPDF">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="strRequest"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1" name="strUserID"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1"
+							name="strPassword" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetXMLResWithPDFResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="GetXMLResWithPDFResult" type="tns:LiveResponse" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:complexType name="LiveResponse">
+				<s:sequence>
+					<s:element minOccurs="0" maxOccurs="1"
+						name="GetXMLReport" type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1"
+						name="GetPDFStream" type="s:base64Binary" />
+					<s:element minOccurs="1" maxOccurs="1" name="OnError"
+						type="s:int" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="ResponseByTicketID">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="strTicketId" type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1"
+							name="subjectType" type="s:int" />
+						<s:element minOccurs="0" maxOccurs="1" name="strUserID"
+							type="s:string" />
+						<s:element minOccurs="0" maxOccurs="1"
+							name="strPassword" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="ResponseByTicketIDResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1"
+							name="ResponseByTicketIDResult" type="tns:LiveResponse" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="PostRequestSoapIn">
+		<wsdl:part name="parameters" element="tns:PostRequest" />
+	</wsdl:message>
+	<wsdl:message name="PostRequestSoapOut">
+		<wsdl:part name="parameters"
+			element="tns:PostRequestResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetXMLResWithPDFSoapIn">
+		<wsdl:part name="parameters" element="tns:GetXMLResWithPDF" />
+	</wsdl:message>
+	<wsdl:message name="GetXMLResWithPDFSoapOut">
+		<wsdl:part name="parameters"
+			element="tns:GetXMLResWithPDFResponse" />
+	</wsdl:message>
+	<wsdl:message name="ResponseByTicketIDSoapIn">
+		<wsdl:part name="parameters"
+			element="tns:ResponseByTicketID" />
+	</wsdl:message>
+	<wsdl:message name="ResponseByTicketIDSoapOut">
+		<wsdl:part name="parameters"
+			element="tns:ResponseByTicketIDResponse" />
+	</wsdl:message>
+	<wsdl:portType name="LiveRequestInvokerSoap">
+		<wsdl:operation name="PostRequest">
+			<wsdl:input message="tns:PostRequestSoapIn" />
+			<wsdl:output message="tns:PostRequestSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetXMLResWithPDF">
+			<wsdl:input message="tns:GetXMLResWithPDFSoapIn" />
+			<wsdl:output message="tns:GetXMLResWithPDFSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="ResponseByTicketID">
+			<wsdl:input message="tns:ResponseByTicketIDSoapIn" />
+			<wsdl:output message="tns:ResponseByTicketIDSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LiveRequestInvokerSoap"
+		type="tns:LiveRequestInvokerSoap">
+		<soap:binding
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="PostRequest">
+			<soap:operation style="document"
+				soapAction="http://tempuri.org/PostRequest" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetXMLResWithPDF">
+			<soap:operation style="document"
+				soapAction="http://tempuri.org/GetXMLResWithPDF" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ResponseByTicketID">
+			<soap:operation style="document"
+				soapAction="http://tempuri.org/ResponseByTicketID" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="LiveRequestInvokerSoap12"
+		type="tns:LiveRequestInvokerSoap">
+		<soap12:binding
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="PostRequest">
+			<soap12:operation style="document"
+				soapAction="http://tempuri.org/PostRequest"
+				soapActionRequired="false" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetXMLResWithPDF">
+			<soap12:operation style="document"
+				soapAction="http://tempuri.org/GetXMLResWithPDF"
+				soapActionRequired="false" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ResponseByTicketID">
+			<soap12:operation style="document"
+				soapAction="http://tempuri.org/ResponseByTicketID"
+				soapActionRequired="false" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LiveRequestInvoker">
+		<wsdl:port name="LiveRequestInvokerSoap12"
+			binding="tns:LiveRequestInvokerSoap12">
+			<soap12:address
+				location="https://www.i-score.com.eg/IscoreWeb/liverequestinvoker.asmx" />
+		</wsdl:port>
+		<wsdl:port name="LiveRequestInvokerSoap"
+			binding="tns:LiveRequestInvokerSoap">
+			<soap:address
+				location="https://www.i-score.com.eg/IscoreWeb/liverequestinvoker.asmx" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

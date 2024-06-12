@@ -1,0 +1,34 @@
+CREATE TABLE ACM_UDF_STEP_WORKFLOW  (
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+        ID_ACM_WORKFLOW_STEP BIGINT ,
+	ID_ACM_COLLECTION_STEP bigint,
+        ID_UDF_GROUP BIGINT ,
+	ID_UDF_FIELD BIGINT , 
+	MANDATORY BIT ,
+);
+
+ALTER TABLE ACM_UDF_LINK
+ADD CATEGORY varchar(100);
+
+ALTER TABLE ACM_UDF_LINK
+ADD ELEMENT_ID bigint;
+
+
+-- update element id by loan id or customer id 
+UPDATE
+    ACM_UDF_LINK
+SET 
+  ELEMENT_ID = CASE WHEN ID_LOAN is not null THEN ID_LOAN  
+                    WHEN ID_CUSTOMER is not null THEN ID_CUSTOMER  END,
+  CATEGORY  = CASE WHEN ID_LOAN is not null THEN 'LOAN'
+                   WHEN ID_CUSTOMER is not null THEN 'CUSTOMER'  END
+
+WHERE
+    ELEMENT_ID is null
+
+scripts à ne pas lancer :
+--ALTER TABLE ACM_UDF_LINK 
+--DROP COLUMN ID_LOAN;
+
+--ALTER TABLE ACM_UDF_LINK 
+--DROP COLUMN ID_CUSTOMER;

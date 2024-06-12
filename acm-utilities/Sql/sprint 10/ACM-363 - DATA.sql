@@ -1,0 +1,42 @@
+-- ACM_HABILITATION_IHM_ROUTE
+INSERT INTO [dbo].[ACM_HABILITATION_IHM_ROUTE]([CLIENT],[CODE_IHM_ROUTE],[IHM_ROUTE],[DESCRIPTION],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])		    
+		VALUES('ACM','IHM_NOTIFICATIONS','notification' ,'page NOTIFICATIONS' ,1,GETDATE(),'ADMIN',0);
+
+-- 
+-- ACM_HABILITATION
+-----------------------------
+-- groupe ID = 1
+----------------------------
+INSERT INTO [dbo].[ACM_HABILITATION]([ACTIONS],[CLIENT],[GROUPE_ID],[ACM_HABILITATION],[ACM_WEB_ROUTE],[VALUE],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])
+ VALUES('fullControl','ACM' ,1 ,'IHM_NOTIFICATIONS' ,'notification' ,1  ,1,GETDATE(),'ADMIN',0);	  
+
+-- ACM_HABILITATION
+-----------------------------
+-- groupe ID = 19
+----------------------------
+INSERT INTO [dbo].[ACM_HABILITATION]([ACTIONS],[CLIENT],[GROUPE_ID],[ACM_HABILITATION],[ACM_WEB_ROUTE],[VALUE],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])
+ VALUES('fullControl','ACM' ,19 ,'IHM_NOTIFICATIONS' ,'notification' ,1  ,1,GETDATE(),'ADMIN',0);
+
+ 
+-- ACM_HABILITATION
+-----------------------------
+-- groupe ID = 27
+----------------------------
+INSERT INTO [dbo].[ACM_HABILITATION]([ACTIONS],[CLIENT],[GROUPE_ID],[ACM_HABILITATION],[ACM_WEB_ROUTE],[VALUE],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])
+ VALUES('fullControl','ACM' ,27 ,'IHM_NOTIFICATIONS' ,'notification' ,1  ,1,GETDATE(),'ADMIN',0);
+
+ 
+-- ACM_HABILITATION
+-----------------------------
+-- groupe ID = 22
+----------------------------
+INSERT INTO [dbo].[ACM_HABILITATION]([ACTIONS],[CLIENT],[GROUPE_ID],[ACM_HABILITATION],[ACM_WEB_ROUTE],[VALUE],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])
+ VALUES('fullControl','ACM' ,22 ,'IHM_NOTIFICATIONS' ,'notification' ,1  ,1,GETDATE(),'ADMIN',0);
+
+-- ACM_HABILITATION
+-----------------------------
+-- groupe ID = 21
+----------------------------
+INSERT INTO [dbo].[ACM_HABILITATION]([ACTIONS],[CLIENT],[GROUPE_ID],[ACM_HABILITATION],[ACM_WEB_ROUTE],[VALUE],[ACM_ENABLED],[DATE_INSERTION],[INSERT_BY],[ACM_VERSION])
+ VALUES('fullControl','ACM' ,21 ,'IHM_NOTIFICATIONS' ,'notification' ,1  ,1,GETDATE(),'ADMIN',0);
+	

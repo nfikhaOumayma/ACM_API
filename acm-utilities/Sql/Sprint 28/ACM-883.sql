@@ -1,0 +1,5 @@
+ALTER TABLE ACM_USERS ADD DEFAULT_LANG VARCHAR (10) NULL;
+
+
+--------- set default value to AR
+update ACM_USERS set DEFAULT_LANG='AR';

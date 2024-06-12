@@ -1,0 +1,5 @@
+----- ACM-412 : Activity Stream improvements
+----- CATEGORY : ALERT / WARNING / INSTANCE
+alter table acm_loan_historique add  CATEGORY  varchar(256)
+----- 0: NOT TECHNIQUE INFORMATION / 1 : TECHNIQUE INFORMATION
+alter table acm_loan_historique add  TECHNIQUE_INFORMATION  BIT

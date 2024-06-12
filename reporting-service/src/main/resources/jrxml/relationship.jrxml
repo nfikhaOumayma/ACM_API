@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="صله القرابة" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="34306308-c916-433c-9ee4-b759e836373f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tamkeen Recette"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="ACCOUNTID" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT 
+ REPLACE(REPLACE(customer.CorrespondenceName,'Mrs ',''),'Mr ','') [CUSTOMER_NAME],
+ (SELECT Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldID=3 AND UserDefinedFieldLinks.CustomerID=CULoan.CustomerID) [CUSTOMER_NATIONAL_ID],
+(SELECT Branches.Description) [BRANCH_NAME]
+ from CULoan 
+ INNER JOIN CUAccount ON(CUAccount.CUAccountID=CULoan.CUAccountID) 
+ INNER JOIN customer ON(CULoan.CustomerID = customer.CustomerID) 
+ INNER JOIN BRANCHES on  (CUACCOUNT.BranchID = BRANCHES.BranchID)
+where CUAccount.CUAccountID =   $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="CUSTOMER_NATIONAL_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NATIONAL_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NATIONAL_ID"/>
+	</field>
+	<field name="BRANCH_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_NAME"/>
+	</field>
+	<title>
+		<band height="95" splitType="Stretch">
+			<textField>
+				<reportElement x="440" y="7" width="110" height="20" uuid="9704644c-5a8e-4330-9046-e140d4a8d392"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الفرع / " + $F{BRANCH_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="47" y="52" width="470" height="30" backcolor="#C2E1FC" uuid="0e7d764a-dd63-479d-a1b5-98398405ea4f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<text><![CDATA[إقرار صله القرابة بأعضاء ورئيس مجلس إدارة وموظفي الشركة ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="2" y="0" width="88" height="50" uuid="1a3732a0-8f37-4e4c-bb43-c4a4a66ebdc7"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/tamkeen_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="493" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="11" width="540" height="18" uuid="a3636029-5018-452d-a17a-fd7e1208b503"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["هل توجد لك أي (صله قرابه / علاقة عمل) مع أي من رئيس وأعضاء مجلس الإدارة  وموظفي شركه الأهلي  كابيتال للتمويل متناهي الصغر (تمكين)"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Opaque" x="10" y="32" width="535" height="30" backcolor="#ECE9F0" uuid="03a91394-a461-43e9-abb1-94162ccad2d4"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="382" y="40" width="120" height="22" uuid="71f2df6e-6b4f-428e-a92f-3ae661aace0d"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[ نعم (  ) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="40" width="120" height="22" uuid="6b621dfe-6a51-42b7-9a9c-ae1cabb8d6bb"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[لا (   ) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="69" width="210" height="20" uuid="bf260167-0c7e-49aa-bd71-0c163cdbdadf">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="7"/>
+				</textElement>
+				<text><![CDATA[في حاله الاجابة بـ ( نعم ) يجب ذكر: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="94" width="240" height="20" uuid="d687502d-52f9-4fb5-a018-0ab8db23e23e">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الإسم / "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="114" width="240" height="20" uuid="6150b1ee-e1f2-4acf-b71f-9eeb01789fc1">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["صله القرابة / "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="134" width="240" height="20" uuid="e9fb1956-1ca3-4345-9dc7-f7916415b7bf"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["علاقة العمل / "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="159" width="530" height="20" uuid="07fb6d2d-256a-4f78-9bc5-f719ef333cfc">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[في حاله الاجابة بـ ( لا ) يرجي استيفاء الإقرار أدناه: 
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="189" width="540" height="60" uuid="5c12f56b-a58a-4a52-8488-02b5fa471c53">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أقر أنا / "+ $F{CUSTOMER_NAME} +" الموقع أدناه أنه لا  توجد لي أي صله قرابة أو علاقة عمل بيني وبين أي من "+"رئيس و اعظاء مجلس الإدارة وموظفي الشركة  الذين اطلعت علي اسمائهم جميعا وفى حالة عدم صلحة أي من البيانات المذكورة أعلاه  فإنني أتحمل المسؤلية كامله عن ذلك."+"وفقا لقانون الهيئة  العامة للرقابة المالية رقم 141 لعام 2014 و تعديلاته  ويحق للشركة اتخاذ ما تراه من إجراءات إذا ما"+"اتضح عدم صحة ما ورد بالإقرار بما في ذلك استدعاء كامل قيمه التمويل، كما أقر بأنني لست من أزواجهم أو اولادهم  أو اقاربهم حتى الدرجة الرابعة."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="249" width="270" height="20" uuid="8b955165-4d76-4b36-a7b5-2503cc9a1548"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[كما أقر وأتعهد بإخطار الشركة في حاله ظهور ما يخالف ذلك 
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="269" width="90" height="20" uuid="98593d10-f77a-4ee0-a00a-f0c847e8f877">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["وهذا إقرار مني بذلك."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="320" width="70" height="20" uuid="ba903958-39ac-489e-b92e-a028ae31bb49">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[التوقيع: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="341" width="70" height="20" uuid="52eb169d-a127-49d3-acd6-9987eebf5a65">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[التاريخ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="381" width="80" height="20" uuid="0b56b850-7b9c-4b95-869b-283baebc801f"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[اسم الموظف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="379" width="90" height="20" uuid="c2996c6c-3c6e-4627-a404-2e81cd14507e"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[ توقيع الموظف]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="449" width="548" height="31" uuid="898bb11c-7eeb-477e-a7b5-e9f787495261"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="9"/>
+				</textElement>
+				<text><![CDATA[* يمكن للعميل معرفة رئيس وأعضاء مجلس الادارة وموظفي الشركة من خلال موظف فرع الشركة او من خلال رقم خدمه العملاء "16895" ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="300" width="540" height="20" uuid="6ef2fd62-d4ff-4dec-b09a-cc2bbc43a3ac"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم العميل:  "+$F{CUSTOMER_NAME}+"  "+"الرقم القومي :  "+$F{CUSTOMER_NATIONAL_ID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="7" width="230" height="24" uuid="655369e0-b4b6-42ce-a3a6-31af54b1e34c"/>
+				<text><![CDATA[BUS|OP,004-1,Ver001,042021]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

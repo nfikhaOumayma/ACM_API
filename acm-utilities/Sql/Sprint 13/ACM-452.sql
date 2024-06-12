@@ -1,0 +1,1 @@
+alter table ACM_ENVIRONNEMENT add DESCRIPTION varchar(512)

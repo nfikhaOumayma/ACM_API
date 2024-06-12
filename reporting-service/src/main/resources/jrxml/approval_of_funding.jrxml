@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="نموذج الموافقة على منح التمويل" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="110e6516-8afa-40cc-828c-7ccec5551a4a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tamkeen UAT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="ACCOUNTID" class="java.lang.Long"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="SUPERVISOR_NAME" class="java.lang.String"/>
+	<parameter name="BRANCH_OPERATION_NAME" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select CULoan.ProductID ,culoan.customerID  ,CULoan.ApplyAmountTotal ,
+FORMAT (getdate(), 'dd-MM-yyyy') [SYSTEM_DATE],
+(select SUM(LoanRepayment) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID) AS TOTAL_LOAN_AMOUNT_DIGITAL,
+(select dbo.ConvertNumber2Letters((select SUM(LoanRepayment) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID), N'جنيه') from CULoanPart where CULoanPart.CULoanID = CULoan.CULoanID) AS TOTAL_LOAN_AMOUNT_LETTER ,
+REPLACE(REPLACE((select CorrespondenceName from Customer where Customer.CustomerID = CULoan.CustomerID),'Mrs ',''),'Mr ','')  AS CUSTOMER_NAME,
+CULoanPart.TermPeriodNum [LOAN_TERM] ,
+FORMAT (CULoanPart.IssueDate , 'dd-MM-yyyy') [ISSUED_DATE],
+FORMAT ((select MAX(RepaymentDate) from CULoanSchedule where CULoanSchedule.CULoanPartID = CULoanPart.CULoanPartID), 'dd-MM-yyyy') [LAST_REPAYMENT_DATE],
+CULoanPart.NormalPayment [REPAYEMENT_AMOUNT] ,
+(select Description from CUProductLoanReasons where CULoan.LoanReasonID = CUProductLoanReasons.LoanReasonID) [LOAN_REASON],
+  (SELECT TOP 1 Address2 FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_CARD_BUILDING_NUMBER],
+  (SELECT TOP 1 Address1 FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_CARD_STREET],
+   (SELECT TOP 1 County FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_CARD_DISTRICT],
+   (SELECT TOP 1 TownCity FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_CARD_CITY],
+    (SELECT TOP 1 State FROM CustomerAddress, Address where CustomerAddress.customerID = culoan.customerID and CustomerAddress.AddressID = Address.AddressID
+ and CustomerAddress.AddressTypeID = 6)  [CUSTOMER_CARD_REGION],
+  (select value from UserDefinedFieldLinks where UserDefinedFieldID = 38 and UserDefinedFieldLinks.BranchID = CUAccount.BranchID) [BRANCH_MANAGER],
+  (select Name from Branches where BranchID = CUAccount.BranchID) [BRANCH_NAME]
+from CULoan
+inner join LoanProduct on CULoan.ProductID = LoanProduct.ProductID
+inner join CULoanPart on (culoan.culoanID = culoanPart.culoanID)
+inner join CUAccount on (CULoan.CUAccountID = CUAccount.CUAccountID)
+
+  where CULoan.cuAccountID =  $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="ProductID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ProductID"/>
+		<property name="com.jaspersoft.studio.field.label" value="ProductID"/>
+	</field>
+	<field name="customerID" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="customerID"/>
+		<property name="com.jaspersoft.studio.field.label" value="customerID"/>
+	</field>
+	<field name="ApplyAmountTotal" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ApplyAmountTotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="ApplyAmountTotal"/>
+	</field>
+	<field name="SYSTEM_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="SYSTEM_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="SYSTEM_DATE"/>
+	</field>
+	<field name="TOTAL_LOAN_AMOUNT_DIGITAL" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="TOTAL_LOAN_AMOUNT_DIGITAL"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_LOAN_AMOUNT_DIGITAL"/>
+	</field>
+	<field name="TOTAL_LOAN_AMOUNT_LETTER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TOTAL_LOAN_AMOUNT_LETTER"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_LOAN_AMOUNT_LETTER"/>
+	</field>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="LOAN_TERM" class="java.lang.Short">
+		<property name="com.jaspersoft.studio.field.name" value="LOAN_TERM"/>
+		<property name="com.jaspersoft.studio.field.label" value="LOAN_TERM"/>
+	</field>
+	<field name="ISSUED_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ISSUED_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ISSUED_DATE"/>
+	</field>
+	<field name="LAST_REPAYMENT_DATE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LAST_REPAYMENT_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="LAST_REPAYMENT_DATE"/>
+	</field>
+	<field name="REPAYEMENT_AMOUNT" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="REPAYEMENT_AMOUNT"/>
+		<property name="com.jaspersoft.studio.field.label" value="REPAYEMENT_AMOUNT"/>
+	</field>
+	<field name="LOAN_REASON" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LOAN_REASON"/>
+		<property name="com.jaspersoft.studio.field.label" value="LOAN_REASON"/>
+	</field>
+	<field name="CUSTOMER_CARD_BUILDING_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_CARD_BUILDING_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CARD_BUILDING_NUMBER"/>
+	</field>
+	<field name="CUSTOMER_CARD_STREET" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_CARD_STREET"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CARD_STREET"/>
+	</field>
+	<field name="CUSTOMER_CARD_DISTRICT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_CARD_DISTRICT"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CARD_DISTRICT"/>
+	</field>
+	<field name="CUSTOMER_CARD_CITY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_CARD_CITY"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CARD_CITY"/>
+	</field>
+	<field name="CUSTOMER_CARD_REGION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_CARD_REGION"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CARD_REGION"/>
+	</field>
+	<field name="BRANCH_MANAGER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_MANAGER"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_MANAGER"/>
+	</field>
+	<field name="BRANCH_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_NAME"/>
+	</field>
+	<title>
+		<band height="90" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="110" y="50" width="380" height="21" backcolor="#CEDCF0" uuid="42f97db2-7408-4eb7-8a10-9f0b8ef1a8f9">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="14"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["قرار الموافقة على منح التمويل من أعضاء لجنة المنح بالفرع "]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="5" y="5" width="100" height="50" uuid="64e3c04e-cb05-45c2-8e94-20b8c2204008"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/tamkeen_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="639" splitType="Stretch">
+			<frame>
+				<reportElement x="12" y="11" width="531" height="529" uuid="97dae81f-4295-42d5-ade1-da8bd86bd3ea"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<line>
+					<reportElement x="0" y="28" width="530" height="1" uuid="87314172-cb0a-49c5-bd37-93763dc931e3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="209" y="7" width="321" height="21" uuid="37b7934e-f3d0-4878-b1ea-33df499b9838">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="12" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["قيمة التمويل من ٥٫٠٠٠ جم حتى ٥٠٫٠٠٠ جم"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="5" y="31" width="521" height="229" uuid="6b6f209e-e53a-4e68-8bc7-18eda521d891">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="10"/>
+						<paragraph lineSpacing="Double" rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["  بموجب توقيع الموقعين أداناه بالاجماع  كل على حده وتحت مسئوليتهم التضامنية، تمت الموافقة على منح تمويل متناهى الصغر  تمويلاً شخصيا   وقدره ("+$F{TOTAL_LOAN_AMOUNT_DIGITAL}+"جم) ( "+$F{TOTAL_LOAN_AMOUNT_LETTER}+" فقط لا غير )"+" للعميل /  "+$F{CUSTOMER_NAME}+" على أن يكون مدة التمويل ( "+$F{LOAN_TERM}+"  شهرا)"+" تبدأ اعتبارا من "+$F{ISSUED_DATE}+"وتنتهى فى "+$F{LAST_REPAYMENT_DATE}+" وتكون قيمة كل قسط مبلغ ("+$F{REPAYEMENT_AMOUNT}+" جم ) "+" وعدد الاقساط ("+$F{LOAN_TERM}+" ) قسط شهرى  وذلك لإستخدامه فى تمويل وتطوير مشروعه الخاص ب"+TRIM( $F{LOAN_REASON})+" و الكائن مقره الفعلى فى "+$F{CUSTOMER_CARD_BUILDING_NUMBER}+" شارع "+$F{CUSTOMER_CARD_STREET}+" حى/قرية "+$F{CUSTOMER_CARD_DISTRICT}+" مدينة / مركز "+$F{CUSTOMER_CARD_CITY}+" محافظة "+$F{CUSTOMER_CARD_REGION}+" وذلك بعد تأكدنا من سلامة  المنح وما تضمنه من إستعلام  ودراسة مالية مناسبة لسمعة العميل وإمكانيته المالية وتأكدنا بأن القسط الشهرى المقرر"+"سداده للشركة يتناسب مع إمكانية العميل المالية مع إعتبار طلب التمويل والإستعلام  الميدانى والدراسة المالية أساس صدور قرار المنح الماثل."]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="261" width="530" height="1" uuid="c702a53c-54d4-49db-b3b6-06a40cace1bc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="286" width="530" height="1" uuid="1f1a30af-982b-4786-bd32-743e985c1604">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="305" width="530" height="1" uuid="4a416cf0-c019-4122-b689-cca795fbce7e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="269" y="326" width="262" height="1" uuid="5276dd1d-aeff-4e3d-895b-9ea2f25c142f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="269" y="345" width="262" height="1" uuid="885afdcc-d92a-4303-8b6e-8f06ff5657de">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="366" width="530" height="1" uuid="cbb58904-ece5-4b02-af10-eccac84332d2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="386" width="530" height="1" uuid="4502fc23-c371-4aa4-b18d-7a3556f97b83">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="446" width="530" height="1" uuid="74893ba7-10f1-4544-b9ed-b6103156d8e3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="268" y="426" width="262" height="1" uuid="fe936315-3c4a-46fd-9d4d-f535580719bf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="268" y="406" width="262" height="1" uuid="61897e7d-02d8-4d24-8d76-61a2cf9c4c6b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="268" y="486" width="262" height="1" uuid="a93c6358-2ff6-4851-9559-961f3f722ab1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="1" y="465" width="530" height="1" uuid="e447415c-f3be-4bf3-a34b-e2c5b57dda0c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="268" y="506" width="262" height="1" uuid="9b5ccf0f-d1cd-4b0a-8ab5-d8a8e26d61ba">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="268" y="306" width="1" height="60" uuid="672d2e31-7908-4b1c-b170-399658c8cbd3">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<line>
+					<reportElement x="268" y="387" width="1" height="60" uuid="959bf2de-6e77-47e4-8c65-fedd6ec20727">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<line>
+					<reportElement x="268" y="465" width="1" height="60" uuid="a17b0d8c-c485-455f-b8e6-62e2e57c61e0">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+				</line>
+				<textField>
+					<reportElement x="257" y="264" width="271" height="21" uuid="19023357-c517-425d-b268-1bd60e14094a">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="12" isBold="true"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["موافقة اللجنة على منح التمويل"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="249" y="286" width="281" height="21" uuid="ff3d71af-7d81-4c78-888b-d1d718d341fd">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["مدير الفرع على حده/"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="306" width="261" height="21" uuid="832f252f-9a11-4e0d-9924-d910221fe898">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["الاسم : "+$F{BRANCH_MANAGER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="326" width="261" height="21" uuid="00d0e838-be99-4765-8ca0-5833a559fa1e">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التوقيع :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="346" width="261" height="21" uuid="d44f11cc-b95f-4c8c-b8ab-d77b21eca59f">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التاريخ :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="324" width="210" height="21" uuid="ce3b0872-3498-44dd-b262-c6f13426201f">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["قم باستخدام خاتم المسمى الوظيفى:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="366" width="261" height="21" uuid="40a12b66-98e6-4ca9-9306-91f6773a0610">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["رئيس المجموعة على حده/ "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="428" width="261" height="17" uuid="ffea29e3-c337-409d-a70b-be5155bd8de4">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التاريخ :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="408" width="261" height="21" uuid="bc883214-0adb-4cda-a48b-f458655181ba">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التوقيع :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="388" width="261" height="21" uuid="0279b5d9-8f08-48eb-a682-7a0e80549fd2">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["الاسم : "+ $P{SUPERVISOR_NAME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="508" width="261" height="17" uuid="ddccecdf-88c6-48dd-8f43-1bb5bcde2806">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التاريخ :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="488" width="261" height="21" uuid="1e87879d-cbf4-460a-aef1-696cd8ff11ae">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["التوقيع :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="270" y="467" width="261" height="21" uuid="1a0fb30a-14b9-4d4f-9cfb-1e6c2446dcc3">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["الاسم :"+$P{BRANCH_OPERATION_NAME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="446" width="261" height="21" uuid="b063c012-8761-4cbb-8e00-b6e4d88857f9">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["مسئول أول العمليات على حده/"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="406" width="211" height="21" uuid="7c0572f5-8135-409d-8008-9a0ce514e172">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["قم باستخدام خاتم المسمى الوظيفى:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="50" y="486" width="213" height="21" uuid="fe495327-f62e-4c07-86e4-7a210cbf2560">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans"/>
+						<paragraph rightIndent="5"/>
+					</textElement>
+					<textFieldExpression><![CDATA["قم باستخدام خاتم المسمى الوظيفى:"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField>
+				<reportElement x="334" y="553" width="204" height="21" uuid="587043c9-8183-4abd-91e2-2fb747a9ed6d"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم الفرع / "+$F{BRANCH_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="554" width="168" height="21" uuid="15370a32-6b5f-4d8d-bc59-e3fa00b9392a"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التاريخ:"+$F{SYSTEM_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="59" splitType="Stretch">
+			<staticText>
+				<reportElement x="-11" y="10" width="520" height="30" uuid="8e654ae1-fe74-4b9f-b8c9-034802e4ae53"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[BUS|OP,012-1,VER001,042021
+]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

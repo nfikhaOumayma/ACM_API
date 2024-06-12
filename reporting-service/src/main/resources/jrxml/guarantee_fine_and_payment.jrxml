@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guarantee_fine_and_payment" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fbfe2a34-b625-47ad-8861-583490ebc058">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[IkFkZHJlc3MiICw2MTUsMTUwNixkZTFmMTUyZC1kNTQwLTRkYzctYjVkMC03YjM1ZDI4YzFjODg7
+IkN1c3RvbWVyUGVyc29uIiAsMTI0MSwxMTg1LGMyYzVjZGRmLTQyMTAtNDY0OS1iNjFmLTFjMTky
+N2M4ZmMzNjsiQ1VMb2FuR3VhcmFudG9yIiAsMTI0MSwxNzI2LGY4M2QzOGI4LWJmMGItNGMzOC05
+NzhhLTg2YTAzODU4YjNjMjsiQ3VzdG9tZXIiICwxNzEsMTI2OCwxMWU1MTJmZS0xMGVkLTQzNjAt
+ODBmYy04YTM2ZTZjZjRiY2U7IkNVTG9hbiIgLDE0NTYsMTUsMzcxOTYwM2YtYzEzOS00NjA0LThh
+OWYtZDJjNzQ5YzdiMGU4OyJDdXN0b21lckFkZHJlc3MiICw2MTUsMTIwNiw5NGQxNmUyZC0wYTA1
+LTRhODctYjg0MS01ODI3ODg5YzE3YzI7IkN1c3RvbWVyQWRkcmVzcyIgLDgwNSwxNjc3LDgzOGUw
+ZWE2LTFkOTgtNDM5ZC1hZmVkLTQ1ZWZmNWM4YTUzZTsiUGVyc29uIiAsNDE3LDg2OCw1YjE4ZDc3
+YS0zNGE1LTQ3NmMtOWQ4Zi0zYzAyYmZmZWZjMmY7IkFkZHJlc3MiICwxNSwyNDM2LDNiMGVkZjE2
+LTRkMWItNDgyNy04MTI1LTQ0NDUxMmRhMGYwYzsiQ3VzdG9tZXIiICw5OTUsMTI2OCwzZDJhN2U2
+My0yYTQyLTQzMWUtOTgzYy01OTJhZjNkMjMxN2I7IkNVQWNjb3VudCIgLDE3MTksMTkxOCw5NDdh
+NGRkZi03OTljLTQ3OTItYTZhNC0zOGM5NDE3MWQ2YWI7]]>
+	</property>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+	REPLACE(REPLACE(C1.CorrespondenceName,'Mrs',''),'Mr','') CustomerName
+	,REPLACE(REPLACE(C2.CorrespondenceName,'Mrs',''),'Mr','') GuarantorName
+	,ROUND(CULoanGuarantor.Amount,0) GuarantorAmount
+	,(SELECT UserDefinedFieldListValues.Description 
+	FROM UserDefinedFieldLinks 
+	INNER JOIN UserDefinedFieldListValues ON UserDefinedFieldLinks.Value=UserDefinedFieldListValues.UserDefinedFieldListValueID
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=2 AND C1.CustomerID=UserDefinedFieldLinks.CustomerID) CustomerNationality
+	,(SELECT UserDefinedFieldListValues.Description 
+	FROM UserDefinedFieldLinks 
+	INNER JOIN UserDefinedFieldListValues ON UserDefinedFieldLinks.Value=UserDefinedFieldListValues.UserDefinedFieldListValueID
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=2 AND C2.CustomerID=UserDefinedFieldLinks.CustomerID) GuarantorNationality
+	,CASE 
+		WHEN ((SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C1.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=2) = 1) 
+			THEN (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C1.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=3)
+			ELSE (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C1.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=4)
+		END Customer_National_Resident_ID
+	,CASE 
+		WHEN ((SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C2.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=2) = 1) 
+			THEN (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C2.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=3)
+			ELSE (SELECT UserDefinedFieldLinks.Value FROM UserDefinedFieldLinks WHERE UserDefinedFieldLinks.CustomerID=C2.CustomerID AND UserDefinedFieldLinks.UserDefinedFieldID=4)
+		END Guarantor_National_Resident_ID
+	,(SELECT FORMAT(CONVERT(DATE,Value),'yyyy/MM/dd')
+	FROM UserDefinedFieldLinks 
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=6 AND UserDefinedFieldLinks.CustomerID=C1.CustomerID) CustomerDateIndentity
+	,(SELECT FORMAT(CONVERT(DATE,Value),'yyyy/MM/dd')
+	FROM UserDefinedFieldLinks 
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=6 AND UserDefinedFieldLinks.CustomerID=C2.CustomerID) GuarantorDateIndentity
+	,(SELECT Value
+	FROM UserDefinedFieldLinks 
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=64 AND UserDefinedFieldLinks.CustomerID=C1.CustomerID) CustomerPlaceIndentity
+	,(SELECT Value
+	FROM UserDefinedFieldLinks 
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID=64 AND UserDefinedFieldLinks.CustomerID=C2.CustomerID) GuarantorPlaceIndentity
+	,A1.State+' '+A1.TownCity+' '+A1.County+' '+A1.Address1+' '+A1.Address2+' '+A1.Address3+' '+A1.PostalCode CustomerAddress
+	,A2.State+' '+A2.TownCity+' '+A2.County+' '+A2.Address1+' '+A2.Address2+' '+A2.Address3+' '+A2.PostalCode GuarantorAddress
+	,Person.Telephone1 GuarantorMobile
+	,FORMAT(GETDATE(),'yyyy/MM/dd') ExecutionDate
+FROM CUAccount
+INNER JOIN CULoan ON CULoan.CUAccountID=CUAccount.CUAccountID
+INNER JOIN CULoanGuarantor ON CULoanGuarantor.CULoanID=CULoan.CULoanID
+INNER JOIN Customer C1 ON C1.CustomerID=CUAccount.CustomerID
+INNER JOIN Customer C2 ON C2.CustomerID=CULoanGuarantor.CustomerID
+INNER JOIN CustomerAddress CA1 ON CA1.CustomerID=C1.CustomerID
+INNER JOIN CustomerAddress CA2 ON CA2.CustomerID=C2.CustomerID
+INNER JOIN Address A1 ON A1.AddressID=CA1.AddressID
+INNER JOIN Address A2 ON A2.AddressID=CA2.AddressID
+INNER JOIN CustomerPerson ON C2.CustomerID=CustomerPerson.CustomerID
+INNER JOIN Person ON Person.PersonID=CustomerPerson.PersonID
+WHERE CUAccount.CUAccountID= $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="CustomerName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerName"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerName"/>
+	</field>
+	<field name="GuarantorName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorName"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorName"/>
+	</field>
+	<field name="GuarantorAmount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorAmount"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorAmount"/>
+	</field>
+	<field name="CustomerNationality" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerNationality"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerNationality"/>
+	</field>
+	<field name="GuarantorNationality" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorNationality"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorNationality"/>
+	</field>
+	<field name="Customer_National_Resident_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Customer_National_Resident_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="Customer_National_Resident_ID"/>
+	</field>
+	<field name="Guarantor_National_Resident_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Guarantor_National_Resident_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="Guarantor_National_Resident_ID"/>
+	</field>
+	<field name="CustomerDateIndentity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerDateIndentity"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerDateIndentity"/>
+	</field>
+	<field name="GuarantorDateIndentity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorDateIndentity"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorDateIndentity"/>
+	</field>
+	<field name="CustomerPlaceIndentity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerPlaceIndentity"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerPlaceIndentity"/>
+	</field>
+	<field name="GuarantorPlaceIndentity" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorPlaceIndentity"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorPlaceIndentity"/>
+	</field>
+	<field name="CustomerAddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerAddress"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerAddress"/>
+	</field>
+	<field name="GuarantorAddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorAddress"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorAddress"/>
+	</field>
+	<field name="GuarantorMobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorMobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorMobile"/>
+	</field>
+	<field name="ExecutionDate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ExecutionDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="ExecutionDate"/>
+	</field>
+	<pageHeader>
+		<band height="63" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="0" width="50" height="50" uuid="e6ffab8c-266e-4bd6-bc71-9fec9c7e4b38"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/BRJMF_Logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="80" y="0" width="471" height="31" uuid="8383cd8c-a639-437b-8795-93d11aa792eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>"+"<style isBold='true'>"+"كفالة غرم وأداء"+"</style>"+"</u>"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="462" splitType="Stretch">
+			<rectangle>
+				<reportElement x="411" y="10" width="121" height="29" uuid="ded5b083-83b8-487c-b525-44f80e2139c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="290" y="10" width="121" height="29" uuid="d6e183ab-79c8-4301-91b2-52633e656b0b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="169" y="10" width="121" height="29" uuid="7b61e44b-578c-47d0-8263-6ce0ae009ced"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="48" y="10" width="121" height="29" uuid="120c0762-e7d4-46df-9eb7-e5d6845ac91b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="411" y="39" width="121" height="29" uuid="ceea0da9-7c29-4e81-95fa-bb4b5c98007e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="290" y="39" width="121" height="29" uuid="a8b51dd3-e5d1-4007-ac18-7ee9e14130c0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="169" y="39" width="121" height="29" uuid="9c340ccd-e275-4e19-a13d-43973c99c129"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="48" y="39" width="121" height="29" uuid="5c7b1769-be8a-40c5-854d-c732703d6dac"/>
+			</rectangle>
+			<textField>
+				<reportElement x="411" y="10" width="120" height="29" uuid="0ba25d43-c4bc-4e71-a16b-58ff5f0c36da"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم الدائن"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="10" width="120" height="29" uuid="cc280ba3-ba32-4e54-8bfb-ac59e887b186"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم المدين"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="169" y="10" width="120" height="29" uuid="c1e5dab5-4486-4d00-9854-f4d05fdf3f9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم الكفيل"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="10" width="120" height="29" uuid="a61b84fb-3e42-44d3-abc0-91cbe44ea286"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مبلغ الكفالة بالريال السعودي"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="40" width="120" height="29" uuid="f97d165a-1f24-473c-8077-8c57d751a163"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["باب رزق جميل للتمويل متناهي الصغر"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="290" y="39" width="120" height="30" uuid="c59f1d94-1f6a-4c19-8e8d-c977f19b105f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CustomerName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="169" y="39" width="120" height="30" uuid="8685eaba-7fce-4585-a44b-b434aa649b7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="50" y="39" width="118" height="30" uuid="8a704d44-a080-48d1-9d6a-861dc50a193b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorAmount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="-1" y="76" width="544" height="40" uuid="5f670d86-77a0-4984-9571-0d768c6d0630"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أقر أنا الموقع أدناه : "+" "+$F{GuarantorName}+" "+"الجنسية:"+" "+$F{GuarantorNationality}+" "+"وأحمل بطاقة أحوال رقم"+" "+$F{Guarantor_National_Resident_ID}+" "+"بتاريخ:"+" "+$F{GuarantorDateIndentity}+" "+"ومصدرها:"+" "+$F{GuarantorPlaceIndentity}+" "+"والمقيم في"+" "+$F{GuarantorAddress}+" "+"( والمشار اليه فيما بعد كفيل )"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="116" width="542" height="74" uuid="21e4322f-c799-47db-b17e-bd44548849b0">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أنني أكفل السيدة:"+" "+$F{CustomerName}+" "+"الجنسية:"+" "+$F{CustomerNationality}+" "+"وأحمل بطاقة أحوال رقم"+" "+$F{Customer_National_Resident_ID}+" "+"بتاريخ:"+" "+$F{CustomerDateIndentity}+" "+"ومصدرها:"+" "+$F{CustomerPlaceIndentity}+" "+"والمقيم في"+" "+$F{CustomerAddress}+" "+"الإقرار أنني أكفل المذكور كفالة غرم وأداء، وأتعهد بأن أكون "+"مسؤولا مسؤولية كاملة تجاه باب رزق جميل للتمويل متناهي الصغر (الشركة)، عندما يطلب مني ذلك وفي حالة عدم قدرة المكفول على"+"لوفاء بالتزاماته لكم فإنني أتعهد بأن أدفع كل ما عليه من التزامات."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="190" width="540" height="29" uuid="5d89c1b9-2a1a-4623-8c5e-fbbd2a96b2c9"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["وللشركة الحق في مطالبتي بالدفع والتسديد لجميع ما على المكفول من التزامات ودون الرجوع على المدين أولا، وان رجوع الشركة على"+" "+" أي من المدين و/ أو الكفيل لا يحرمها حق الرجوع على الاخر او على كلينا."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="223" width="543" height="29" uuid="2d73a8c8-f7d1-4a41-b4cc-7723eba49854"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["وبتوقيعي ادناه اقر بصحة الدين المذكور اعلاه وللشركة الحق في اتخاذ ما تراه مناسبا من اجراءات لتحصيل كامل حقوقها بما فيها"+"مصاريف التحصيل. ، وتظل الكفالة نافذة وسارية في حقي دون الغاء لحين استكمال السداد و الحصول على مخالصى نهائية من الدائن"+" "+" بهذا الشأن . "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="258" width="542" height="31" uuid="6ee5e6fb-9ea6-4417-bdde-9448aa1f529a"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ولكوني كفيلا غارما متضامنا فإنني أقر واتعهد بعدم طلب تقسيم الدين أو المماطلة في السداد أو الطعن بإعسار مكفولي ولا  بسجنه ولا"+" بتغيبه ولا بفقدانه اهليته او موته ولا التذرع باي اعذار كانت."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="287" width="80" height="20" uuid="259d9239-5fcf-4b0e-a3c6-761c82544dea"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اسم الكفيل :  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="307" width="80" height="20" uuid="ae3641a4-b070-4806-8e29-0e9ceb1d11de"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع الكفيل:   "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="330" width="80" height="20" uuid="fa6b30b5-fbb2-4370-be5e-2c52f26f1261"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التاريخ : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="350" width="80" height="20" uuid="e9d0804f-ba1d-435b-b81c-5ce4fbc49eb5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["عنوان السكن:   "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="396" width="80" height="20" uuid="9c405643-9fcf-49de-9936-0ac4a0cd9973"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الجوال :    "]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="20" y="289" width="240" height="18" uuid="351abdea-fe04-4fd7-b71f-26cb5a9d2f44"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="80" y="330" width="180" height="19" uuid="c5456f9c-c6e1-4261-a4f4-0918aecf8d03"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ExecutionDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="3" y="349" width="256" height="40" uuid="0b16acfb-6564-4df4-8acc-480d7a72eb0c"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorAddress}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="90" y="396" width="170" height="19" uuid="40e5b941-7505-472f-b3cc-a4c98007be5d"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorMobile}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

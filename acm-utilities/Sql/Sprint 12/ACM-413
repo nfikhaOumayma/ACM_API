@@ -1,0 +1,4 @@
+----- ACM-413 Setting reminder generic / Partial --- 
+------ != 0 reminder partial / = 0 reminder generic
+INSERT INTO [ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('REMINDER_GENERIC', '0', 1, '2020-07-09', 0);

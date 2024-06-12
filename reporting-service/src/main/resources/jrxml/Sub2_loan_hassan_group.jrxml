@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub2_قرض حسن – جماعي" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aa09a668-de0d-47a7-949f-9e881d9f9633">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Abacus"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[(long) 3]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	CULoan.CULoanID
+	,REPLACE(Customer.Name,',','') Customer_Name
+FROM CULoan
+INNER JOIN Customer ON Customer.CustomerID=CULoan.CustomerID
+WHERE  CULoan.CommunityCULoanID IN (SELECT CULoan.CULoanID FROM CULoan WHERE CULoan.CUAccountID=$P{ACCOUNTID})]]>
+	</queryString>
+	<field name="CULoanID" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="CULoanID"/>
+		<property name="com.jaspersoft.studio.field.label" value="CULoanID"/>
+	</field>
+	<field name="Customer_Name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Customer_Name"/>
+		<property name="com.jaspersoft.studio.field.label" value="Customer_Name"/>
+	</field>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="240" y="0" width="54" height="14" uuid="9d8d1469-c905-457e-a5d1-945b28cc8208">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["العميل"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="241" y="16" width="54" height="14" uuid="1ec45dae-e4d9-439d-881f-599a5a366a55">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["التوقيع : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="210" height="15" uuid="f4843a90-31eb-4012-8d23-6f666d386f19"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Customer_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

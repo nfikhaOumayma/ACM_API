@@ -1,0 +1,3 @@
+-- maritalStatus
+-- Add MARITAL_STATUS column --
+ALTER TABLE ACM_CUSTOMER ADD MARITAL_STATUS varchar(5);

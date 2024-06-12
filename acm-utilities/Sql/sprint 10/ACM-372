@@ -1,0 +1,7 @@
+-- add BranchID, BRANCHE_NAME, BRANCHE_DESCRIPTION for acm_users
+alter table acm_users add BranchID int not null default 0, 
+					  BRANCHE_NAME varchar(50), BRANCHE_DESCRIPTION varchar(200);
+					  
+-- add BranchID, BRANCHE_NAME, BRANCHE_DESCRIPTION for acm_loan
+alter table acm_loan add BranchID int not null default 0, 
+					  BRANCHE_NAME varchar(50), BRANCHE_DESCRIPTION varchar(200);

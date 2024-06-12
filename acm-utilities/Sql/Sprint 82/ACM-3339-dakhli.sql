@@ -1,0 +1,20 @@
+ --DAKHLI
+ insert into ACM_ENVIRONNEMENT (ACM_ENVIRONNEMENT_KEY,ACM_ENVIRONNEMENT_VALUE,ACM_ENABLED)
+ values('DAKHLI_API_REQUEST_URL','https://1fa9bc2e-3edb-41e6-a8ac-cf6b40cc379a.mock.pstmn.io/',1),
+	   ('DAKHLI_API_REQUEST_APP_ID','app-id',1),
+	   ('DAKHLI_API_REQUEST_APP_KEY','app-key',1),
+	   ('DAKHLI_API_REQUEST_PLATFORM_KEY','platform-key',1),
+	   ('DAKHLI_API_REQUEST_ORGANIZATION_NUMBER','organization-number',1),
+	   ('DAKHLI_API_REQUEST_REQUEST_REASON','request-reseaon',1);
+
+--NAFATH
+ insert into ACM_ENVIRONNEMENT (ACM_ENVIRONNEMENT_KEY,ACM_ENVIRONNEMENT_VALUE,ACM_ENABLED)
+ values('NAFATH_API_REQUEST_BASE_URL','https://Iam2-qa-api.dev-apps.elm.sa:433/api/v1/oidc',1),
+	   ('NAFATH_API_REQUEST_ORG_NUMBER','org-number-base',1),
+	   ('NAFATH_API_REQUEST_PLATFORM_KEY','plat-key',1),
+	   ('NAFATH_API_REQUEST_NUMBER','req-number',1);
+
+
+--NAFATH
+ insert into ACM_ENVIRONNEMENT (ACM_ENVIRONNEMENT_KEY,ACM_ENVIRONNEMENT_VALUE,ACM_ENABLED)
+ values('NAFATH_API_REQUEST_APP_ID','xxx-xxxx-xx-xxxx-xxx-xxx',1);

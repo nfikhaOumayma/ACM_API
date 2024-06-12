@@ -1,0 +1,2 @@
+ALTER TABLE acm_loan
+ALTER COLUMN PRODUCT_RATE decimal(16,4);

@@ -1,0 +1,1 @@
+ALTER TABLE acm_users ADD EMPLOYEE_ID varchar(120) NULL;

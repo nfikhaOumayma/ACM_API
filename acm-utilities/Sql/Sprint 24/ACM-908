@@ -1,0 +1,14 @@
+ALTER TABLE ACM_USERS ADD CATEGORY VARCHAR (256) NULL;
+
+-- update existing data
+--1 
+--update ACM_USERS set category='OPERATION';
+--2
+--update ACM_USERS set category='MANAGMENT' where username in ('Khezimame','Metwallyaa','Sammanhy');
+ --3
+--update ACM_USERS set category='CUSTOMER' where RESPONSABLE_ID='-1';
+
+-- switch to use branch ID
+update [ACM_USERS] set [ACCESS_BRANCHES]='8,4,5' where [USERNAME]='Sammanhy'
+update [ACM_USERS] set [ACCESS_BRANCHES]='7,8' where [USERNAME]='Metwallyaa'
+update [ACM_USERS] set [ACCESS_BRANCHES]='4,5,6,7,8' where [USERNAME]='Khezimame'

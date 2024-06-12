@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+	<Properties>
+		<Property name="PID">????</Property>
+		<Property name="LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} - %clr{%5p} - %clr{%-40.40c{1.}}{cyan} - %clr{:}{faint}%m%n%xwEx</Property>
+		<Property name="LOG_PATTERN_FILE">%d{yyyy-MM-dd HH:mm:ss.SSS} - %-5level - %logger{36} - %msg%n</Property>
+		<Property name="path">${sys:user.home}/logs_ACM</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+ 		
+ 		<!-- ### File Appenders : SHOW ERROR LEVEL OF LOG ### -->
+		<RollingFile name="errorLog"
+			fileName="${path}/config_service-error.log"
+			filePattern="${path}/logs/$${date:yyyy-MM}/config_service-error-%d{yyyy-MM-dd}-%i.log">
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN_FILE}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<!-- ### File Appenders : SHOW ALL LEVEL OF LOG ### -->
+		<RollingFile name="traceLog"
+			fileName="${path}/config_service-trace.log"
+			filePattern="${path}/logs/$${date:yyyy-MM}/config_service-trace-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${LOG_PATTERN_FILE}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="1">
+				<Delete basePath="${path}" maxDepth="3">
+					<IfFileName glob="*-trace*.log">
+						<IfLastModified age="P2D" />
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile> 
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="traceLog" />
+		</Root>
+	</Loggers>
+</Configuration>

@@ -1,0 +1,40 @@
+-------------
+-------------
+----ACM-557
+-------------
+-------------
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('LIMITE_UDF_LINK_ID_LOAN', '0', 1, '2020-09-23', 0)
+---------------------------------------------
+--  "0 0/10 * * * ?" = run job Every 60 mins of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_UDF_LOAN', '0 0/10 * * * ?', 1, '2020-09-23', 0);
+
+---------------------------------------------
+---------------------------------------------
+
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('LIMITE_UDF_LINK_ID_CUSTOMER', '0', 1, '2020-09-23', 0)
+---------------------------------------------
+--  "0 0/10 * * * ?" = run job Every 60 mins of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_UDF_CUSTOMER', '0 0/10 * * * ?', 1, '2020-09-23', 0);
+
+---------------------------------------------
+---------------------------------------------
+
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('LIMITE_ID_ADDRESS', '0', 1, '2020-09-24', 0)
+---------------------------------------------
+--  "0 0/10 * * * ?" = run job Every 60 mins of every day.
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('CRON_EXPRESSION_ADDRESS', '0 0/10 * * * ?', 1, '2020-09-24', 0);
+
+-------------
+-------------
+----ACM-567
+-------------
+-------------
+INSERT INTO [DBO].[ACM_ENVIRONNEMENT]([ACM_ENVIRONNEMENT_KEY], [ACM_ENVIRONNEMENT_VALUE], [ACM_ENABLED], [DATE_INSERTION], [ACM_VERSION]) 
+VALUES ('RISK_AMOUNT_VALIDATION', '70000', 1, '2020-09-25', 0)
+ 

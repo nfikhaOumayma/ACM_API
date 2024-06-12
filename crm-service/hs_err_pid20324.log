@@ -1,0 +1,162 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=20324, tid=0x0000000000002cf8
+#
+# JRE version:  (8.0_202-b08) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.202-b08 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000002f6f000):  JavaThread "Unknown thread" [_thread_in_vm, id=11512, stack(0x0000000002de0000,0x0000000002ee0000)]
+
+Stack: [0x0000000002de0000,0x0000000002ee0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000002f6f000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=11512, stack(0x0000000002de0000,0x0000000002ee0000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x00000006c4e00000, size: 4018 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x00000007c0000000
+
+Heap:
+ PSYoungGen      total 75264K, used 1290K [0x000000076c500000, 0x0000000771900000, 0x00000007c0000000)
+  eden space 64512K, 2% used [0x000000076c500000,0x000000076c642900,0x0000000770400000)
+  from space 10752K, 0% used [0x0000000770e80000,0x0000000770e80000,0x0000000771900000)
+  to   space 10752K, 0% used [0x0000000770400000,0x0000000770400000,0x0000000770e80000)
+ ParOldGen       total 172032K, used 0K [0x00000006c4e00000, 0x00000006cf600000, 0x000000076c500000)
+  object space 172032K, 0% used [0x00000006c4e00000,0x00000006c4e00000,0x00000006cf600000)
+ Metaspace       used 775K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 76K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000012420000,0x0000000012c00000] byte_map_base: 0x000000000edf9000
+
+Marking Bits: (ParMarkBitMap*) 0x00000000755d5ce0
+ Begin Bits: [0x0000000013b40000, 0x0000000017a08000)
+ End Bits:   [0x0000000017a08000, 0x000000001b8d0000)
+
+Polling page: 0x0000000000e00000
+
+CodeCache: size=245760Kb used=328Kb max_used=328Kb free=245431Kb
+ bounds [0x0000000003060000, 0x00000000032d0000, 0x0000000012060000]
+ total_blobs=58 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.035 loading class java/lang/Short
+Event: 0.035 loading class java/lang/Short done
+Event: 0.035 loading class java/lang/Integer
+Event: 0.035 loading class java/lang/Integer done
+Event: 0.035 loading class java/lang/Long
+Event: 0.035 loading class java/lang/Long done
+Event: 0.036 loading class java/lang/NullPointerException
+Event: 0.036 loading class java/lang/NullPointerException done
+Event: 0.036 loading class java/lang/ArithmeticException
+Event: 0.036 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff67f740000 - 0x00007ff67f777000 	C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
+0x00007ffce0110000 - 0x00007ffce0308000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffcdf7e0000 - 0x00007ffcdf89d000 	C:\Windows\System32\KERNEL32.dll
+0x00007ffcdd4a0000 - 0x00007ffcdd5bb000 	C:\Windows\system32\hmpalert.dll
+0x00007ffcddb40000 - 0x00007ffcdde36000 	C:\Windows\System32\KERNELBASE.dll
+0x00007ffcdfdf0000 - 0x00007ffcdfe9f000 	C:\Windows\System32\ADVAPI32.dll
+0x00007ffcde630000 - 0x00007ffcde6ce000 	C:\Windows\System32\msvcrt.dll
+0x00007ffcdeb40000 - 0x00007ffcdebdc000 	C:\Windows\System32\sechost.dll
+0x00007ffcde1d0000 - 0x00007ffcde2f6000 	C:\Windows\System32\RPCRT4.dll
+0x00007ffcdf330000 - 0x00007ffcdf4ce000 	C:\Windows\System32\USER32.dll
+0x00007ffcdd9f0000 - 0x00007ffcdda12000 	C:\Windows\System32\win32u.dll
+0x00007ffcdf6e0000 - 0x00007ffcdf70c000 	C:\Windows\System32\GDI32.dll
+0x00007ffcdda20000 - 0x00007ffcddb3a000 	C:\Windows\System32\gdi32full.dll
+0x00007ffcdd7f0000 - 0x00007ffcdd88d000 	C:\Windows\System32\msvcp_win.dll
+0x00007ffcde040000 - 0x00007ffcde140000 	C:\Windows\System32\ucrtbase.dll
+0x00007ffcce9e0000 - 0x00007ffccec7a000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.3636_none_60b6a03d71f818d5\COMCTL32.dll
+0x00007ffcdf7a0000 - 0x00007ffcdf7d0000 	C:\Windows\System32\IMM32.DLL
+0x0000000075660000 - 0x0000000075732000 	C:\Program Files\Java\jdk1.8.0_202\jre\bin\msvcr100.dll
+0x0000000074db0000 - 0x0000000075655000 	C:\Program Files\Java\jdk1.8.0_202\jre\bin\server\jvm.dll
+0x00007ffcdf8a0000 - 0x00007ffcdf8a8000 	C:\Windows\System32\PSAPI.DLL
+0x00007ffcbc540000 - 0x00007ffcbc567000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ffcd86a0000 - 0x00007ffcd86aa000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffcbfdc0000 - 0x00007ffcbfdc9000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffcdff50000 - 0x00007ffcdffbb000 	C:\Windows\System32\WS2_32.dll
+0x00007ffcd91f0000 - 0x00007ffcd91ff000 	C:\Program Files\Java\jdk1.8.0_202\jre\bin\verify.dll
+0x00007ffcc0a20000 - 0x00007ffcc0a49000 	C:\Program Files\Java\jdk1.8.0_202\jre\bin\java.dll
+0x00007ffcd91d0000 - 0x00007ffcd91e6000 	C:\Program Files\Java\jdk1.8.0_202\jre\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=62873 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Dspring.jmx.enabled=true -Dspring.application.admin.enabled=true -XX:TieredStopAtLevel=1 -Dspring.boot.project.name=crm-service -Dfile.encoding=UTF-8 
+java_command: com.acm.CrmServiceApplication --spring.output.ansi.enabled=always
+java_class_path (initial): C:\@workSpace\TAMKEEN\coris-bank-api\acm-api\crm-service\target\classes;C:\@workSpace\TAMKEEN\coris-bank-api\acm-api\acm-utilities\target\classes;C:\Users\kouali\.m2\repository\org\springframework\boot\spring-boot-starter-aop\2.0.4.RELEASE\spring-boot-starter-aop-2.0.4.RELEASE.jar;C:\Users\kouali\.m2\repository\org\springframework\spring-aop\5.0.8.RELEASE\spring-aop-5.0.8.RELEASE.jar;C:\Users\kouali\.m2\repository\org\aspectj\aspectjweaver\1.8.13\aspectjweaver-1.8.13.jar;C:\Users\kouali\.m2\repository\commons-fileupload\commons-fileupload\1.2.1\commons-fileupload-1.2.1.jar;C:\Users\kouali\.m2\repository\commons-io\commons-io\2.5\commons-io-2.5.jar;C:\Users\kouali\.m2\repository\com\google\code\gson\gson\2.8.5\gson-2.8.5.jar;C:\@workSpace\TAMKEEN\coris-bank-api\acm-api\acm-exceptions\target\classes;C:\Users\kouali\.m2\repository\org\apache\chemistry\opencmis\chemistry-opencmis-client-impl\1.1.0\chemistry-opencmis-client-impl-1.1.0.jar;C:\Users\kouali\.m2\repository\org\apache\chemistry\opencmis\chemistry-opencmis-client-api\1.1.0\chemistry-opencmis-client-api-1.1.0.jar;C:\Users\kouali\.m2\repository\org\apache\chemistry\opencmis\chemistry-opencmis-commons-api\1.1.0\chemistry-opencmis-commons-api-1.1.0.jar;C:\Users\kouali\.m2\repository\org\apache\chemistry\opencmis\chemistry-opencmis-commons-impl\1.1.0\chemistry-opencmis-commons-impl-1.1.0.jar;C:\Users\kouali\.m2\repository\org\apache\chemistry\opencmis\chemistry-opencmis-client-bindings\1.1.0\chemistry-opencmis-client-bindings-1.1.0.jar;C:\Users\kouali\.m2\repository\org\apache\cxf\cxf-rt-frontend-jaxws\3.0.12\cxf-rt-frontend-jaxws-3.0.12.jar;C:\Users\kouali\.m2\repository\xml-resolver\xml-resolver\1.2\xml-resolver-1.2.jar;C:\Users\kouali\.m2\repository\asm\asm\3.3.1\asm-3.3.1.jar;C:\Users\kouali\.m2\repository\org\apache\cxf\cxf-core\3.0.12\cxf-core-3.0.12.jar;C:\Users\kouali\.m2\repository\org\apache\ws\xmlschema\xmlschema-core\2.2.1\xmlschema-core-2.2.1.jar;C:\Users\kouali\.m2\reposit
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_202
+PATH=D:/OneDrive - Talys Consulting/Bureau/sts/sts-4.12.1.RELEASE//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.0.v20211012-1059/jre/bin/server;D:/OneDrive - Talys Consulting/Bureau/sts/sts-4.12.1.RELEASE//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.0.v20211012-1059/jre/bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\kouali\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Users\kouali\AppData\Local\Microsoft\WindowsApps;C:\Users\kouali\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\kouali\AppData\Roaming\npm;C:\Users\kouali\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\nodejs;C:\Program Files\Azure Data Studio\bin;C:\Users\kouali\AppData\Roaming\nvm;;D:\OneDrive - Talys Consulting\Bureau\sts\sts-4.12.1.RELEASE;
+USERNAME=kouali
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 154 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 19041 (10.0.19041.3636)
+
+CPU:total 12 (initial active 12) (12 cores per cpu, 1 threads per core) family 6 model 154 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 16454352k(532548k free), swap 48373916k(98352k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Fri Dec 22 11:31:12 2023
+timezone: Paris, Madrid
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

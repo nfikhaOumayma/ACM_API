@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe036e66-8cbd-457d-8511-a867bddb1dd2">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tamkeen_recette"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="Dataset1" uuid="00f50285-16ff-4a0a-bc42-6bc8aabea780">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="ACCOUNTID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 	
+	REPLACE(REPLACE(Customer.CorrespondenceName,'Mrs ',''),'Mr ','') [CUSTOMER_NAME],
+ 	ISNULL((SELECT CASE 
+				WHEN UserDefinedFieldListValues.Name = 'No Card' THEN 0 
+				ELSE 1 
+			END
+	FROM UserDefinedFieldLinks, UserDefinedFields, UserDefinedFieldListValues
+	WHERE UserDefinedFieldLinks.UserDefinedFieldID = UserDefinedFields.UserDefinedFieldID 
+	AND UserDefinedFieldLinks.Value = CONVERT (nvarchar(1000),UserDefinedFieldListValues.UserDefinedFieldListValueID)
+	AND UserDefinedFields.FieldName = 'Disbursment Method' AND UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID), 0)[MEZA_CARD],
+	(SELECT Value from UserDefinedFieldLinks where UserDefinedFieldID = 3 and UserDefinedFieldLinks.CustomerID = CUAccount.CustomerID) [NATIONAL_ID],
+	ISNULL(Person.Telephone1, '')  [CUSTOMER_MOBILE_NUMBER]
+
+from CUAccount, Customer, CustomerPerson, Person
+where CUAccount.CustomerID = Customer.CustomerID
+	  AND CustomerPerson.CustomerID = Customer.CustomerID
+	  AND Person.PersonID = CustomerPerson.PersonID
+	  AND CUAccountID = $P{ACCOUNTID}]]>
+	</queryString>
+	<field name="CUSTOMER_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_NAME"/>
+	</field>
+	<field name="MEZA_CARD" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="MEZA_CARD"/>
+		<property name="com.jaspersoft.studio.field.label" value="MEZA_CARD"/>
+	</field>
+	<field name="NATIONAL_ID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NATIONAL_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="NATIONAL_ID"/>
+	</field>
+	<field name="CUSTOMER_MOBILE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CUSTOMER_MOBILE_NUMBER"/>
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_MOBILE_NUMBER"/>
+	</field>
+	<title>
+		<band height="149" splitType="Stretch">
+			<textField>
+				<reportElement x="149" y="88" width="257" height="20" uuid="c9465e76-34ac-46b7-9dfe-8d20d5a368ff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الموافقة على استخدام خدمـات الدفع الإلكتروني"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="132" y="109" width="290" height="20" uuid="ee76759d-758f-4d97-b05d-eecf83fda592"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[في مجال نشاط تمويل المشروعات متناهية الصغر للشركات ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="416" y="8" width="118" height="72" uuid="df749529-9704-4d13-ae9a-52038bc316e0"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/fra_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="420" splitType="Stretch">
+			<staticText>
+				<reportElement x="380" y="47" width="130" height="16" uuid="25d63fb3-a9d7-4a2e-8b96-8c0ce10bed77"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[صرف التمويل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="62" width="130" height="14" uuid="e97fe552-7997-4aa3-a6e8-0e3e01c64026"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[سداد أقساط التمويل]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="76" width="506" height="20" uuid="93367d65-005a-4aa8-843f-5f58f12b45ff"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[سداد أي مستحقات لجهة التمويل وصرف أي مستحقات للعميل على أن يكون كلاهما مرتبط بالتمويل متناهي الصغر .]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="48" width="14" height="16" backcolor="#000000" uuid="9f37e91d-a1b1-4279-b93a-716ca0ca8892"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[❑]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="61" width="14" height="16" uuid="f9faa03d-2bde-4503-a1b6-b8637f26ff17"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[❑]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="76" width="14" height="16" uuid="ee6278a3-692e-4f66-97d2-6c37ca6564a3"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[❑]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="101" width="530" height="20" uuid="b59cf553-d36d-48d7-86f1-6603b11e8f43">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["والناشئة عن حصولي على تمويل مشروعات متناهية صغر من شركة" + "..........................."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="121" width="530" height="16" uuid="b42ec4cd-1e71-4f52-b37c-064c3dd1aa1e">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["والتي قامت بإرشادي على كيفية استخدام هذه الخدمات."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="141" width="530" height="36" uuid="6a938eac-210a-4015-87d0-2c81738d8b2f">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ويعد الإيصال المطبوع الذي يتم استلامه عند اجراء عمليات السداد أو الصرف لدى منافذ جهة الدفع الالكتروني   عاليه تأكيد إلتمام المعاملة المالية المطلوبة. وذلك كله في إطار أحكام التعاقد الموقع بين جمعية/ مؤسسة أهلية /شركة."+ "الاهلي كابيتال للتمويل متناهي الصغر (تمكين)" +"وجهة الدفع الالكتروني" + "البنك الأهلي المصري" + " بتاريخ " + "03/02/2021"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="187" width="530" height="50" uuid="c763f549-bb0d-4177-9b9f-058c8a2927ec">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["هذا، ويعد توقيعي على هذا الطلب تأكيداً على قبولي استخدام الخدمة وبالحقوق و الالتزامات  الناشئة عنها وطريقة  تقديم الشكوى بشأنها( ان وجدت). "+"\n"+"كما التزم بإخطار جهة التمويل عاليه في حالة فقدان الهاتف المحمول الخاص بي أو تغيير الرقم الخاص بي في حينه. "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="324" y="356" width="220" height="20" uuid="5e24a222-7f9d-42c7-a7dc-58c30c89b6f1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[رقم موافقة الشركة لخدمة الدفع الالكتروني]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="354" width="190" height="20" uuid="d6fc3378-f782-466c-9242-b0dce69c3472"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<text><![CDATA[ختم الشركة المُرخص لها بمزاولة النشاط]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="23" y="7" width="509" height="34" uuid="c0b88569-4497-4290-9d0e-3607d0485865">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans"/>
+					<paragraph lineSpacing="Double" rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أوافق أنا الموقع أدناه السيد(ة) "+ $F{CUSTOMER_NAME} +" على استخدام خدمات الدفع عاليه طرف منافذ(جهة الدفع الالكتروني)"+"...................."+"لأغراض: "]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="521" y="48" width="11" height="13" uuid="68cd389a-8edf-4d3c-9517-cdaa211d6d23"/>
+				<imageExpression><![CDATA[IF($F{MEZA_CARD} == 1 ,   $P{SUBREPORT_DIR}+ "/images/check.png"  , $P{SUBREPORT_DIR}+ "/images/transparent.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="521" y="76" width="11" height="13" uuid="30c1675f-4eaf-4218-8592-81036e1432e8"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/check.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="521" y="61" width="11" height="13" uuid="3768887c-e06e-4c05-85f0-5d4776945cd5"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/check.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="286" y="253" width="260" height="20" uuid="a74c769a-70f0-4f3c-8ffa-f1f92cf7cfeb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["اســـم العميل : " + $F{CUSTOMER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="273" width="260" height="20" uuid="01086c64-9757-4046-a8b8-2ef10c902059"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الــرقم القومــي : " +$F{NATIONAL_ID}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="392" y="373" width="84" height="20" uuid="5b8eae6a-9f12-4cfd-a6e4-41a69a1cbc87"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[16895]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="293" width="474" height="20" uuid="86ae5df3-3daf-48a3-98cf-7f2b90ae24c4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA["رقم الهاتف المحمول للعميل الخاص بخدمة تلقى رسائل الخدمة : "+ $F{CUSTOMER_MOBILE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

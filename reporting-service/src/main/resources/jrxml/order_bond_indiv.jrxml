@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="order_bond_indiv" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5cfebc7f-6899-475a-9d4e-5cb5b198f26d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="ACCOUNTID" class="java.lang.Long" nestedType="java.lang.Long">
+		<defaultValueExpression><![CDATA[(long) 1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+	((CULoanSchedule.Period-CULoanPart.PeriodsDeferred-1)/6)+1 SchedulePeriod
+	,FORMAT(MAX(CULoanSchedule.RepaymentDate),'yyyy/MM/dd') RepaymentDate
+	,SUM(CULoanSchedule.TotalRepayment) TotalRepayment
+	,dbo.ConvertNumber2Letters(SUM(CULoanSchedule.TotalRepayment), N' ريال سعودي  ') TotalRepaymentLetter
+	,REPLACE(REPLACE(C1.CorrespondenceName,'Mrs',''),'Mr','')  CustomerName
+	,P1.Telephone1 CustomerMobile
+	,REPLACE(REPLACE(C2.CorrespondenceName,'Mrs',''),'Mr','')  GuarantorName
+	,P2.Telephone1 GuarantorMobile
+	,(SELECT Branches.Description FROM Branches WHERE Branches.BranchID=CUAccount.BranchID) BranchName
+	,dbo.GetArabicDate(GETDATE()) ExecuteDate
+FROM CUAccount
+INNER JOIN Customer C1 ON C1.CustomerID=CUAccount.CustomerID
+INNER JOIN CustomerPerson CP1 ON CP1.CustomerID=C1.CustomerID
+INNER JOIN Person P1 ON P1.PersonID=CP1.PersonID
+INNER JOIN CULoan ON CULoan.CUAccountID=CUAccount.CUAccountID
+INNER JOIN CULoanPart ON CULoan.CULoanID=CULoanPart.CULoanID
+INNER JOIN CULoanSchedule ON CULoanSchedule.CULoanPartID=CULoanPart.CULoanPartID
+INNER JOIN CULoanGuarantor ON CULoanGuarantor.CULoanID=CULoan.CULoanID
+INNER JOIN Customer C2 ON C2.CustomerID=CULoanGuarantor.CustomerID
+INNER JOIN CustomerPerson CP2 ON CP2.CustomerID=C2.CustomerID
+INNER JOIN Person P2 ON P2.PersonID=CP2.PersonID
+WHERE CULoanSchedule.TotalRepayment>0 AND CUAccount.CUAccountID=$P{ACCOUNTID}
+GROUP BY ((CULoanSchedule.Period-CULoanPart.PeriodsDeferred-1)/6)
+,C1.CorrespondenceName,C2.CorrespondenceName,P1.Telephone1,P2.Telephone1,CUAccount.BranchID]]>
+	</queryString>
+	<field name="SchedulePeriod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="SchedulePeriod"/>
+		<property name="com.jaspersoft.studio.field.label" value="SchedulePeriod"/>
+	</field>
+	<field name="RepaymentDate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RepaymentDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="RepaymentDate"/>
+	</field>
+	<field name="TotalRepayment" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TotalRepayment"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalRepayment"/>
+	</field>
+	<field name="TotalRepaymentLetter" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TotalRepaymentLetter"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalRepaymentLetter"/>
+	</field>
+	<field name="CustomerName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerName"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerName"/>
+	</field>
+	<field name="CustomerMobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CustomerMobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerMobile"/>
+	</field>
+	<field name="GuarantorName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorName"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorName"/>
+	</field>
+	<field name="GuarantorMobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="GuarantorMobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="GuarantorMobile"/>
+	</field>
+	<field name="BranchName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BranchName"/>
+		<property name="com.jaspersoft.studio.field.label" value="BranchName"/>
+	</field>
+	<field name="ExecuteDate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ExecuteDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="ExecuteDate"/>
+	</field>
+	<pageHeader>
+		<band height="63" splitType="Stretch">
+			<image>
+				<reportElement x="460" y="0" width="50" height="50" uuid="f51466c1-6633-4aff-92f7-39ace4460968"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+ "/images/BRJMF_Logo.png"]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="180" y="10" width="201" height="31" backcolor="#9BBB59" uuid="e0de7de5-f825-459b-9e3e-0e546081ba8c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="180" y="10" width="201" height="30" uuid="a8501198-088e-4a42-869d-efbebc37ff90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14"/>
+				</textElement>
+				<text><![CDATA[سند لأمر]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="365" splitType="Stretch">
+			<textField>
+				<reportElement x="460" y="10" width="80" height="20" uuid="bfa8cf1f-6fc3-4516-9935-95626ff354be"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["سند رقم:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="40" width="80" height="20" uuid="8275c4e0-5c07-4532-ae36-6644cf150fe1"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["حرر في:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="10" width="80" height="20" uuid="06bf8626-1fd3-4084-b0ca-e0f1b47888b7"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تاريخ الاستحقاق:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="40" width="80" height="20" uuid="40bdd813-1bc3-4532-bd3b-42ec77715c70"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بتاريخ:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="40" width="50" height="20" uuid="0378e187-07be-44fe-9cea-5a5900ae44bc"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["مبلـــــغ:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="545" height="20" uuid="f2af1b22-40c9-49f4-8ec5-978812d3baa5"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["أتعهد أنا الموقع أدناه  بأن أدفع بموجب هذا السند بدون قيد أو شرط لأمر شركة باب رزق جميل للتمويل متناهي الصغر"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="80" width="545" height="20" uuid="97e883d0-1b3d-4dc7-96c7-95093b346421"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["المبلغ أعلاه وقدره فقط:"+" "+$F{TotalRepaymentLetter}+"لا غير"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="109" width="80" height="20" uuid="887ff66e-3c63-49a5-97b9-a6307d1f6c93"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع المـــدين :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="109" width="80" height="20" uuid="e3312bde-0fc5-40d4-8c78-df04374fc019"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["توقيع الكفيل الغارم:	"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="150" width="80" height="20" uuid="c4c40eca-2284-450e-9fc5-94c20926d025"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الإســــــــــــــم :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="180" width="80" height="20" uuid="36aa1b75-5546-4ca2-bdc9-343001dc5a89"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تليفــــــــــــــون:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="150" width="80" height="20" uuid="817300a0-ffb5-49f8-8ccb-1ab39d4ca84b"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["الإســــــــــــــم :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="180" width="80" height="20" uuid="d97cd9b5-7cd9-464f-89a8-535f818a5633"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["تليفــــــــــــــون:"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="294" y="217" width="250" height="80" uuid="4e19410d-cedc-436f-89b4-e36bcd89c455"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="30" y="217" width="254" height="80" uuid="fe6c1033-dcb6-4f86-b326-25bdd918b5ce"/>
+			</rectangle>
+			<textField>
+				<reportElement x="5" y="310" width="545" height="20" uuid="976dd3f7-ac2f-40b6-ab76-d074dda731a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["شركة باب رزق جميل التمويل متناهي الصغر- شركة مساهمة مغلقة -  رقم السجل التجاري : ٤٠٣٠٢٩٤١١٧"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="340" width="545" height="20" uuid="95f9fc5b-3eb0-4dff-b60f-58be41eeb251"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["جدة -   ص.ب ٢٤٨ جدة ٢١٤١١  المملكة العربية السعودية   رأس مال : مائة مليون ريال مدفوع بالكامل"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="220" width="240" height="70" uuid="84cd954b-a20d-4b45-b3ba-010770476ba2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["هذا السند واجب الدفع بدون تعلل بموجب قرار مجلس الوزراء الموقر رقم ٦٩٢  تاريخ ٢٦/٩/١٣٨٣هـ والمتوج بالمرسوم الملكي الكريم رقم ٣٧ بتاريخ ١١/١٠/١٣٨٣هـ نظام الأوراق التجارية."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="220" width="240" height="70" uuid="eb7fce61-c96e-4e44-b279-187cd5cc274e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["بموجب هذا السند يسقط المدين والكفيل الغارم كافة حقوق التقديم والمطالبة والاحتجاج والأخطار بالامتناع عن الوفاء والمتعلقة بهذا السند كما يجوز لشركة باب رزق جميل للتمويل متناهي الصغر بموجب هذا السند الرجوع للمدين أو الكفيل الغارم منفردين أو مجتمعين ودون مراعاة أو ترتيب "]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="340" y="10" width="120" height="20" uuid="1fed9844-e42d-427e-92c2-d222f97b7593"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SchedulePeriod}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="150" y="10" width="100" height="20" uuid="55d9152e-88c1-4ed0-993c-1c5f85b8b63d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RepaymentDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="150" y="40" width="100" height="20" uuid="4732239b-eead-43d3-8abc-edb7d90679f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ExecuteDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="340" y="40" width="120" height="20" uuid="a78f044a-dff6-4c20-a11d-63567a1cdd10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BranchName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="40" width="88" height="20" uuid="6aa27481-8224-44ec-baee-86511ac860bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TotalRepayment}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="300" y="150" width="160" height="20" uuid="042c0938-34ce-48e1-bb36-976a53acf786"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CustomerName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="300" y="180" width="160" height="20" uuid="ed4a5c1f-d9de-4833-86b0-bd75c47d9df1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CustomerMobile}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="30" y="150" width="180" height="20" uuid="a71b3b29-ea54-4e78-93c9-b42519635ecb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="30" y="180" width="180" height="20" uuid="527c2d4b-c189-4cd9-becd-19e445da08d8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GuarantorMobile}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

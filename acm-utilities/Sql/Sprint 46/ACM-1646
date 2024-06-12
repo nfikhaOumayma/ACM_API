@@ -1,0 +1,6 @@
+ALTER TABLE acm_users
+ADD HIRING_DATE date;
+
+ALTER TABLE acm_users
+ADD RESIGNING_DATE date;
+

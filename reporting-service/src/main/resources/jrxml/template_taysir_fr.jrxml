@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template_taysir" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6efdb041-2991-4ba6-958e-bc3134ebaa9f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="accountNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[accountNumber]]></fieldDescription>
+	</field>
+	<field name="customerName" class="java.lang.String">
+		<fieldDescription><![CDATA[customerName]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[approvelAmount]]></fieldDescription>
+	</field>
+	<field name="currencySymbol" class="java.lang.String">
+		<fieldDescription><![CDATA[currencySymbol]]></fieldDescription>
+	</field>
+	<field name="productRate" class="java.lang.Integer">
+		<fieldDescription><![CDATA[productRate]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<staticText>
+				<reportElement x="-10" y="0" width="585" height="66" uuid="15038d2a-c649-4a00-92f4-6805066ddd81"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[
+Un petit prêt personnel nombre: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="28" width="100" height="30" uuid="621dcdb2-b0ee-44ed-9a23-ff964f196a97"/>
+				<textFieldExpression><![CDATA[$F{accountNumber}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="10" width="98" height="46" uuid="3a91b867-7858-4d3b-8ef7-e310cb5dc387"/>
+				<imageExpression><![CDATA["jrxml/images/ACM_Logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="451" splitType="Stretch">
+			<staticText>
+				<reportElement x="-11" y="0" width="586" height="400" uuid="40ff5367-de6b-40fc-8b70-fb436c1e9d97"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Parmi les deux groupes ci-dessous: 
+
+1) Une société de facilitation de microcrédit, une société anonyme, soumise à la loi tunisienne, une institution de microfinance agréée par le ministère des finances, selon la licence délivrée le 28 mars 2014, son numéro d'enregistrement commercial 0171842013 B, numéro d'identification fiscale 0001292840 / M / A / N, son siège social est situé dans le quartier, la succursale verte est située dans la troisième branche verte du 91  Al-Busairi Al-Hasrani Al-Hashani, que j'ai délégué, en vertu d'une procuration.
+
+2) Le client,                             , titulaire de la carte d'identité nationale n ° 27623789 délivrée à Tunis le 02/02/2000 Profession et Résident.
+
+Chapitre 1 : 
+
+Le sujet donne le prêteur à l'emprunteur conformément aux conditions énoncées ci-dessous et aux dispositions du décret n ° 117 de 2011 du 05 novembre 2011 ainsi qu'aux textes complémentaires et aux textes juridiques qui n'entre pas en conflit avec un petit prêt, les besoins de financement pour l'amélioration des conditions de vie, d'un montant de  
+L'emprunteur reconnaît et déclare qu'il ne peut bénéficier du prêt inclus dans le présent contrat après avoir accompli toutes les procédures légales nécessaires liées aux signatures des parties contractantes.
+
+Chapitre 2: Conditions du prêt 
+
+Le prêt est attribué selon les conditions suivantes : 
+A) Montant du prêt : 
+B) Taux d'intérêt annuel proche de    %
+
+
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="88" width="120" height="24" uuid="66a51be3-a9c1-4b0a-b176-f89970b9d15d"/>
+				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="176" width="100" height="30" uuid="7487c931-d360-4232-9165-cbf67c3e325b"/>
+				<textFieldExpression><![CDATA[$F{approvelAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="394" y="176" width="100" height="30" uuid="13e5133b-e68d-4746-a65e-77d89cda3990"/>
+				<textFieldExpression><![CDATA[$F{currencySymbol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="265" width="100" height="30" uuid="804040e2-fb4f-40b2-bf80-3fd6ea70c8d2"/>
+				<textFieldExpression><![CDATA[$F{approvelAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="265" width="100" height="30" uuid="d52cbdb9-2fa1-4fe5-b926-028139596080"/>
+				<textFieldExpression><![CDATA[$F{currencySymbol}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="277" width="100" height="30" uuid="eacc4807-96ab-4d17-9ab5-57b3bb85af1c"/>
+				<textFieldExpression><![CDATA[$F{productRate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="142" y="419" width="120" height="24" uuid="13939f29-d416-4962-bd95-d53d6e847925"/>
+				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="142" y="402" width="88" height="27" uuid="45b0d797-78f4-41f4-8b4b-7d3551415cb3"/>
+				<text><![CDATA[Emprunteur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="390" width="100" height="30" uuid="a0dc1ca3-4fda-4a4a-baf1-0f76c19c1ed0"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Signatures :
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="399" width="71" height="21" uuid="49d9e446-6796-451f-b9f6-7f3826a224c6"/>
+				<text><![CDATA[Prêteur]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="70" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>
